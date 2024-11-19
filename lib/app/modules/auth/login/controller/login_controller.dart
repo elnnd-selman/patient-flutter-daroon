@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class LoginCtrl extends GetxController {
           });
 
       if (response != null) {
-        if (response.statusCode == 201) {
+        if (response.statusCode == 201 || response.statusCode == 200) {
           showToastMessage(
               message: "Successfully login.",
               context: context,
@@ -37,22 +39,25 @@ class LoginCtrl extends GetxController {
               icon: Icons.check);
           final jsonData = jsonDecode(response.body);
 
-          Get.find<LocalStorageController>().daroonBox!.put("isLogin", true);
-
           final userModel = UserModel.fromJson(jsonData);
-          print(jsonData);
-          Get.find<LocalStorageController>()
+
+          await Get.find<LocalStorageController>()
               .daroonBox!
               .put("userModel", userModel);
-          print("Checkin ${jsonData["typeOfUser"]}");
-          Get.find<LocalStorageController>()
+
+          await Get.find<LocalStorageController>()
               .daroonBox!
               .put("userRole", userModel.user!.typeOfUser!);
-          if (jsonData["typeOfUser"] == "user") {
-            Get.offAllNamed(Routes.userdrawerScreen);
-          } else {
-            Get.offAllNamed(Routes.userdrawerScreen);
-          }
+          await Get.find<LocalStorageController>()
+              .daroonBox!
+              .put("isLogin", true);
+          Get.offAllNamed(Routes.userdrawerScreen);
+          // if (jsonData["typeOfUser"] == userModel.user!.typeOfUser!) {
+          //   Get.offAllNamed(Routes.userdrawerScreen);
+          // } else {
+          //   Get.offAllNamed(Routes.userdrawerScreen);
+          // }
+          // Get.offAllNamed(Routes.userdrawerScreen);
           cleanController();
           _processing.value = false;
         } else {

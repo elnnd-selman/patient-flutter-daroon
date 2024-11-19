@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
@@ -17,6 +18,7 @@ class CommonTextfeild extends StatefulWidget {
     this.maxLine = 1,
     this.onChange,
     this.borderColor = AppColors.borderColor,
+    this.inputFormat,
   });
   bool obscuretext;
   final String hinttext;
@@ -29,6 +31,7 @@ class CommonTextfeild extends StatefulWidget {
   Function(String)? onChange;
   // ignore: prefer_typing_uninitialized_variables
   final validations;
+  List<TextInputFormatter>? inputFormat;
 
   // ignore: prefer_typing_uninitialized_variables
   var keyboardType;
@@ -40,6 +43,7 @@ class _CommonTextfeildState extends State<CommonTextfeild> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: widget.inputFormat ?? [],
       maxLines: widget.maxLine,
       style: AppTextStyles.medium.copyWith(
         fontWeight: FontWeight.w400,
@@ -55,7 +59,7 @@ class _CommonTextfeildState extends State<CommonTextfeild> {
       onChanged: widget.onChange,
       decoration: InputDecoration(
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
+            const EdgeInsets.symmetric(vertical: 22, horizontal: 14),
         fillColor: const Color(0xffF7F7F8),
         filled: true,
         errorBorder: OutlineInputBorder(
@@ -294,9 +298,8 @@ class _AddressTextFieldState extends State<AddressTextField> {
           padding: const EdgeInsets.all(15),
           child: SvgPicture.asset(
             "assets/icons/dollar.svg",
-            color: const Color(0xff535353),
-            colorFilter: ColorFilter.mode(
-              const Color(0xff535353),
+            colorFilter: const ColorFilter.mode(
+              Color(0xff535353),
               BlendMode.srcIn,
             ),
           ),

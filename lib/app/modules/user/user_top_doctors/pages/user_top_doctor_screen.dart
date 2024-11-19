@@ -1,14 +1,18 @@
+import 'package:daroon_user/app/modules/user/user_top_doctors/controller/user_top_doctor_controller.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
+import 'package:daroon_user/global/widgets/loading_overlay.dart';
+import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:daroon_user/app/modules/user/user_home/widget/top_doctor_conatiner.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/widget/top_doctor_conatiner.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 
-class UserTopDoctorScreen extends StatelessWidget {
+class UserTopDoctorScreen extends GetView<UserTopDoctorController> {
   const UserTopDoctorScreen({super.key});
 
   @override
@@ -17,15 +21,34 @@ class UserTopDoctorScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: 4 * SizeConfig.widthMultiplier,
           vertical: 3 * SizeConfig.heightMultiplier),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPatientTextField(),
-            SizedBox(height: 3 * SizeConfig.heightMultiplier),
-            const TopDoctorContainer(),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPatientTextField(),
+          SizedBox(height: 2 * SizeConfig.heightMultiplier),
+          // const TopDoctorContainer(),;
+          Obx(
+            () => controller.isLoading.value
+                ? const Expanded(child: LoadingWidget())
+                : controller.topDoctorModelList.isEmpty
+                    ? const Expanded(
+                        child: NoDataWidget(text: "No Doctor Found"))
+                    : Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: controller.topDoctorModelList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return TopDoctorContainer(
+                              topDoctorModel:
+                                  controller.topDoctorModelList[index],
+                            );
+                          },
+                        ),
+                      ),
+          ),
+          SizedBox(height: 2 * SizeConfig.heightMultiplier),
+        ],
       ),
     );
   }
@@ -76,7 +99,7 @@ class UserTopDoctorScreen extends StatelessWidget {
                 AppColors.lighttextColor, BlendMode.srcIn),
           ),
         ),
-        suffixIcon: GestureDetector(
+        suffixIcon: CustomCupertinoButton(
           onTap: () => Get.toNamed(Routes.filterScreen),
           child: Padding(
             padding: const EdgeInsets.all(20),

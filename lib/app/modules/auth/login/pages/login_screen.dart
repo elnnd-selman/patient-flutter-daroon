@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/login/controller/login_controller.dart';
@@ -109,7 +110,7 @@ class LoginScreen extends GetView<LoginCtrl> {
                     const SizedBox(height: 15),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: GestureDetector(
+                      child: CustomCupertinoButton(
                         onTap: () {
                           Get.toNamed(Routes.forgetPassword);
                         },

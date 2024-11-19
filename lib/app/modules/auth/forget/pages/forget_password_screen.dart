@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/forget/controller/forget_password_controller.dart';
@@ -53,7 +54,7 @@ class ForgetPassowrdScreen extends GetView<ForgetPasswordCtrl> {
               shrinkWrap: true,
               itemCount: 2,
               itemBuilder: (context, index) {
-                return GestureDetector(
+                return CustomCupertinoButton(
                   onTap: () {
                     controller.currentIndex.value = index;
                   },

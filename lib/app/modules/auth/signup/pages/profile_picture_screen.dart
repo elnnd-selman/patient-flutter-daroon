@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/signup/controller/profile_pic_controller.dart';
@@ -84,7 +85,7 @@ class ProfilePictureScreen extends GetView<ProfilePicController> {
                       Positioned(
                         bottom: 6,
                         right: 10,
-                        child: GestureDetector(
+                        child: CustomCupertinoButton(
                           onTap: () {
                             controller.addPhoto(context);
                           },
@@ -127,7 +128,7 @@ class ProfilePictureScreen extends GetView<ProfilePicController> {
                     },
                     name: "Next"),
                 8.verticalSpace,
-                GestureDetector(
+                CustomCupertinoButton(
                   onTap: () {
                     Get.offAllNamed(Routes.welcome);
                   },

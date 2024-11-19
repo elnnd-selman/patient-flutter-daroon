@@ -1,3 +1,6 @@
+import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_podcast_app_bar.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/pages/user_podcast.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,7 +120,7 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
   final List _appBars = [
     const UserHomeAppBar(),
     const UserTopDoctorAppBar(),
-    Container(),
+    const UserPodcastAppBar(),
     Container(),
     Container(),
   ];
@@ -125,7 +128,7 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
   final List pagesList = [
     const UserHomeScreen(),
     const UserTopDoctorScreen(),
-    Container(),
+    const UserPodcastScreen(),
     Container(),
     Container(),
   ];
@@ -259,13 +262,13 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
     );
   }
 
-  GestureDetector _bottomIcons({
+  CustomCupertinoButton _bottomIcons({
     required String icon,
     required double size,
     required Color color,
     required Function()? ontap,
   }) {
-    return GestureDetector(
+    return CustomCupertinoButton(
       onTap: ontap,
       child: Container(
         padding: EdgeInsets.symmetric(

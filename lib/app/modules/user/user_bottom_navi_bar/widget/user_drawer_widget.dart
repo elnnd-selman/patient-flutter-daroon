@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -9,7 +10,7 @@ class UserDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return CustomCupertinoButton(
       onTap: () {
         if (ZoomDrawer.of(context)!.isOpen()) {
           ZoomDrawer.of(context)!.close();

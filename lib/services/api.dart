@@ -21,7 +21,7 @@ class ApiService {
     return response;
   }
 
-  static Future<http.Response?> postwithoutHeaderAPi({
+  static Future<http.Response?> postwithHeaderAPi({
     required String endPoint,
     required Map<String, dynamic>? body,
   }) async {
@@ -31,7 +31,7 @@ class ApiService {
     return response;
   }
 
-  static Future<http.Response?> postwithOutHeader({
+  static Future<http.Response?> postwithHeader({
     required String endPoint,
     required Map<String, dynamic>? body,
     required Map<String, String>? userToken,

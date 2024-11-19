@@ -1,9 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/upcoming_custom_container.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
@@ -15,7 +14,7 @@ class UserUpcomingAppointmentContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return CustomCupertinoButton(
       onTap: () {
         // Get.toNamed(Routes.doctorAppointmentDetail, arguments: {
         //   "buttonName": "Confirm",

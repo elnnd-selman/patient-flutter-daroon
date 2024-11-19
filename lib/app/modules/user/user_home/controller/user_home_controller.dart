@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:appinio_swiper/appinio_swiper.dart';
+import 'package:daroon_user/app/model/user_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/controllers/local_storage_controller.dart';
@@ -24,10 +26,19 @@ class UserHomeController extends GetxController {
     AppColors.primaryColor,
   ];
 
+  Rxn<UserModel> userModel = Rxn();
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    Get.find<LocalStorageController>().daroonBox!.delete("isLogin");
+    // Get.find<LocalStorageController>().daroonBox!.delete("isLogin");
+    userModel.value = await Get.find<LocalStorageController>()
+        .daroonBox!
+        .get("userModel", defaultValue: UserModel);
+
+    if (kDebugMode) {
+      print(userModel.value!.token!);
+      print(userModel.value!.user!.id!);
+    }
   }
 
   Future<void> shakeCard() async {

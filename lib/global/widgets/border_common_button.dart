@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
@@ -10,7 +11,7 @@ class BorderCommonButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return CustomCupertinoButton(
       onTap: ontap,
       child: Container(
         // margin: const EdgeInsets.symmetric(vertical: 15),

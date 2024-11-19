@@ -1,3 +1,6 @@
+import 'package:daroon_user/app/modules/user/user_offer/model/user_offer_model.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
+import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -8,14 +11,18 @@ import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
+import 'package:intl/intl.dart';
 
 class UserOfferContainer extends StatelessWidget {
-  const UserOfferContainer({super.key});
+  final UserOfferModel userOfferModel;
+  const UserOfferContainer({super.key, required this.userOfferModel});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Get.toNamed(Routes.userOffersDetails),
+    return CustomCupertinoButton(
+      onTap: () => Get.toNamed(Routes.userOffersDetails, arguments: [
+        userOfferModel,
+      ]),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -30,15 +37,25 @@ class UserOfferContainer extends StatelessWidget {
                 height: 24 * SizeConfig.heightMultiplier,
                 width: MediaQuery.of(context).size.width,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/circlurDot.png"),
-                      fit: BoxFit.fill,
-                    ),
+                    // image: DecorationImage(
+                    //   image: AssetImage("assets/images/circlurDot.png"),
+                    //   fit: BoxFit.fill,
+                    // ),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20))),
                 child: Stack(
                   children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                      child: NetWorkImageLoader(
+                        height: 24 * SizeConfig.heightMultiplier,
+                        width: MediaQuery.of(context).size.width,
+                        imageURL: userOfferModel.image!.bg!,
+                      ),
+                    ),
                     Positioned(
                       top: 2 * SizeConfig.heightMultiplier,
                       right: 14,
@@ -66,23 +83,18 @@ class UserOfferContainer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
+                            NetWorkImageLoader(
+                              shape: BoxShape.circle,
                               height: 5 * SizeConfig.heightMultiplier,
                               width: 5 * SizeConfig.heightMultiplier,
-                              decoration: const BoxDecoration(
-                                  color: Colors.amber,
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/tempImages.png"),
-                                  ),
-                                  shape: BoxShape.circle),
+                              imageURL: userOfferModel.image!.bg!,
                             ),
                             10.horizontalSpace,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Dr. Doctor Name",
+                                  "${userOfferModel.doctor!.firstNameEn} ${userOfferModel.doctor!.lastNameEn!}",
                                   style: AppTextStyles.medium.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.whiteBGColor,
@@ -90,7 +102,9 @@ class UserOfferContainer extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "Specialist",
+                                  userOfferModel.doctor!.speciality == null
+                                      ? '--'
+                                      : userOfferModel.doctor!.speciality!,
                                   style: AppTextStyles.medium.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.whiteBGColor,
@@ -143,7 +157,7 @@ class UserOfferContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Offer Title",
+                    userOfferModel.titleEn!,
                     style: AppTextStyles.medium.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.blackBGColor,
@@ -151,7 +165,7 @@ class UserOfferContainer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "In publishing and graphic design...",
+                    userOfferModel.descriptionEn!,
                     style: AppTextStyles.medium.copyWith(
                       fontWeight: FontWeight.w400,
                       color: AppColors.greyBGColor.withOpacity(0.6),
@@ -169,7 +183,7 @@ class UserOfferContainer extends StatelessWidget {
                     children: [
                       _moreOfferContainer(
                           "assets/icons/calendar.svg",
-                          "• 31 Oct - 15 Nov",
+                          "• ${formatDate(userOfferModel.startTime!, userOfferModel.endTime!)}",
                           AppColors.primaryColor,
                           MediaQuery.of(context).size.width * 0.47),
                       5.horizontalSpace,
@@ -180,7 +194,7 @@ class UserOfferContainer extends StatelessWidget {
                           MediaQuery.of(context).size.width * 0.35),
                       _moreOfferContainer(
                           "assets/icons/newoffer.svg",
-                          "• 40% Off",
+                          "• ${userOfferModel.discountPercentage}% Off",
                           Colors.red,
                           MediaQuery.of(context).size.width * 0.35),
                     ],
@@ -194,6 +208,14 @@ class UserOfferContainer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String formatDate(DateTime startDate, DateTime endDate) {
+    DateFormat formatter = DateFormat('dd MMM');
+    String formattedDate = formatter.format(startDate);
+
+    String formatEndDate = formatter.format(endDate);
+    return "$formattedDate - $formatEndDate";
   }
 
   Container _moreOfferContainer(

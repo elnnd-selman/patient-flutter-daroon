@@ -37,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (Get.find<LocalStorageController>().daroonBox!.get("isLogin") != null) {
       if (Get.find<LocalStorageController>().daroonBox!.get("isLogin")!) {
-        print(Get.find<LocalStorageController>().daroonBox!.get("userRole"));
         if (Get.find<LocalStorageController>().daroonBox!.get("userRole") ==
             "doctor") {
           // Get.offAllNamed(Routes.doctordrawerScreen);

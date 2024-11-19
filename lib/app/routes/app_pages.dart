@@ -1,3 +1,8 @@
+import 'package:daroon_user/app/modules/auth/signup/pages/email_otp_screen.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/binding/top_doctor_bindng.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/pages/see_on_map_offices.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/pages/specific_doctor_offer_screen.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/pages/top_doctor_details.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/forget/binding/forget_password_binding.dart';
 import 'package:daroon_user/app/modules/auth/forget/pages/forget_email.dart';
@@ -65,9 +70,15 @@ class AppPages {
       page: () => const EmailPhoneNumberScreen(),
     ),
     GetPage(
-        name: Routes.otpScreen,
-        page: () => const OtpScreen(),
-        binding: OptBinding()),
+      name: Routes.otpScreen,
+      page: () => const OtpScreen(),
+      binding: OptBinding(),
+    ),
+    GetPage(
+      name: Routes.emailOTPScreen,
+      page: () => const EmailOtpScreen(),
+      binding: OptBinding(),
+    ),
     GetPage(
       name: Routes.forgetPassword,
       page: () => const ForgetPassowrdScreen(),
@@ -102,6 +113,25 @@ class AppPages {
       name: Routes.welcome,
       page: () => const WelcomeScreen(),
     ),
+
+    //////  Top Doctor Detail
+    GetPage(
+      name: Routes.topDotocrProfileDetail,
+      page: () => TopDoctorProfileScreen(),
+      binding: TopDoctorBindng(),
+    ),
+    GetPage(
+      name: Routes.seeOnMapAppointment,
+      page: () => SeeOnMapAppointment(),
+      binding: TopDoctorBindng(),
+    ),
+    GetPage(
+      name: Routes.specificDoctorOfferScreen,
+      page: () => const SpecificDoctorOfferScreen(),
+      binding: TopDoctorBindng(),
+    ),
+    ////
+    ///
     // GetPage(
     //   name: Routes.doctordrawerScreen,
     //   page: () => const DoctorDrawerScreen(),
@@ -220,7 +250,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.userOffersDetails,
-      page: () => const UserOfferDetailScreen(),
+      page: () => UserOfferDetailScreen(),
     ),
     GetPage(
       name: Routes.filterScreen,

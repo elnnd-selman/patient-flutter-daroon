@@ -11,17 +11,23 @@ import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignUpCtrl extends GetxController {
   RxString selectedGender = 'Gender'.obs;
-  final firstName = TextEditingController();
-  final lastName = TextEditingController();
+  final firstNameEN = TextEditingController();
+  final firstNameKU = TextEditingController();
+  final firstNameAR = TextEditingController();
+  final lastNameEN = TextEditingController();
+  final lastNameKU = TextEditingController();
+  final lastNameAR = TextEditingController();
   final email = TextEditingController();
   final userName = TextEditingController();
   final password = TextEditingController();
   final confirmpassword = TextEditingController();
   final phone = TextEditingController();
+  Rxn<DateTime> birthDate = Rxn(null);
   final _processing = false.obs;
   bool get processing => _processing.value;
 
@@ -35,6 +41,12 @@ class SignUpCtrl extends GetxController {
   // var userModel = Rxn<Users>();
 
   RxList<String> genderList = ['Male', 'Female'].obs;
+
+  String formatDate(DateTime date) {
+    DateFormat formatter = DateFormat('dd-MMM-yy');
+    String formattedDate = formatter.format(date);
+    return formattedDate;
+  }
 
   checkPhoneValidation(String phoneNumber, String dialCode) {
     bool isValid = CountryUtils.validatePhoneNumber(phoneNumber, dialCode);
@@ -53,19 +65,35 @@ class SignUpCtrl extends GetxController {
       FocusManager.instance.primaryFocus?.unfocus();
 
       String newText = phone.text.replaceAll(' ', '');
+
       final response = await ApiService.post(
           endPoint: '${AppTokens.apiURl}/users/register',
           body: {
-            "name": firstName.text,
-            "fullName": "${firstName.text} ${lastName.text}",
-            "username": userName.text,
+            "firstName": "${firstNameEN.text.trim()} ${lastNameEN.text.trim()}",
+            "firstName_ku": firstNameKU.text.trim(),
+            "firstName_ar": firstNameAR.text.trim(),
+            "firstName_en": firstNameEN.text.trim(),
+            "lastName_ku": lastNameKU.text.trim(),
+            "lastName_ar": lastNameAR.text.trim(),
+            "lastName_en": lastNameEN.text.trim(),
+            "username": userName.text.trim(),
             "gender": selectedGender.value.toLowerCase(),
-            "email": email.text,
-            "password": password.text,
-            "confirmPassword": confirmpassword.text,
-            "phoneNumber": "$dialCode$newText"
+            "email": email.text.trim(),
+            "password": password.text.trim(),
+            "confirmPassword": confirmpassword.text.trim(),
+            "phoneNumber": "${dialCode.value}$newText",
+            "appLang": "ku",
+            "profilePicture": "",
+            "dateOfBirth": birthDate.value.toString(),
+            // "name": firstName.text,
+            // "fullName": "${firstName.text} ${lastName.text}",
+            // "username": userName.text,
+            // "gender": selectedGender.value.toLowerCase(),
+            // "email": email.text,
+            // "password": password.text,
+            // "confirmPassword": confirmpassword.text,
+            // "phoneNumber": "$dialCode$newText"
           });
-
       if (response != null) {
         if (response.statusCode == 201 || response.statusCode == 200) {
           showToastMessage(
@@ -89,10 +117,12 @@ class SignUpCtrl extends GetxController {
           Get.offAllNamed(Routes.otpScreen, arguments: {
             "userToken": jsonData["token"],
             "email": email.text,
+            "phone": "${dialCode.value}$newText",
           });
           cleanController();
         } else {
           _processing.value = false;
+
           showToastMessage(
               message: response.body,
               context: context,
@@ -118,29 +148,30 @@ class SignUpCtrl extends GetxController {
   }
 
   sendOtptoUser(String userToken) async {
-    final response = await ApiService.postwithOutHeader(
+    await ApiService.postwithHeader(
       userToken: {"Authorization": userToken},
       endPoint:
           '${AppTokens.apiURl}/users/send-verification-code-via-phone-number',
       body: {},
     );
-    print(response!.statusCode);
-    print(response.body);
   }
 
   sendOtptoUserInEmail(String userToken) async {
-    final response = await ApiService.postwithOutHeader(
+    await ApiService.postwithHeader(
         userToken: {"Authorization": userToken},
         endPoint: '${AppTokens.apiURl}/users/send-verification-code-via-email',
         body: {});
-    print(response!.statusCode);
-    print(response.body);
   }
 
   cleanController() {
     selectedGender.value = 'Gender';
-    firstName.clear();
-    lastName.clear();
+    firstNameAR.clear();
+    firstNameKU.clear();
+
+    firstNameEN.clear();
+    lastNameAR.clear();
+    lastNameKU.clear();
+    lastNameEN.clear();
     email.clear();
     userName.clear();
     password.clear();

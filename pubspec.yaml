@@ -42,7 +42,7 @@ dependencies:
   flutter_zoom_drawer: ^3.2.0
   flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   fl_chart: ^0.68.0
   animate_do: ^3.3.4
   image_picker: ^1.1.2
@@ -99,6 +99,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons_png/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

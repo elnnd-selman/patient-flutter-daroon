@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/forget/controller/forget_password_controller.dart';
@@ -146,7 +147,7 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                       controller.otpCode.value = pin;
                     }),
                 30.verticalSpace,
-                GestureDetector(
+                CustomCupertinoButton(
                   onTap: () {
                     if (controller.startDuration.value == 0) {
                       controller.resendCode(context);

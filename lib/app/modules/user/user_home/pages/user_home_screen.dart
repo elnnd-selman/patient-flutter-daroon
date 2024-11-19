@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
-import 'package:daroon_user/app/modules/user/user_home/widget/top_doctor_conatiner.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/user_doctor_special_container.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/user_upcoming_appointment.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -27,7 +26,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
             SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
             _buildCirclurContainer(),
             SizedBox(height: 4 * SizeConfig.heightMultiplier),
-            Container(
+            SizedBox(
               // color: Colors.amber,
               height: MediaQuery.of(context).size.height * 0.2,
               width: MediaQuery.of(context).size.width,
@@ -39,11 +38,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
                 controller: controller.appinioSwiperController,
                 onCardPositionChanged: (
                   SwiperPosition position,
-                ) {
-                  //debugPrint('${position.offset.toAxisDirection()}, '
-                  //    '${position.offset}, '
-                  //    '${position.angle}');
-                },
+                ) {},
                 onSwipeEnd: controller.swipeEnd,
                 onEnd: controller.onEnd,
                 cardCount: 2,
@@ -77,7 +72,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
             SizedBox(height: 4 * SizeConfig.heightMultiplier),
             _buildTitleRow("Top Doctors"),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
-            const TopDoctorContainer(),
+            // const TopDoctorContainer(),
             SizedBox(
               height: 60 * SizeConfig.heightMultiplier,
             ),

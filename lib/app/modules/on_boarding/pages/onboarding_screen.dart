@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/on_boarding/model/on_boarding_model.dart';
@@ -127,7 +128,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ],
                     ),
                     SizedBox(height: size.height * 0.04),
-                    GestureDetector(
+                    CustomCupertinoButton(
                       onTap: () {
                         currentIndex == 2
                             ? Get.offNamed(Routes.loginSelectionScreen)

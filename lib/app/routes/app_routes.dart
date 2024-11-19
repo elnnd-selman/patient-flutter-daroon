@@ -9,6 +9,7 @@ abstract class Routes {
   static const firstsignup = '/firstsignup';
   static const emailPhoneNumber = '/emailPhoneNumber';
   static const otpScreen = '/otpScreen';
+  static const emailOTPScreen = '/emailOTPScreen';
   static const forgetPassword = '/forgetPassword';
   static const forgetEmail = '/forgetEmail';
   static const forgetPhone = '/forgetPhone';
@@ -48,4 +49,8 @@ abstract class Routes {
   static const userOfferScreen = "/userOfferScreen";
   static const userOffersDetails = "/userOffersDetails";
   static const filterScreen = "/filterScreen";
+
+  static const topDotocrProfileDetail = '/topDotocrProfileDetail';
+  static const seeOnMapAppointment = "/seeOnMapAppointment";
+  static const specificDoctorOfferScreen = "/specificDoctorOfferScreen";
 }

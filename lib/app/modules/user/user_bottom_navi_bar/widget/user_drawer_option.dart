@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,12 +47,12 @@ class UserDrawerOption extends StatelessWidget {
     );
   }
 
-  GestureDetector _drawerTexttile({
+  CustomCupertinoButton _drawerTexttile({
     required String icon,
     required String text,
     required int index,
   }) {
-    return GestureDetector(
+    return CustomCupertinoButton(
       onTap: () {
         setIndex(index);
       },

@@ -1,3 +1,5 @@
+import 'package:daroon_user/global/widgets/loading_overlay.dart';
+import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -77,16 +79,38 @@ class UserOfferScreen extends GetView<UserOffersController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 3 * SizeConfig.heightMultiplier),
-            Text(
-              "14 Offers",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff898A8D),
-                fontSize: 15,
+            Obx(
+              () => Text(
+                "${controller.userOfferModelList.length} Offers",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff898A8D),
+                  fontSize: 15,
+                ),
               ),
             ),
             SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
-            const UserOfferContainer(),
+            Obx(
+              () => controller.processing.value
+                  ? const Expanded(child: LoadingWidget())
+                  : controller.userOfferModelList.isEmpty
+                      ? const Expanded(
+                          child: NoDataWidget(
+                            text: "No Offer Fund",
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: controller.userOfferModelList.length,
+                            itemBuilder: (context, index) {
+                              return UserOfferContainer(
+                                userOfferModel:
+                                    controller.userOfferModelList[index],
+                              );
+                            },
+                          ),
+                        ),
+            )
           ],
         ),
       ),

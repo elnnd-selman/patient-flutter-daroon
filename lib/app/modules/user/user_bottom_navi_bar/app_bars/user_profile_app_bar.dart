@@ -1,4 +1,5 @@
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/controller/user_custom_navi_controller.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -30,7 +31,7 @@ class DoctorProfileAppBar extends GetView<UserCustomNaviController> {
         ),
       ),
       actions: [
-        GestureDetector(
+        CustomCupertinoButton(
           onTap: () {},
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),

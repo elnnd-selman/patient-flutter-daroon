@@ -1,8 +1,7 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/widget/user_drawer_widget.dart';
-import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
@@ -19,7 +18,7 @@ class UserHomeAppBar extends StatelessWidget {
       shadowColor: Colors.white,
       surfaceTintColor: Colors.white,
       actions: [
-        GestureDetector(
+        CustomCupertinoButton(
           onTap: () {
             // Get.toNamed(Routes.doctorNotification),
           },
@@ -27,7 +26,7 @@ class UserHomeAppBar extends StatelessWidget {
               SvgPicture.asset(Assets.notificationIcon, height: 23, width: 23),
         ),
         14.horizontalSpace,
-        GestureDetector(
+        CustomCupertinoButton(
             onTap: () {
               // Get.toNamed(Routes.doctorMessage);
             },

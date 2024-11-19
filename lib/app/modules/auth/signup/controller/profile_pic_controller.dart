@@ -141,9 +141,10 @@ class ProfilePicController extends GetxController {
     _processing.value = true;
     final response = await ApiService.patchImage(
       filepath: image,
-      userToken: userToken,
+      userToken: "Bearer $userToken",
       url: '${AppTokens.apiURl}/users/profile-picture',
     );
+
     if (response.statusCode == 201 || response.statusCode == 200) {
       _processing.value = false;
       showToastMessage(

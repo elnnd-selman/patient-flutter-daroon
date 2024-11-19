@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
@@ -149,7 +150,7 @@ class HaveAccount extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(title, style: titleStyle),
-        GestureDetector(
+        CustomCupertinoButton(
           onTap: ontap,
           child: Text(subtitle, style: subtitleStyle),
         ),

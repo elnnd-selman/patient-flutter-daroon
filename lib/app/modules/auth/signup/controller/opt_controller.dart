@@ -33,18 +33,26 @@ class OptController extends GetxController {
     _startTimer();
   }
 
+  setOTPCode(String token, BuildContext context) async {
+    await resendCode(token, context);
+  }
+
+  setEmailOTPCode(String token, BuildContext context) async {
+    await resendCodebyEmail(token, context);
+  }
+
   resendCode(String userToken, BuildContext context) async {
     startDuration.value = 60;
     _startTimer();
-    final response = await ApiService.postwithOutHeader(
-        userToken: {"Authorization": userToken},
+    final response = await ApiService.postwithHeader(
+        userToken: {"Authorization": "Bearer $userToken"},
         endPoint:
             '${AppTokens.apiURl}/users/send-verification-code-via-phone-number',
         body: {});
     if (response != null) {
       if (response.statusCode == 201 || response.statusCode == 200) {
         showToastMessage(
-            message: "Successfully Send Otp Code",
+            message: "Successfully Send Otp Code to phone",
             // ignore: use_build_context_synchronously
             context: context,
             color: const Color(0xff5BA66B),
@@ -70,34 +78,95 @@ class OptController extends GetxController {
   resendCodebyEmail(String userToken, BuildContext context) async {
     startDuration.value = 60;
     _startTimer();
-    final response = await ApiService.postwithOutHeader(
-        userToken: {"Authorization": userToken},
+    final response = await ApiService.postwithHeader(
+        userToken: {"Authorization": "Bearer $userToken"},
         endPoint: '${AppTokens.apiURl}/users/send-verification-code-via-email',
         body: {});
     if (response != null) {
       if (response.statusCode == 201 || response.statusCode == 200) {
-        print(response.body);
+        showToastMessage(
+            message: "Successfully send opt to email.",
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xff5BA66B),
+            icon: Icons.check);
       } else {
-        print(response.body);
+        showToastMessage(
+            message: response.body,
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xffEC1C24),
+            icon: Icons.close);
       }
-    } else {
-      print("isiie");
     }
   }
 
-  verifyOtpCode({
+  verifyPhoneOtpCode({
     required String code,
     required BuildContext context,
     required String userToken,
+    required String phone,
+    required String email,
   }) async {
     _processing.value = true;
-    final response = await ApiService.postwithOutHeader(
-        userToken: {"Authorization": userToken},
+    final response = await ApiService.postwithHeader(
+        userToken: {"Authorization": "Bearer $userToken"},
         endPoint: '${AppTokens.apiURl}/users/verify-phone/$code',
         body: {});
 
-    await ApiService.postwithOutHeader(
-        userToken: {"Authorization": userToken},
+    // final emailRespose = await ApiService.postwithOutHeader(
+    //     userToken: {"Authorization": "Bearer $userToken"},
+    //     endPoint: '${AppTokens.apiURl}/users/verify-email-by-code/$code',
+    //     body: {});
+    // print(emailRespose!.body);
+    // print(response!.body);
+    // _processing.value = false;
+
+    if (response != null) {
+      if (response.statusCode == 201 || response.statusCode == 201) {
+        showToastMessage(
+            message: "Successfully Verify Code",
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xff5BA66B),
+            icon: Icons.check);
+        _processing.value = false;
+
+        Get.offAllNamed(Routes.emailOTPScreen, arguments: {
+          "userToken": userToken,
+          "email": email,
+          "phone": phone,
+        });
+      } else {
+        _processing.value = false;
+        showToastMessage(
+            message: response.body,
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xffEC1C24),
+            icon: Icons.close);
+      }
+    } else {
+      _processing.value = false;
+      showToastMessage(
+          message: response!.body,
+          // ignore: use_build_context_synchronously
+          context: context,
+          color: const Color(0xffEC1C24),
+          icon: Icons.close);
+    }
+  }
+
+  verifyEmailOtpCode({
+    required String code,
+    required BuildContext context,
+    required String userToken,
+    required String phone,
+    required String email,
+  }) async {
+    _processing.value = true;
+    final response = await ApiService.postwithHeader(
+        userToken: {"Authorization": "Bearer $userToken"},
         endPoint: '${AppTokens.apiURl}/users/verify-email-by-code/$code',
         body: {});
 

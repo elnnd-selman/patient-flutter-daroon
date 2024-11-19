@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/signup/controller/signup_controller.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -49,16 +50,18 @@ class SignUpScreen extends GetView<SignUpCtrl> {
                           fontSize: 25,
                           color: AppColors.darkBlackBGColor,
                         )),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     Text("create account to use app features.",
                         style: AppTextStyles.medium.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          // fontFamily: ksecondaryFontFamily,
                           color: const Color(0xff707281),
                         )),
-                    40.verticalSpace,
+                    14.verticalSpace,
                     CommonTextfeild(
+                      inputFormat: [
+                        FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                      ],
                       scanIcons: false,
                       obscuretext: false,
                       hinttext: "Username",

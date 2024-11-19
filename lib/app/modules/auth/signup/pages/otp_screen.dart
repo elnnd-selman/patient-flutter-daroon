@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/signup/controller/opt_controller.dart';
@@ -45,145 +46,150 @@ class OtpScreen extends GetView<OptController> {
         borderRadius: BorderRadius.circular(10),
       ),
     );
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-            )),
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                Text("Enter verification code",
-                    style: AppTextStyles.bold.copyWith(
-                      fontSize: 25,
-                      color: AppColors.darkBlackBGColor,
-                    )),
-                const SizedBox(height: 10),
-                Text(
-                  "Please enter verification code we sent to your",
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.medium.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff707281),
+    return GetBuilder<OptController>(initState: (_) {
+      controller.setOTPCode(Get.arguments["userToken"], context);
+    }, builder: (_) {
+      return Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          shadowColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+              )),
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Text("Enter verification code",
+                      style: AppTextStyles.bold.copyWith(
+                        fontSize: 25,
+                        color: AppColors.darkBlackBGColor,
+                      )),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Please enter verification code we sent to your",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.medium.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff707281),
+                    ),
                   ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "email ",
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.medium.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff707281),
-                      ),
-                    ),
-                    6.horizontalSpace,
-                    Text(
-                      Get.arguments["email"],
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.medium.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.blackBGColor,
-                      ),
-                    ),
-                  ],
-                ),
-                40.verticalSpace,
-                Pinput(
-                    length: 6,
-                    defaultPinTheme: defaultPinTheme,
-                    focusedPinTheme: focusedPinTheme,
-                    submittedPinTheme: submittedPinTheme,
-                    showCursor: true,
-                    onChanged: (pin) {
-                      controller.otpCode.value = pin;
-                    }),
-                30.verticalSpace,
-                GestureDetector(
-                  onTap: () {
-                    if (controller.startDuration.value == 0) {
-                      controller.resendCode(
-                          Get.arguments["userToken"], context);
-                      controller.resendCodebyEmail(
-                          Get.arguments["userToken"], context);
-                    }
-                  },
-                  child: Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Resend",
+                        "email ",
                         textAlign: TextAlign.center,
                         style: AppTextStyles.medium.copyWith(
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff707281),
+                        ),
+                      ),
+                      6.horizontalSpace,
+                      Text(
+                        Get.arguments["phone"],
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.medium.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                           color: AppColors.blackBGColor,
                         ),
                       ),
-                      10.horizontalSpace,
-                      Obx(
-                        () => Text(
-                          "00:${controller.startDuration}",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.medium.copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      )
                     ],
                   ),
-                ),
-                const Spacer(),
-                CommonButton(
-                    ontap: () {
-                      if (controller.otpCode.value.length == 6) {
-                        controller.verifyOtpCode(
-                            userToken: Get.arguments["userToken"],
-                            code: controller.otpCode.value,
-                            context: context);
-                      } else {
-                        showToastMessage(
-                            message: "Complete Otp Code",
-                            // ignore: use_build_context_synchronously
-                            context: context,
-                            color: const Color(0xffEC1C24),
-                            icon: Icons.close);
+                  40.verticalSpace,
+                  Pinput(
+                      length: 6,
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      showCursor: true,
+                      onChanged: (pin) {
+                        controller.otpCode.value = pin;
+                      }),
+                  30.verticalSpace,
+                  CustomCupertinoButton(
+                    onTap: () {
+                      if (controller.startDuration.value == 0) {
+                        controller.resendCode(
+                            Get.arguments["userToken"], context);
                       }
                     },
-                    name: "Verify"),
-                20.verticalSpace,
-              ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Resend code",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.medium.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.blackBGColor,
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        Obx(
+                          () => Text(
+                            "00:${controller.startDuration}",
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.medium.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  CommonButton(
+                      ontap: () {
+                        if (controller.otpCode.value.length == 6) {
+                          controller.verifyPhoneOtpCode(
+                            userToken: Get.arguments["userToken"],
+                            code: controller.otpCode.value,
+                            context: context,
+                            phone: Get.arguments["phone"],
+                            email: Get.arguments["email"],
+                          );
+                        } else {
+                          showToastMessage(
+                              message: "Complete Otp Code",
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              color: const Color(0xffEC1C24),
+                              icon: Icons.close);
+                        }
+                      },
+                      name: "Verify"),
+                  20.verticalSpace,
+                ],
+              ),
             ),
-          ),
-          Obx(() {
-            if (controller.processing) {
-              return const LoadingOverlay();
-            }
-            return const SizedBox();
-          }),
-        ],
-      ),
-    );
+            Obx(() {
+              if (controller.processing) {
+                return const LoadingOverlay();
+              }
+              return const SizedBox();
+            }),
+          ],
+        ),
+      );
+    });
   }
 }

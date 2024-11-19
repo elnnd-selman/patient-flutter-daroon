@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -23,6 +24,20 @@ class LoadingOverlay extends StatelessWidget {
           color: AppColors.primaryColor,
         ),
       ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SpinKitSpinningLines(
+      color: AppColors.primaryColor,
+      size: 6 * SizeConfig.heightMultiplier,
     );
   }
 }

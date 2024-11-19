@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 
@@ -14,7 +15,7 @@ class SocailContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return CustomCupertinoButton(
       onTap: ontap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
