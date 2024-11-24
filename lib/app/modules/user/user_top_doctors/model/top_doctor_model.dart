@@ -16,6 +16,7 @@ class TopDoctorModel {
     required this.profilePicture,
     required this.dateOfBirth,
     required this.isDeleted,
+    required this.backgroundPicture,
     required this.offices,
     required this.level,
     required this.speciality,
@@ -40,6 +41,7 @@ class TopDoctorModel {
   final ProfilePicture? profilePicture;
   final DateTime? dateOfBirth;
   final bool? isDeleted;
+  final dynamic backgroundPicture;
   final List<Office> offices;
   final Level? level;
   final Speciality? speciality;
@@ -72,6 +74,7 @@ class TopDoctorModel {
           : ProfilePicture.fromJson(json["profilePicture"]),
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
       isDeleted: json["isDeleted"],
+      backgroundPicture: json["background_picture"],
       offices: json["offices"] == null
           ? []
           : List<Office>.from(json["offices"]!.map((x) => Office.fromJson(x))),
@@ -137,23 +140,6 @@ class Education {
       v: json["__v"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "degree": degree,
-        "fromYear": fromYear,
-        "toYear": toYear,
-        "institute_ar": instituteAr,
-        "institute_en": instituteEn,
-        "institute_ku": instituteKu,
-        "degreeName_ar": degreeNameAr,
-        "degreeName_en": degreeNameEn,
-        "degreeName_ku": degreeNameKu,
-        "isDeleted": isDeleted,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
-      };
 }
 
 class Level {
@@ -189,17 +175,6 @@ class Level {
       isDeleted: json["isDeleted"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "level_ku": levelKu,
-        "level_ar": levelAr,
-        "level_en": levelEn,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-      };
 }
 
 class Office {
@@ -334,11 +309,6 @@ class Coordinate {
       longitude: json["longitude"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-      };
 }
 
 class Country {
@@ -412,19 +382,72 @@ class TypeOfOffice {
 }
 
 class AppointmentTimes {
-  AppointmentTimes({required this.json});
-  final Map<String, dynamic> json;
+  AppointmentTimes({
+    required this.sunday,
+    required this.monday,
+    required this.tuesday,
+    required this.wednesday,
+    required this.thursday,
+    required this.friday,
+    required this.saturday,
+  });
+
+  final List<Day> sunday;
+  final List<Day> monday;
+  final List<Day> tuesday;
+  final List<Day> wednesday;
+  final List<Day> thursday;
+  final List<Day> friday;
+  final List<Day> saturday;
 
   factory AppointmentTimes.fromJson(Map<String, dynamic> json) {
-    return AppointmentTimes(json: json);
+    return AppointmentTimes(
+      sunday: json["sunday"] == null
+          ? []
+          : List<Day>.from(json["sunday"]!.map((x) => Day.fromJson(x))),
+      monday: json["monday"] == null
+          ? []
+          : List<Day>.from(json["monday"]!.map((x) => Day.fromJson(x))),
+      tuesday: json["tuesday"] == null
+          ? []
+          : List<Day>.from(json["tuesday"]!.map((x) => Day.fromJson(x))),
+      wednesday: json["wednesday"] == null
+          ? []
+          : List<Day>.from(json["wednesday"]!.map((x) => Day.fromJson(x))),
+      thursday: json["thursday"] == null
+          ? []
+          : List<Day>.from(json["thursday"]!.map((x) => Day.fromJson(x))),
+      friday: json["friday"] == null
+          ? []
+          : List<Day>.from(json["friday"]!.map((x) => Day.fromJson(x))),
+      saturday: json["saturday"] == null
+          ? []
+          : List<Day>.from(json["saturday"]!.map((x) => Day.fromJson(x))),
+    );
   }
+}
 
-  Map<String, dynamic> toJson() => {};
+class Day {
+  Day({
+    required this.time,
+    required this.isBooked,
+  });
+
+  final String? time;
+  final bool? isBooked;
+
+  factory Day.fromJson(Map<String, dynamic> json) {
+    return Day(
+      time: json["time"],
+      isBooked: json["isBooked"],
+    );
+  }
 }
 
 class Doctor {
   Doctor({
     required this.phone,
+    required this.backgroundPicture,
     required this.id,
     required this.firstName,
     required this.firstNameKu,
@@ -434,7 +457,6 @@ class Doctor {
     required this.email,
     required this.isEmailVerified,
     required this.gender,
-    required this.password,
     required this.isActive,
     required this.education,
     required this.lastNameKu,
@@ -452,7 +474,6 @@ class Doctor {
     required this.createdAt,
     required this.updatedAt,
     required this.v,
-    required this.sessionToken,
     required this.level,
     required this.speciality,
     required this.biographyAr,
@@ -461,6 +482,7 @@ class Doctor {
   });
 
   final Phone? phone;
+  final dynamic backgroundPicture;
   final String? id;
   final String? firstName;
   final String? firstNameKu;
@@ -470,7 +492,6 @@ class Doctor {
   final String? email;
   final bool? isEmailVerified;
   final String? gender;
-  final String? password;
   final bool? isActive;
   final List<Education> education;
   final String? lastNameKu;
@@ -488,7 +509,6 @@ class Doctor {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final String? sessionToken;
   final Level? level;
   final Speciality? speciality;
   final String? biographyAr;
@@ -498,6 +518,7 @@ class Doctor {
   factory Doctor.fromJson(Map<String, dynamic> json) {
     return Doctor(
       phone: json["phone"] == null ? null : Phone.fromJson(json["phone"]),
+      backgroundPicture: json["background_picture"],
       id: json["_id"],
       firstName: json["firstName"],
       firstNameKu: json["firstName_ku"],
@@ -507,7 +528,6 @@ class Doctor {
       email: json["email"],
       isEmailVerified: json["isEmailVerified"],
       gender: json["gender"],
-      password: json["password"],
       isActive: json["isActive"],
       education: json["education"] == null
           ? []
@@ -530,7 +550,6 @@ class Doctor {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
-      sessionToken: json["sessionToken"],
       level: json["level"] == null ? null : Level.fromJson(json["level"]),
       speciality: json["speciality"] == null
           ? null

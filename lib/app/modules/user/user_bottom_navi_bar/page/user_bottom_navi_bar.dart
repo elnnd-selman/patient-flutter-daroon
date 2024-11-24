@@ -1,5 +1,13 @@
+import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/pages/user_appointment_screen.dart';
+import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_appointment_app_bar.dart';
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_podcast_app_bar.dart';
+import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_profile_app_bar.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/controller/user_podcast_controller.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/pages/user_podcast.dart';
+import 'package:daroon_user/app/modules/user/user_profile/controller/user_profile_controller.dart';
+import 'package:daroon_user/app/modules/user/user_profile/pages/user_profile.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/controller/user_top_doctor_controller.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +19,7 @@ import 'package:daroon_user/app/modules/user/user_top_doctors/pages/user_top_doc
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
+import 'package:get/get.dart';
 
 class UserBottomNaviBar extends StatefulWidget {
   const UserBottomNaviBar({super.key});
@@ -121,16 +130,16 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
     const UserHomeAppBar(),
     const UserTopDoctorAppBar(),
     const UserPodcastAppBar(),
-    Container(),
-    Container(),
+    const UserAppointmentAppBar(),
+    const UserProfileAppBar(),
   ];
 
   final List pagesList = [
     const UserHomeScreen(),
     const UserTopDoctorScreen(),
     const UserPodcastScreen(),
-    Container(),
-    Container(),
+    const UserAppointmentScreen(),
+    const UserProfile(),
   ];
 
   @override
@@ -201,6 +210,10 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller5!.reverse();
                           HapticFeedback.lightImpact();
                         });
+                        if (Get.isRegistered<UserTopDoctorController>()) {
+                          Get.find<UserTopDoctorController>()
+                              .getTopDoctorData();
+                        }
                       }),
                   _bottomIcons(
                       size: _animation3!.value,
@@ -218,6 +231,10 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller5!.reverse();
                           HapticFeedback.lightImpact();
                         });
+                        if (Get.isRegistered<UserPodcastController>()) {
+                          Get.find<UserPodcastController>().getPodCast();
+                          Get.find<UserPodcastController>().getPresenter();
+                        }
                       }),
                   _bottomIcons(
                       size: _animation4!.value,
@@ -235,6 +252,11 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller5!.reverse();
                           HapticFeedback.lightImpact();
                         });
+
+                        if (Get.isRegistered<UserAppointmentController>()) {
+                          Get.find<UserAppointmentController>()
+                              .getDoctorAppointments();
+                        }
                       }),
                   _bottomIcons(
                       size: _animation5!.value,
@@ -252,6 +274,10 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller4!.reverse();
                           HapticFeedback.lightImpact();
                         });
+                        if (Get.isRegistered<UserProfileController>()) {
+                          Get.find<UserProfileController>()
+                              .getUserProfileData();
+                        }
                       }),
                 ],
               ),

@@ -1,4 +1,4 @@
-import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/controller/user_custom_navi_controller.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -8,7 +8,7 @@ import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
-class UserAppointmentAppBar extends GetView<UserCustomNaviController> {
+class UserAppointmentAppBar extends GetView<UserAppointmentController> {
   const UserAppointmentAppBar({super.key});
 
   @override

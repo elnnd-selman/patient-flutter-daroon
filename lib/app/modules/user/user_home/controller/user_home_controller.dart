@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:daroon_user/app/model/user_model.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
+import 'package:daroon_user/global/constants/app_tokens.dart';
+import 'package:daroon_user/services/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +39,8 @@ class UserHomeController extends GetxController {
     userModel.value = await Get.find<LocalStorageController>()
         .daroonBox!
         .get("userModel", defaultValue: UserModel);
-
+    getUserAppointments();
+    getTopDoctorData();
     if (kDebugMode) {
       print(userModel.value!.token!);
       print(userModel.value!.user!.id!);
@@ -84,5 +90,54 @@ class UserHomeController extends GetxController {
 
   void onEnd() {
     log('end reached!');
+  }
+
+  RxBool isLoading = false.obs;
+  RxList<AppointmentModel> upcomingAppointmentList = RxList();
+  getUserAppointments() async {
+    isLoading.value = true;
+
+    final response = await ApiService.getwithUserToken(
+      endPoint: "${AppTokens.apiURl}/appointments?status=upcoming",
+      userToken: {
+        "Authorization": "Bearer ${userModel.value!.token!}",
+      },
+    );
+    if (response!.statusCode == 200 || response.statusCode == 201) {
+      List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      upcomingAppointmentList.value =
+          jsonResponse.map((data) => AppointmentModel.fromJson(data)).toList();
+
+      upcomingAppointmentList
+          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+
+      isLoading.value = false;
+    } else {
+      isLoading.value = false;
+    }
+  }
+
+  RxList<TopDoctorModel> topDoctorModelList = <TopDoctorModel>[].obs;
+  RxBool processing = false.obs;
+  getTopDoctorData() async {
+    try {
+      processing.value = true;
+      final response = await ApiService.getwithUserToken(
+        endPoint: "${AppTokens.apiURl}/doctors",
+        userToken: {
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+      );
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        topDoctorModelList.value =
+            jsonResponse.map((data) => TopDoctorModel.fromJson(data)).toList();
+      }
+      processing.value = false;
+    } catch (e) {
+      processing.value = false;
+      printInfo(info: e.toString());
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:daroon_user/app/modules/user/user_home/controller/user_home_cont
 import 'package:daroon_user/app/modules/user/user_home/model/top_doctor_content_model.dart';
 import 'package:daroon_user/app/modules/user/user_offer/model/user_offer_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_rating.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/foundation.dart';
@@ -51,6 +52,7 @@ class TopDoctorProfileController extends GetxController {
 
   RxList<Marker> markers = <Marker>[].obs;
   RxBool isSetting = false.obs;
+  Rxn<TopDoctorModel> topDoctorData = Rxn();
   setMarker(TopDoctorModel doctorData) async {
     isSetting.value = true;
     final Uint8List markerIcon =
@@ -76,7 +78,10 @@ class TopDoctorProfileController extends GetxController {
         ),
       );
     }
+    topDoctorData.value = doctorData;
     await getDoctorOfersData(doctorData.id!);
+    await getDoctorPost(doctorID: doctorData.id!);
+    await getDoctorRatingData(doctorData.id!);
     isSetting.value = false;
   }
 
@@ -91,7 +96,7 @@ class TopDoctorProfileController extends GetxController {
   }
 
   getDoctorPost({
-    required String postType,
+    required String doctorID,
   }) async {
     isLoading.value = true;
     currentPage.value = 1;
@@ -105,8 +110,7 @@ class TopDoctorProfileController extends GetxController {
       }
 
       final response = await ApiService.getwithUserToken(
-        endPoint:
-            '${AppTokens.apiURl}/contents/my-contents?pagination=1&limit=10&contentType=${postType == 'All Posts' ? 'post' : postType.toLowerCase()}',
+        endPoint: '${AppTokens.apiURl}/doctors/$doctorID/contents',
         userToken: {
           "Authorization":
               "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
@@ -160,10 +164,14 @@ class TopDoctorProfileController extends GetxController {
   }
 
   String convertDateToformat(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    DateFormat formatter = DateFormat('dd-MMM-yyyy');
-    String formattedDate = formatter.format(dateTime);
-    return formattedDate;
+    if (date == "null") {
+      return '--';
+    } else {
+      DateTime dateTime = DateTime.parse(date);
+      DateFormat formatter = DateFormat('dd-MMM-yyyy');
+      String formattedDate = formatter.format(dateTime);
+      return formattedDate;
+    }
   }
 
   updateLikeOnPost({
@@ -192,64 +200,6 @@ class TopDoctorProfileController extends GetxController {
       }
     }
   }
-
-  // Rxn<UserProfileModel> userProfileModel = Rxn();
-  // getUserProfileData() async {
-  //   processing.value = true;
-  //   final response = await ApiService.getwithUserToken(
-  //     endPoint: '${AppTokens.apiURl}/doctors/profile',
-  //     userToken: {
-  //       "Authorization":
-  //           "Bearer ${Get.find<DoctorHomeController>().userModel.value!.token!}",
-  //     },
-  //   );
-
-  //   if (response!.statusCode == 200 || response.statusCode == 201) {
-  //     final jsonData = jsonDecode(response.body);
-  //     userProfileModel.value = UserProfileModel.fromJson(jsonData);
-  //   } else if (response.statusCode == 401) {
-  //     final jsonData = jsonDecode(response.body);
-  //     if (jsonData["message"] == "unauthorized") {
-  //       Get.find<DoctorHomeController>().signOutUser();
-  //     }
-  //   }
-  //   processing.value = false;
-  // }
-
-  // checkLanguageExist(String langName) {
-  //   bool langExist = false;
-  //   langExist =
-  //       userProfileModel.value!.userProfile!.languages.contains(langName);
-  //   return langExist;
-  // }
-
-  // deletePost(
-  //     {required ContentData contentData,
-  //     required int index,
-  //     required BuildContext context}) async {
-  //   final response = await ApiService.deleteWithHeader(
-  //     userToken: {
-  //       'Content-Type': 'application/json',
-  //       "Authorization":
-  //           "Bearer ${Get.find<DoctorHomeController>().userModel.value!.token!}",
-  //     },
-  //     endPoint: '${AppTokens.apiURl}/contents/${contentData.id}/delete',
-  //     body: {},
-  //   );
-
-  //   if (response != null) {
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       contentModelList.removeWhere((val) => val.id == contentData.id);
-  //       contentModelList.refresh();
-  //       showToastMessage(
-  //           message:
-  //               "You send a request for admin to delete this post successfully.",
-  //           context: context,
-  //           color: const Color(0xff5BA66B),
-  //           icon: Icons.check);
-  //     }
-  //   }
-  // }
 
   ScrollController scrollController = ScrollController();
   RxBool reFetchLoader = false.obs;
@@ -305,6 +255,35 @@ class TopDoctorProfileController extends GetxController {
     } catch (e) {
       printError(info: e.toString());
       isOfferLoading.value = false;
+    }
+  }
+
+  RxList<DoctorRatingModel> doctorRatingList = <DoctorRatingModel>[].obs;
+  RxBool isRatingLoading = false.obs;
+  getDoctorRatingData(String doctorID) async {
+    isRatingLoading.value = true;
+    doctorRatingList.value = [];
+
+    try {
+      final response = await ApiService.getwithUserToken(
+        endPoint: '${AppTokens.apiURl}/appointments/doctors/$doctorID/ratting',
+        userToken: {
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+      );
+
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        doctorRatingList.value = jsonResponse
+            .map((data) => DoctorRatingModel.fromJson(data))
+            .toList();
+      }
+
+      isRatingLoading.value = false;
+    } catch (e) {
+      printError(info: e.toString());
+      isRatingLoading.value = false;
     }
   }
 }

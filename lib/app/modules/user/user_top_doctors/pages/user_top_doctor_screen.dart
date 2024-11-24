@@ -1,12 +1,10 @@
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/user_top_doctor_controller.dart';
-import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/top_doctor_conatiner.dart';
-import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
@@ -99,19 +97,19 @@ class UserTopDoctorScreen extends GetView<UserTopDoctorController> {
                 AppColors.lighttextColor, BlendMode.srcIn),
           ),
         ),
-        suffixIcon: CustomCupertinoButton(
-          onTap: () => Get.toNamed(Routes.filterScreen),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SvgPicture.asset(
-              Assets.filterIcon,
-              colorFilter: const ColorFilter.mode(
-                  AppColors.primaryColor, BlendMode.srcIn),
-            ),
-          ),
-        ),
+        // suffixIcon: CustomCupertinoButton(
+        //   onTap: () => Get.toNamed(Routes.filterScreen),
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(20),
+        //     child: SvgPicture.asset(
+        //       Assets.filterIcon,
+        //       colorFilter: const ColorFilter.mode(
+        //           AppColors.primaryColor, BlendMode.srcIn),
+        //     ),
+        //   ),
+        // ),
         isDense: true,
-        hintText: "Search Patient",
+        hintText: "Search Doctor",
         hintStyle: AppTextStyles.medium.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 15,

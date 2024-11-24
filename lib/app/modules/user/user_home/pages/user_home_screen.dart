@@ -1,10 +1,13 @@
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:daroon_user/app/modules/user/user_home/widget/home_upcoming_appointment.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/widget/top_doctor_conatiner.dart';
+import 'package:daroon_user/global/widgets/loading_overlay.dart';
+import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/user_doctor_special_container.dart';
-import 'package:daroon_user/app/modules/user/user_home/widget/user_upcoming_appointment.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
@@ -59,8 +62,9 @@ class UserHomeScreen extends GetView<UserHomeController> {
             SizedBox(height: 4 * SizeConfig.heightMultiplier),
             _buildTitleRow("Upcoming Appointment"),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
-            const UserUpcomingAppointmentContainer(),
-            SizedBox(height: 4 * SizeConfig.heightMultiplier),
+            const HomeUpcomingAppointment(),
+
+            // SizedBox(height: 1 * SizeConfig.heightMultiplier),
             Container(
               height: MediaQuery.of(context).size.height * 0.2,
               decoration: BoxDecoration(
@@ -72,7 +76,32 @@ class UserHomeScreen extends GetView<UserHomeController> {
             SizedBox(height: 4 * SizeConfig.heightMultiplier),
             _buildTitleRow("Top Doctors"),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
-            // const TopDoctorContainer(),
+            Obx(
+              () => controller.isLoading.value
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 7 * SizeConfig.heightMultiplier),
+                      child: const Center(child: LoadingWidget()),
+                    )
+                  : controller.topDoctorModelList.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 7 * SizeConfig.heightMultiplier),
+                          child: const Center(
+                              child: NoDataWidget(text: "No Doctor Found")),
+                        )
+                      : ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: 1,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return TopDoctorContainer(
+                              topDoctorModel:
+                                  controller.topDoctorModelList[index],
+                            );
+                          },
+                        ),
+            ),
             SizedBox(
               height: 60 * SizeConfig.heightMultiplier,
             ),

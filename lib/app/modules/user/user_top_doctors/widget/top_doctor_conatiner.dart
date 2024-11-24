@@ -166,7 +166,12 @@ class TopDoctorContainer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 1 * SizeConfig.heightMultiplier),
-          CommonButton(ontap: () {}, name: "Make Appointment"),
+          CommonButton(
+              ontap: () {
+                Get.toNamed(Routes.seeOnMapAppointment,
+                    arguments: [topDoctorModel]);
+              },
+              name: "Make Appointment"),
         ],
       ),
     );

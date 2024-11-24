@@ -1,75 +1,84 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:daroon_user/app/modules/user/user_top_doctors/controller/top_doctor_profile_controller.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/controller/office_on_map_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
+import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
+import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SeeOnMapAppointment extends GetView<TopDoctorProfileController> {
+class SeeOnMapAppointment extends GetView<OfficeOnMapController> {
   SeeOnMapAppointment({super.key});
 
   final topDoctorModel = Get.arguments[0] as TopDoctorModel;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // margin: const EdgeInsets.symmetric(vertical: 6),
-        height: MediaQuery.of(context).size.height * 1,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Obx(
-                () => GoogleMap(
-                  markers: Set<Marker>.from(
-                    controller.markers.map((marker) => marker),
-                  ),
-                  mapType: MapType.terrain,
-                  initialCameraPosition: controller.kGooglePlex,
-                  myLocationEnabled: true,
-                  onMapCreated: (GoogleMapController googleCtrl) {
-                    controller.completer.complete(googleCtrl);
-                  },
+    return GetBuilder<OfficeOnMapController>(initState: (_) {
+      controller.setMarker(topDoctorModel);
+    }, builder: (_) {
+      return Scaffold(
+        body: Container(
+          // margin: const EdgeInsets.symmetric(vertical: 6),
+          height: MediaQuery.of(context).size.height * 1,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Obx(
+                  () => controller.isSetting.value
+                      ? const Center(child: LoadingWidget())
+                      : GoogleMap(
+                          markers: Set<Marker>.from(
+                            controller.markers.map((marker) => marker),
+                          ),
+                          mapType: MapType.terrain,
+                          initialCameraPosition: controller.kGooglePlex,
+                          myLocationEnabled: true,
+                          onMapCreated: (GoogleMapController googleCtrl) {
+                            controller.completer.complete(googleCtrl);
+                          },
+                        ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 20,
-              child: SizedBox(
-                // color: AppColors.w,
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: CarouselSlider.builder(
-                    options: CarouselOptions(
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      viewportFraction: .9,
-                    ),
-                    itemCount: topDoctorModel.offices.length,
-                    itemBuilder: (BuildContext context, int itemIndex,
-                        int pageViewIndex) {
-                      return SeeOnMapContainer(
-                        topDoctorModel: topDoctorModel,
-                        officeAddreesModel: topDoctorModel.offices[itemIndex],
-                      );
-                    }),
+              Positioned(
+                bottom: 20,
+                child: SizedBox(
+                  // color: AppColors.w,
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: MediaQuery.of(context).size.height * 0.23,
+                  child: CarouselSlider.builder(
+                      options: CarouselOptions(
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        viewportFraction: .9,
+                      ),
+                      itemCount: topDoctorModel.offices.length,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) {
+                        return SeeOnMapContainer(
+                          topDoctorModel: topDoctorModel,
+                          officeAddreesModel: topDoctorModel.offices[itemIndex],
+                        );
+                      }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -114,23 +123,6 @@ class SeeOnMapContainer extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              CustomCupertinoButton(
-                child: Text(
-                  "See Details",
-                  style: AppTextStyles.medium.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              10.horizontalSpace,
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 14,
-                color: AppColors.primaryColor,
-              )
             ],
           ),
           SizedBox(height: 2 * SizeConfig.heightMultiplier),
@@ -184,7 +176,16 @@ class SeeOnMapContainer extends StatelessWidget {
                 ),
               )
             ],
-          )
+          ),
+          SizedBox(height: 2.5 * SizeConfig.heightMultiplier),
+          CustomButton(
+              ontap: () {
+                Get.toNamed(Routes.createAppointment, arguments: [
+                  topDoctorModel,
+                  officeAddreesModel,
+                ]);
+              },
+              name: "Select"),
         ],
       ),
     );

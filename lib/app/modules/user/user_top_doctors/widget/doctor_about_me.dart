@@ -193,22 +193,22 @@ class DoctorAboutMe extends GetView<TopDoctorProfileController> {
                 fontSize: SizeConfig.heightMultiplier * 1.8,
               ),
             ),
-            const Spacer(),
-            CustomCupertinoButton(
-              onTap: () {
-                Get.toNamed(Routes.seeOnMapAppointment, arguments: [
-                  topDoctorModel,
-                ]);
-              },
-              child: Text(
-                "See All",
-                style: AppTextStyles.medium.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
-                  fontSize: 14,
-                ),
-              ),
-            ),
+            // const Spacer(),
+            // CustomCupertinoButton(
+            //   onTap: () {
+            //     Get.toNamed(Routes.seeOnMapAppointment, arguments: [
+            //       topDoctorModel,
+            //     ]);
+            //   },
+            //   child: Text(
+            //     "See All",
+            //     style: AppTextStyles.medium.copyWith(
+            //       fontWeight: FontWeight.w600,
+            //       color: AppColors.primaryColor,
+            //       fontSize: 14,
+            //     ),
+            //   ),
+            // ),
             10.horizontalSpace,
             const Icon(
               Icons.arrow_forward_ios_rounded,
@@ -304,7 +304,7 @@ class DoctorAboutMe extends GetView<TopDoctorProfileController> {
             ),
           ),
           Text(
-            "${formatDate(education.fromYear!)} - ${formatDate(education.toYear!)}",
+            "${education.fromYear!} - ${education.toYear!}",
             style: AppTextStyles.medium.copyWith(
               fontWeight: FontWeight.w500,
               color: AppColors.lighttextColor,

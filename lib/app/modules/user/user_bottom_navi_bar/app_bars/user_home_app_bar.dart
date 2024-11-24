@@ -1,3 +1,4 @@
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,7 @@ import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/widget/user_dr
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
+import 'package:get/get.dart';
 
 class UserHomeAppBar extends StatelessWidget {
   const UserHomeAppBar({super.key});
@@ -28,7 +30,7 @@ class UserHomeAppBar extends StatelessWidget {
         14.horizontalSpace,
         CustomCupertinoButton(
             onTap: () {
-              // Get.toNamed(Routes.doctorMessage);
+              Get.toNamed(Routes.userMessage);
             },
             child: SvgPicture.asset(Assets.messageIcon, height: 23, width: 23)),
         SizedBox(width: 2.5 * SizeConfig.widthMultiplier)

@@ -53,4 +53,19 @@ abstract class Routes {
   static const topDotocrProfileDetail = '/topDotocrProfileDetail';
   static const seeOnMapAppointment = "/seeOnMapAppointment";
   static const specificDoctorOfferScreen = "/specificDoctorOfferScreen";
+  static const userAppointmentDetail = "/userAppointmentDetail";
+  static const cancelAppointment = "/cancelAppointment";
+  static const createAppointment = "/createAppointment";
+  static const userPresenterProfile = "/userPresenterProfile";
+  static const userPodCastDetail = "/userPodCastDetail";
+  static const presenterPodCastDetail = "/presenterPodCastDetail";
+  static const createPatientDetail = "/createPatientDetail";
+
+  static const userEditProfile = "/userEditProfile";
+  static const userChangeEmail = "/userChangeEmail";
+  static const userChangeUserName = "/userChangeUserName";
+
+  ///
+  static const userMessage = "/userMessage";
+  static const userChatRoom = "/userChatRoom";
 }

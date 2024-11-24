@@ -1,4 +1,5 @@
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/controller/user_custom_navi_controller.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,8 +7,8 @@ import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 
-class DoctorProfileAppBar extends GetView<UserCustomNaviController> {
-  const DoctorProfileAppBar({super.key});
+class UserProfileAppBar extends GetView<UserCustomNaviController> {
+  const UserProfileAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,9 @@ class DoctorProfileAppBar extends GetView<UserCustomNaviController> {
       ),
       actions: [
         CustomCupertinoButton(
-          onTap: () {},
+          onTap: () => Get.toNamed(Routes.userEditProfile),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               "Edit",
               style: AppTextStyles.medium.copyWith(

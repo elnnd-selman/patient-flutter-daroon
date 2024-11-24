@@ -16,7 +16,7 @@ showToastMessage({
   FToast().showToast(
     child: Container(
       width: MediaQuery.of(context).size.width * 1,
-      margin: const EdgeInsets.symmetric(vertical: 20),
+      // margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.whiteBGColor,
@@ -59,7 +59,7 @@ showToastMessage({
           Flexible(
             child: Text(
               message,
-              overflow: TextOverflow.ellipsis,
+              // overflow: TextOverflow.ellipsis,
               style: AppTextStyles.medium.copyWith(
                 fontWeight: FontWeight.w400,
                 color: AppColors.blackBGColor,

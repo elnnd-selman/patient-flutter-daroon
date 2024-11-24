@@ -1,5 +1,23 @@
 import 'package:daroon_user/app/modules/auth/signup/pages/email_otp_screen.dart';
+import 'package:daroon_user/app/modules/doctor_message/binding/user_mesaage_binding.dart';
+import 'package:daroon_user/app/modules/doctor_message/pages/user_chat_room.dart';
+import 'package:daroon_user/app/modules/doctor_message/pages/user_message.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/binding/user_appointment_binding.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/pages/appointment_detail_screen.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/pages/cancel_appointment_detail.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/binding/presenter_binding.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/binding/user_podcast_binding.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/pages/presenter_podcast_details.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/pages/user_podcast_detail_screen.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/pages/user_presenter_profile.dart';
+import 'package:daroon_user/app/modules/user/user_profile/binding/user_edit_profile_binding.dart';
+import 'package:daroon_user/app/modules/user/user_profile/binding/user_profile_binding.dart';
+import 'package:daroon_user/app/modules/user/user_profile/pages/user_change_email.dart';
+import 'package:daroon_user/app/modules/user/user_profile/pages/user_change_username.dart';
+import 'package:daroon_user/app/modules/user/user_profile/pages/user_edit_profile.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/binding/top_doctor_bindng.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/pages/create_appointment_screen.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/pages/create_patient_detail.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/pages/see_on_map_offices.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/pages/specific_doctor_offer_screen.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/pages/top_doctor_details.dart';
@@ -130,8 +148,70 @@ class AppPages {
       page: () => const SpecificDoctorOfferScreen(),
       binding: TopDoctorBindng(),
     ),
+    GetPage(
+      name: Routes.createAppointment,
+      page: () => CreateAppointmentScreen(),
+      binding: TopDoctorBindng(),
+    ),
+    GetPage(
+      name: Routes.createPatientDetail,
+      page: () => const CreatePatientDetailScreen(),
+      binding: TopDoctorBindng(),
+    ),
     ////
-    ///
+    ///  Appointment
+    GetPage(
+      name: Routes.userAppointmentDetail,
+      page: () => AppointmentDetailScreen(),
+    ),
+    GetPage(
+      name: Routes.cancelAppointment,
+      page: () => const CancelAppointmentDetail(),
+      binding: UserAppointmentBinding(),
+    ),
+    ///////// User PodCast///
+    GetPage(
+      name: Routes.userPresenterProfile,
+      page: () => UserPresenterProfileScreen(),
+      binding: UserPodcastBinding(),
+    ),
+    GetPage(
+      name: Routes.userPodCastDetail,
+      page: () => UserPodcastDetailScreen(),
+      binding: UserPodcastBinding(),
+    ),
+    GetPage(
+      name: Routes.presenterPodCastDetail,
+      page: () => PresenterPodcastDetails(),
+      binding: PresenterBinding(),
+    ),
+    ///// User Profile ///
+    GetPage(
+      name: Routes.userEditProfile,
+      page: () => const UserEditProfile(),
+      binding: UserProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.userChangeEmail,
+      page: () => const UserChangeEmail(),
+      binding: UserEditProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.userChangeUserName,
+      page: () => const UserChangeUsername(),
+      binding: UserEditProfileBinding(),
+    ),
+    /////////// Massge
+    GetPage(
+      name: Routes.userMessage,
+      page: () => const UserMessageScreen(),
+      binding: UserMesaageBinding(),
+    ),
+    GetPage(
+      name: Routes.userChatRoom,
+      page: () => const UserChatPage(),
+      binding: UserMesaageBinding(),
+    ),
     // GetPage(
     //   name: Routes.doctordrawerScreen,
     //   page: () => const DoctorDrawerScreen(),

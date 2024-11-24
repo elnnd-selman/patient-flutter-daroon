@@ -36,3 +36,37 @@ class CommonButton extends StatelessWidget {
     );
   }
 }
+
+class CustomButton extends StatelessWidget {
+  final VoidCallback ontap;
+  final String name;
+  const CustomButton({
+    super.key,
+    required this.ontap,
+    required this.name,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomCupertinoButton(
+      onTap: ontap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Text(
+            name,
+            style: AppTextStyles.bold.copyWith(
+              fontSize: 16,
+              color: AppColors.whiteBGColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

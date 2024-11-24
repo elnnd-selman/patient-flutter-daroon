@@ -1,6 +1,7 @@
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/top_doctor_profile_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/doctor_about_me.dart';
+import 'package:daroon_user/app/modules/user/user_top_doctors/widget/doctor_post.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/doctor_profile_header.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/doctor_profile_header_row.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/doctor_profile_toggle_button.dart';
@@ -66,7 +67,7 @@ class TopDoctorProfileScreen extends GetView<TopDoctorProfileController> {
               Obx(() => controller.selectedTab == 0
                   ? DoctorAboutMe(topDoctorModel: doctorData)
                   : controller.selectedTab == 1
-                      ? Container()
+                      ? DoctorPost(topDoctorModel: doctorData)
                       : const DoctorReviews()),
               SizedBox(height: 6 * SizeConfig.heightMultiplier),
             ],
