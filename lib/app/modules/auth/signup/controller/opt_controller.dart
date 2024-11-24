@@ -114,14 +114,6 @@ class OptController extends GetxController {
         endPoint: '${AppTokens.apiURl}/users/verify-phone/$code',
         body: {});
 
-    // final emailRespose = await ApiService.postwithOutHeader(
-    //     userToken: {"Authorization": "Bearer $userToken"},
-    //     endPoint: '${AppTokens.apiURl}/users/verify-email-by-code/$code',
-    //     body: {});
-    // print(emailRespose!.body);
-    // print(response!.body);
-    // _processing.value = false;
-
     if (response != null) {
       if (response.statusCode == 201 || response.statusCode == 201) {
         showToastMessage(
