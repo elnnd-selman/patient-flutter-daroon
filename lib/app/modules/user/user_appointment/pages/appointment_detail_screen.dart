@@ -416,17 +416,19 @@ class AppointmentDetailScreen extends StatelessWidget {
                                 isScrollControlled: true,
                                 isDismissible: false,
                               );
-                            } else {
+                            } else if (Get.arguments[1] == "requesting") {
                               Get.find<UserAppointmentController>()
-                                  .confirmAppointment(
-                                      appointmentModel, context, "confirmed");
+                                  .confirmAppointment(appointmentModel, context,
+                                      "confirmed", false);
                             }
                           },
                           name: Get.arguments[0] == "cancelled"
                               ? "Reschedule"
                               : Get.arguments[1] == "completed"
                                   ? "Leave Review"
-                                  : Get.arguments[0],
+                                  : Get.arguments[1] == "requesting"
+                                      ? "Confirm"
+                                      : Get.arguments[0],
                         )
                       : const SizedBox(),
                   0.verticalSpace,

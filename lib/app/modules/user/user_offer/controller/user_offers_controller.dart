@@ -23,6 +23,7 @@ class UserOffersController extends GetxController {
     userOfferModelList.value = [];
 
     try {
+      // offers
       final response = await ApiService.getwithUserToken(
         endPoint: '${AppTokens.apiURl}/offers',
         userToken: {

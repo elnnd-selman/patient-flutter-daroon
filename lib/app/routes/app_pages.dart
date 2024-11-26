@@ -209,7 +209,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.userChatRoom,
-      page: () => const UserChatPage(),
+      page: () => const DocotrChatPage(),
       binding: UserMesaageBinding(),
     ),
     // GetPage(

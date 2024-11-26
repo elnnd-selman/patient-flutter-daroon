@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:daroon_user/app/model/user_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
+import 'package:daroon_user/app/modules/user/user_home/model/public_ads_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
@@ -41,33 +42,35 @@ class UserHomeController extends GetxController {
         .get("userModel", defaultValue: UserModel);
     getUserAppointments();
     getTopDoctorData();
+    getVIPDoctorData();
+    getPublicAds();
     if (kDebugMode) {
       print(userModel.value!.token!);
       print(userModel.value!.user!.id!);
     }
   }
 
-  Future<void> shakeCard() async {
-    const double distance = 30;
-    // We can animate back and forth by chaining different animations.
-    await appinioSwiperController.animateTo(
-      const Offset(-distance, 0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
-    await appinioSwiperController.animateTo(
-      const Offset(distance, 0),
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-    // We need to animate back to the center because `animateTo` does not center
-    // the card for us.
-    await appinioSwiperController.animateTo(
-      const Offset(0, 0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
-  }
+  // Future<void> shakeCard() async {
+  //   const double distance = 30;
+  //   // We can animate back and forth by chaining different animations.
+  //   await appinioSwiperController.animateTo(
+  //     const Offset(-distance, 0),
+  //     duration: const Duration(milliseconds: 200),
+  //     curve: Curves.easeInOut,
+  //   );
+  //   await appinioSwiperController.animateTo(
+  //     const Offset(distance, 0),
+  //     duration: const Duration(milliseconds: 400),
+  //     curve: Curves.easeInOut,
+  //   );
+  //   // We need to animate back to the center because `animateTo` does not center
+  //   // the card for us.
+  //   await appinioSwiperController.animateTo(
+  //     const Offset(0, 0),
+  //     duration: const Duration(milliseconds: 200),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   void swipeEnd(int previousIndex, int targetIndex, SwiperActivity activity) {
     switch (activity) {
@@ -88,8 +91,10 @@ class UserHomeController extends GetxController {
     }
   }
 
+  RxBool isEndCard = false.obs;
   void onEnd() {
     log('end reached!');
+    isEndCard.value = true;
   }
 
   RxBool isLoading = false.obs;
@@ -137,6 +142,56 @@ class UserHomeController extends GetxController {
       processing.value = false;
     } catch (e) {
       processing.value = false;
+      printInfo(info: e.toString());
+    }
+  }
+
+  RxList<TopDoctorModel> vipDoctorModelList = <TopDoctorModel>[].obs;
+  RxBool isVipLoading = false.obs;
+  getVIPDoctorData() async {
+    try {
+      vipDoctorModelList.value = [];
+      isVipLoading.value = true;
+      final response = await ApiService.getwithUserToken(
+        endPoint: "${AppTokens.apiURl}/doctors/vip",
+        userToken: {
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+      );
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        vipDoctorModelList.value =
+            jsonResponse.map((data) => TopDoctorModel.fromJson(data)).toList();
+      }
+      isVipLoading.value = false;
+    } catch (e) {
+      isVipLoading.value = false;
+      printInfo(info: e.toString());
+    }
+  }
+
+  RxList<PublicAdsModel> publicADSList = <PublicAdsModel>[].obs;
+  RxBool isAdsLoading = false.obs;
+  getPublicAds() async {
+    try {
+      publicADSList.value = [];
+      isAdsLoading.value = true;
+      final response = await ApiService.getwithUserToken(
+        endPoint: "${AppTokens.apiURl}/ads",
+        userToken: {
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+      );
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        publicADSList.value =
+            jsonResponse.map((data) => PublicAdsModel.fromJson(data)).toList();
+      }
+      isAdsLoading.value = false;
+    } catch (e) {
+      isAdsLoading.value = false;
       printInfo(info: e.toString());
     }
   }

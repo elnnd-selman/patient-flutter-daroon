@@ -108,6 +108,9 @@ class ApiService {
     required String endPoint,
     required Map<String, String>? userToken,
   }) async {
+    if (kDebugMode) {
+      print(endPoint);
+    }
     final response = await http.get(Uri.parse(endPoint), headers: userToken);
 
     return response;

@@ -30,7 +30,7 @@ class PresenterCommentSetion extends GetView<PresenterPodcastDetailCtrl> {
           : controller.commetnModelList.isEmpty
               ? Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical: 5 * SizeConfig.heightMultiplier),
+                      vertical: 20 * SizeConfig.heightMultiplier),
                   child: const Center(
                       child: NoDataWidget(text: "No Comment available")),
                 )

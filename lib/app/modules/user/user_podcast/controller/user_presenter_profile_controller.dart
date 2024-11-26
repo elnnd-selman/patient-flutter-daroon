@@ -23,6 +23,10 @@ class UserPresenterProfileController extends GetxController {
   }
 
   RxList<PodCastModel> popularPodcastList = <PodCastModel>[].obs;
+  RxList<PodCastModel> podcastList = <PodCastModel>[].obs;
+  RxList<PodCastModel> photoList = <PodCastModel>[].obs;
+  RxList<PodCastModel> textList = <PodCastModel>[].obs;
+
   getPodCast(String presenterID) async {
     processing.value = true;
 
@@ -38,6 +42,18 @@ class UserPresenterProfileController extends GetxController {
 
       popularPodcastList.value = List<PodCastModel>.from(
           jsonData["data"]!.map((x) => PodCastModel.fromJson(x)));
+
+      if (popularPodcastList.isNotEmpty) {
+        for (int i = 0; i < popularPodcastList.length; i++) {
+          if (popularPodcastList[i].type == "video") {
+            podcastList.add(popularPodcastList[i]);
+          } else if (popularPodcastList[i].type == "text") {
+            textList.add(popularPodcastList[i]);
+          } else if (popularPodcastList[i].type == "image") {
+            photoList.add(popularPodcastList[i]);
+          }
+        }
+      }
 
       processing.value = false;
     }

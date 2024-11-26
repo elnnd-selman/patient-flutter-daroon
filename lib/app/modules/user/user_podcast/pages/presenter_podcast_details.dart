@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/controller/presenter_podcast_detail_ctrl.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/model/user_podcast_model.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/widget/presenter_comment_setion.dart';
@@ -10,6 +11,7 @@ import 'package:daroon_user/global/utils/check_null_value.dart';
 import 'package:daroon_user/global/utils/spaces.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
+import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -62,15 +64,276 @@ class PresenterPodcastDetails extends GetView<PresenterPodcastDetailCtrl> {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildHeader(),
+                            // _buildHeader(),
                             20.verticalSpace,
-                            Container(
-                              height: 24 * SizeConfig.heightMultiplier,
-                              color: Colors.amber,
+                            podcastData.type == "image" ||
+                                    podcastData.type == "text"
+                                ? Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            6 * SizeConfig.widthMultiplier),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xffE8E8E8),
+                                          width: 0.5),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        podcastData.type == "text"
+                                            ? const SizedBox()
+                                            : Container(
+                                                height: 30 *
+                                                    SizeConfig.heightMultiplier,
+                                                decoration: const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                  topLeft: Radius.circular(16),
+                                                  topRight: Radius.circular(16),
+                                                )),
+                                                child: CarouselSlider.builder(
+                                                    options: CarouselOptions(
+                                                      height: 31 *
+                                                          SizeConfig
+                                                              .heightMultiplier,
+                                                      autoPlay: false,
+                                                      enlargeCenterPage: true,
+                                                      enableInfiniteScroll:
+                                                          false,
+                                                      viewportFraction: 1,
+                                                    ),
+                                                    itemCount: podcastData
+                                                        .images.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int itemIndex,
+                                                            int pageViewIndex) {
+                                                      return ClipRRect(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  16),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  16),
+                                                        ),
+                                                        child: Stack(
+                                                          children: [
+                                                            NetWorkImageLoader(
+                                                                boxFit:
+                                                                    BoxFit.fill,
+                                                                imageURL: podcastData
+                                                                        .images[
+                                                                    itemIndex],
+                                                                height: 30 *
+                                                                    SizeConfig
+                                                                        .heightMultiplier,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width),
+                                                            Positioned(
+                                                              top: 2 *
+                                                                  SizeConfig
+                                                                      .heightMultiplier,
+                                                              left: 6 *
+                                                                  SizeConfig
+                                                                      .widthMultiplier,
+                                                              child: Container(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical:
+                                                                        10,
+                                                                    horizontal:
+                                                                        14),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              6),
+                                                                  color: AppColors
+                                                                      .blackBGColor
+                                                                      .withOpacity(
+                                                                          0.06),
+                                                                ),
+                                                                child: Text(
+                                                                  "$itemIndex/${podcastData.images.length}",
+                                                                  style: AppTextStyles
+                                                                      .medium
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color:
+                                                                              AppColors.whiteBGColor),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }),
+                                              ),
+                                        podcastData.type == "text"
+                                            ? 20.verticalSpace
+                                            : 10.verticalSpace,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: ReadMoreText(
+                                            podcastData.contentEn!,
+                                            trimMode: TrimMode.Line,
+                                            trimLines: 2,
+                                            trimLength: 200,
+                                            colorClickableText: Colors.pink,
+                                            trimCollapsedText: 'More',
+                                            trimExpandedText: 'Less',
+                                            style:
+                                                AppTextStyles.normal.copyWith(
+                                              fontSize: 14,
+                                              color: AppColors.blackBGColor
+                                                  .withOpacity(.6),
+                                            ),
+                                            moreStyle: AppTextStyles.normal
+                                                .copyWith(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                          ),
+                                        ),
+                                        14.verticalSpace,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 14),
+                                          child: Row(
+                                            children: [
+                                              CupertinoButton(
+                                                pressedOpacity: 0,
+                                                padding: EdgeInsets.zero,
+                                                minSize: 0,
+                                                onPressed: () => controller
+                                                    .updateLikeOnPost(),
+                                                child: Obx(
+                                                  () => Icon(
+                                                    controller.podCastModel
+                                                            .value!.isLiked!
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    color: controller
+                                                            .podCastModel
+                                                            .value!
+                                                            .isLiked!
+                                                        ? AppColors.primaryColor
+                                                        : Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              CupertinoButton(
+                                                pressedOpacity: 0,
+                                                padding: EdgeInsets.zero,
+                                                minSize: 0,
+                                                onPressed: () => controller
+                                                    .updateLikeOnPost(),
+                                                child: Obx(
+                                                  () => Text(
+                                                    " ${controller.podCastModel.value!.likes} Likes",
+                                                    style: AppTextStyles.normal
+                                                        .copyWith(
+                                                      color: const Color(
+                                                          0xff50555C),
+                                                      fontSize: SizeConfig
+                                                              .heightMultiplier *
+                                                          1.7,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              20.horizontalSpace,
+                                              SvgPicture.asset(
+                                                Assets.commentIcon,
+                                                height: 16,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                        AppColors.blackBGColor,
+                                                        BlendMode.srcIn),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Obx(
+                                                () => Text(
+                                                  " ${controller.commetnModelList.length} Comment",
+                                                  style: AppTextStyles.normal
+                                                      .copyWith(
+                                                    color:
+                                                        const Color(0xff50555C),
+                                                    fontSize: SizeConfig
+                                                            .heightMultiplier *
+                                                        1.7,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        14.verticalSpace,
+                                        Container(
+                                            color: const Color(0xffE8E8E8),
+                                            height: 0.5),
+                                        20.verticalSpace,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            12.horizontalSpace,
+                                            SvgPicture.asset(
+                                              "assets/icons/clock.svg",
+                                              height: 2.5 *
+                                                  SizeConfig.heightMultiplier,
+                                            ),
+                                            14.horizontalSpace,
+                                            Text(
+                                              "Created at ${formatDateTime(podcastData.createdAt!)}",
+                                              style:
+                                                  AppTextStyles.normal.copyWith(
+                                                fontSize: 12,
+                                                color: AppColors.lighttextColor,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        20.verticalSpace,
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    height: 24 * SizeConfig.heightMultiplier,
+                                    color: Colors.amber,
+                                  ),
+                            20.verticalSpace,
+                            podcastData.type == "video"
+                                ? _buildPostDescription()
+                                : const SizedBox(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 6 * SizeConfig.widthMultiplier),
+                              child: Text(
+                                "Comments",
+                                style: AppTextStyles.bold.copyWith(
+                                  color: AppColors.lighttextColor,
+                                  fontSize: SizeConfig.heightMultiplier * 2,
+                                ),
+                              ),
                             ),
-                            20.verticalSpace,
-                            _buildPostDescription(),
                             const PresenterCommentSetion(),
                           ],
                         ),
@@ -95,6 +358,14 @@ class PresenterPodcastDetails extends GetView<PresenterPodcastDetailCtrl> {
         );
       },
     );
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    final DateFormat timeFormat = DateFormat('hh:mm a');
+    final DateFormat dateFormat = DateFormat('dd MMMM yyyy');
+    String formattedTime = timeFormat.format(dateTime);
+    String formattedDate = dateFormat.format(dateTime);
+    return '$formattedTime - $formattedDate';
   }
 
   SizedBox _buildTextField(BuildContext context) {
@@ -303,13 +574,6 @@ class PresenterPodcastDetails extends GetView<PresenterPodcastDetailCtrl> {
             color: const Color(0xff979797),
           ),
           14.verticalSpace,
-          Text(
-            "Comments",
-            style: AppTextStyles.bold.copyWith(
-              color: AppColors.lighttextColor,
-              fontSize: SizeConfig.heightMultiplier * 2,
-            ),
-          ),
         ],
       ),
     );

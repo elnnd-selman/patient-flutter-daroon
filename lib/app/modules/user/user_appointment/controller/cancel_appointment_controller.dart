@@ -31,9 +31,12 @@ class CancelAppointmentController extends GetxController {
         endPoint:
             '${AppTokens.apiURl}/appointments/${appointmentModel.id}/cancelled',
         body: {
-          "cancelledReason": currentIndex.value == 4
-              ? reasonTextField.text
-              : cancelAppointmentList[currentIndex.value].title,
+          "cancelledReason": "Travling",
+          "cancelledReasonNote": "I can meet at this time"
+          // "cancelledReason": currentIndex.value == 4
+          //     ? reasonTextField.text
+          //     : cancelAppointmentList[currentIndex.value].title,
+          // "cancelledReasonNote": "I can meet at this time"
         },
       );
       if (response != null) {

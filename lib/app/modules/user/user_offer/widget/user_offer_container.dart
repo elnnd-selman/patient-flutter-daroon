@@ -10,7 +10,6 @@ import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
-import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:intl/intl.dart';
 
 class UserOfferContainer extends StatelessWidget {
@@ -104,7 +103,8 @@ class UserOfferContainer extends StatelessWidget {
                                 Text(
                                   userOfferModel.doctor!.speciality == null
                                       ? '--'
-                                      : userOfferModel.doctor!.speciality!,
+                                      : userOfferModel
+                                          .doctor!.speciality!.specialityEn!,
                                   style: AppTextStyles.medium.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.whiteBGColor,
@@ -200,7 +200,7 @@ class UserOfferContainer extends StatelessWidget {
                     ],
                   ),
                   4.verticalSpace,
-                  CommonButton(ontap: () {}, name: "Book")
+                  // CommonButton(ontap: () {}, name: "Book")
                 ],
               ),
             ),

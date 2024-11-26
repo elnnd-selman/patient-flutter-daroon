@@ -7,6 +7,7 @@ import 'package:daroon_user/app/modules/user/user_home/controller/user_home_cont
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -185,56 +186,37 @@ class UserAppointmentController extends GetxController {
     AppointmentModel appointmentModel,
     BuildContext context,
     String status,
+    bool isMain,
   ) async {
     try {
       _confirmProcessing.value = true;
-      final response = await ApiService.putWithHeader(
+      final response = await ApiService.patchWithHeader(
           userToken: {
             'Content-Type': 'application/json',
             "Authorization":
                 "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
           },
           endPoint:
-              '${AppTokens.apiURl}/doctors/appointments/${appointmentModel.id}/$status',
+              '${AppTokens.apiURl}/appointments/${appointmentModel.id}/confirmed',
           body: {});
 
       if (response != null) {
         if (response.statusCode == 200 || response.statusCode == 201) {
-          if (status == "confirmed") {
-            upcomingAppointmentList
-                .removeWhere((item) => item.id == appointmentModel.id);
-            confirmedAppointmentList.add(appointmentModel);
+          requestAppointmentList
+              .removeWhere((item) => item.id == appointmentModel.id);
+          confirmedAppointmentList.add(appointmentModel);
+          if (!isMain) {
             Get.back();
-            showToastMessage(
-                message: "Successfully confirmed appointmetnt",
-                // ignore: use_build_context_synchronously
-                context: context,
-                color: const Color(0xff5BA66B),
-                icon: Icons.check);
-          } else if (status == "completed") {
-            confirmedAppointmentList
-                .removeWhere((item) => item.id == appointmentModel.id);
-            completedAppointmentList.add(appointmentModel);
-            Get.back();
-            showToastMessage(
-                message: "Successfully complete appointmetnt",
-                // ignore: use_build_context_synchronously
-                context: context,
-                color: const Color(0xff5BA66B),
-                icon: Icons.check);
-          } else if (status == "cancelled") {
-            confirmedAppointmentList
-                .removeWhere((item) => item.id == appointmentModel.id);
-            cancelAppointmentList.add(appointmentModel);
-            Get.back();
-            showToastMessage(
-                message: "Successfully cancel appointmetnt",
-                // ignore: use_build_context_synchronously
-                context: context,
-                color: const Color(0xff5BA66B),
-                icon: Icons.check);
           }
+          _confirmProcessing.value = false;
+          showToastMessage(
+              message: "Successfully confirmed appointmetnt",
+              // ignore: use_build_context_synchronously
+              context: context,
+              color: const Color(0xff5BA66B),
+              icon: Icons.check);
         } else {
+          _confirmProcessing.value = false;
           showToastMessage(
               message: response.body,
               // ignore: use_build_context_synchronously
@@ -243,8 +225,10 @@ class UserAppointmentController extends GetxController {
               icon: Icons.close);
         }
       }
-      _confirmProcessing.value = false;
     } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
       _confirmProcessing.value = false;
     }
   }

@@ -23,7 +23,7 @@ class UserPodCastContainer extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: 30 * SizeConfig.heightMultiplier,
-      margin: EdgeInsets.symmetric(horizontal: 0 * SizeConfig.widthMultiplier),
+      margin: EdgeInsets.only(bottom: 4 * SizeConfig.widthMultiplier),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
       ),

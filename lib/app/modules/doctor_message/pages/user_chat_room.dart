@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:async';
+
 import 'package:daroon_user/app/modules/doctor_message/controller/chat_room_controller.dart';
 import 'package:daroon_user/app/modules/doctor_message/model/user_message_model.dart';
 import 'package:daroon_user/app/modules/doctor_message/widget/chat_title.dart';
@@ -12,21 +14,23 @@ import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:get/get.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
-class UserChatPage extends StatefulWidget {
-  const UserChatPage({super.key});
+class DocotrChatPage extends StatefulWidget {
+  const DocotrChatPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _UserChatPageState createState() => _UserChatPageState();
+  _DocotrChatPageState createState() => _DocotrChatPageState();
 }
 
 final ctrl = Get.put(ChatRoomController());
 
-class _UserChatPageState extends State<UserChatPage> {
+class _DocotrChatPageState extends State<DocotrChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,34 +53,46 @@ class _UserChatPageState extends State<UserChatPage> {
   void initState() {
     super.initState();
     userMessageModelData = Get.arguments[0];
-    connect();
+    connectAndListen();
     ctrl.getUserChatConversation(userMessageModelData.id!);
   }
 
-  Future<void> connect() async {
-    print(userMessageModelData.id!);
-    socket = io.io(AppTokens.apiURl, <String, dynamic>{
-      'autoConnect': true,
-      'transports': ['websocket'],
-    });
+  StreamSocket streamSocket = StreamSocket();
+  @override
+  void dispose() {
+    super.dispose();
+    socket.disconnect();
 
-    joinChat();
-    socket.on("new_message", (msg) {
-      print(msg);
-    });
+    socket.dispose();
+  }
+
+  void connectAndListen() {
+    socket = io.io(
+      "${AppTokens.apiURl}",
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .setPath("/io")
+          .setReconnectionAttempts(5)
+          .disableAutoConnect()
+          .build(),
+    );
+    socket.connect();
+
     socket.onConnect((_) {
       print('connect');
-      // socket.emit('msg', 'test');
+      print(_);
     });
+    socket.on("connect", (data) {
+      print("Connected to Socket.IO server: ${socket.id}");
+    });
+    joinChat();
 
-    socket.onDisconnect((_) => print('Connection Disconnection'));
-    socket.onConnectError((err) => print(err));
-    socket.onError((err) => print(err));
-    socket.onConnect((val) {
-      print(val);
-      print("frfr");
+    //When an event recieved from server, data is added to the stream
+    socket.on('new_message', (data) {
+      print("TEsttsffs");
+      streamSocket.addResponse(data);
     });
-    print(socket.connected);
+    socket.onDisconnect((_) => print('disconnect'));
   }
 
   getData() {
@@ -90,28 +106,25 @@ class _UserChatPageState extends State<UserChatPage> {
     }
   }
 
-  joinChat() async {
-    socket.emit("join_conversation", [
-      userMessageModelData.id!,
-      "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
-    ]);
+  joinChat() {
+    print(userMessageModelData.id!);
+    socket.emit(
+      "join_conversation",
+      [
+        userMessageModelData.id!,
+        "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+      ],
+    );
   }
 
   sendMessage() {
     print(userMessageModelData.id);
+    print(Get.find<UserHomeController>().userModel.value!.token!);
     socket.emit("send_message", {
       'conversationId': userMessageModelData.id!,
       "token":
           "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
-      "text": "Test Chehcefhf",
-    });
-  }
-
-  void listenForMessages() {
-    socket.on('new_message', (data) {
-      // Handle the received message
-      print('Received message: $data');
-      // Update your UI or perform other actions based on the message
+      "text": "World",
     });
   }
 
@@ -133,11 +146,10 @@ class _UserChatPageState extends State<UserChatPage> {
               ),
               InkWell(
                 onTap: () {
-                  socket.onConnect((val) {});
                   // connect();
                   // joinChat();
-                  // sendMessage();
-
+                  sendMessage();
+                  // newMeasa();
                   // getData();
                   // sendMessage();
                 },
@@ -320,27 +332,27 @@ class _UserChatPageState extends State<UserChatPage> {
                 color: const Color(0xff535353),
                 fontSize: 1.6 * SizeConfig.heightMultiplier,
               ),
-              // prefixIcon: Container(
-              //   // color: Colors.red,
-              //   width: 14 * SizeConfig.widthMultiplier,
-              //   margin: EdgeInsets.only(
-              //       left: 4 * SizeConfig.widthMultiplier,
-              //       right: 4 * SizeConfig.widthMultiplier),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       SvgPicture.asset(
-              //         "assets/icons/camer_up.svg",
-              //         height: 3 * SizeConfig.heightMultiplier,
-              //       ),
-              //       SizedBox(width: 1 * SizeConfig.widthMultiplier),
-              //       SvgPicture.asset(
-              //         "assets/icons/mic_icon.svg",
-              //         height: 3 * SizeConfig.heightMultiplier,
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              prefixIcon: Container(
+                // color: Colors.red,
+                width: 14 * SizeConfig.widthMultiplier,
+                margin: EdgeInsets.only(
+                    left: 4 * SizeConfig.widthMultiplier,
+                    right: 4 * SizeConfig.widthMultiplier),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/camer_up.svg",
+                      height: 3 * SizeConfig.heightMultiplier,
+                    ),
+                    SizedBox(width: 1 * SizeConfig.widthMultiplier),
+                    SvgPicture.asset(
+                      "assets/icons/mic_icon.svg",
+                      height: 3 * SizeConfig.heightMultiplier,
+                    ),
+                  ],
+                ),
+              ),
               suffixIcon: Container(
                 margin: const EdgeInsets.only(right: 10),
                 padding: const EdgeInsets.all(14),
@@ -382,5 +394,17 @@ class _UserChatPageState extends State<UserChatPage> {
         ),
       ),
     );
+  }
+}
+
+class StreamSocket {
+  final _socketResponse = StreamController<String>();
+
+  void Function(String) get addResponse => _socketResponse.sink.add;
+
+  Stream<String> get getResponse => _socketResponse.stream;
+
+  void dispose() {
+    _socketResponse.close();
   }
 }

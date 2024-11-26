@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:daroon_user/app/binding/initial_binding.dart';
 import 'package:daroon_user/app/model/user_model.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
 
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
@@ -68,5 +70,14 @@ class MyApp extends StatelessWidget {
         );
       });
     });
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

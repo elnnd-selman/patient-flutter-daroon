@@ -10,7 +10,6 @@ import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
-import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:intl/intl.dart';
 
 class UserOfferDetailScreen extends StatelessWidget {
@@ -175,7 +174,7 @@ class UserOfferDetailScreen extends StatelessWidget {
                                 ),
                                 10.horizontalSpace,
                                 Text(
-                                  "${offerData.office!.daysOpen.length} days per week",
+                                  "${offerData.offices.isEmpty ? "---" : offerData.offices[0].daysOpen.length} days per week",
                                   style: AppTextStyles.medium.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: const Color(0xff898A8D),
@@ -226,7 +225,9 @@ class UserOfferDetailScreen extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Text(
-                                        offerData.office!.description!,
+                                        offerData.offices.isEmpty
+                                            ? "----"
+                                            : offerData.offices[0].description!,
                                         maxLines: 2,
                                         style: AppTextStyles.black.copyWith(
                                           fontWeight: FontWeight.w400,
@@ -243,8 +244,8 @@ class UserOfferDetailScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 3 * SizeConfig.heightMultiplier),
-                      CommonButton(ontap: () {}, name: "Book"),
-                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                      // CommonButton(ontap: () {}, name: "Book"),
+                      // SizedBox(height: 2 * SizeConfig.heightMultiplier),
                     ],
                   ),
                 ),

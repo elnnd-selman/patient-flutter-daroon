@@ -45,44 +45,47 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
             ),
             10.verticalSpace,
 
-            Obx(() => controller.processing.value
-                ? Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 15 * SizeConfig.heightMultiplier),
-                    child: const Center(child: LoadingWidget()),
-                  )
-                : controller.popularPodcastList.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 15 * SizeConfig.heightMultiplier),
-                        child: const Center(
-                            child: NoDataWidget(text: "No Podcast Found")),
-                      )
-                    : CarouselSlider.builder(
-                        options: CarouselOptions(
-                          height: 31 * SizeConfig.heightMultiplier,
-                          autoPlay: false,
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 1,
-                          // aspectRatio: 2.0,
-                          // initialPage: 2,
-                        ),
-                        itemCount: controller.popularPodcastList.length,
-                        itemBuilder: (BuildContext context, int itemIndex,
-                            int pageViewIndex) {
-                          return CustomCupertinoButton(
-                            onTap: () {
-                              Get.toNamed(Routes.userPodCastDetail, arguments: [
-                                controller.popularPodcastList[itemIndex]
-                              ]);
-                            },
-                            child: UserPodCastContainer(
-                              podCastModel:
-                                  controller.popularPodcastList[itemIndex],
-                            ),
-                          );
-                        })),
+            Obx(
+              () => controller.processing.value
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 15 * SizeConfig.heightMultiplier),
+                      child: const Center(child: LoadingWidget()),
+                    )
+                  : controller.popularPodcastList.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15 * SizeConfig.heightMultiplier),
+                          child: const Center(
+                              child: NoDataWidget(text: "No Podcast Found")),
+                        )
+                      : CarouselSlider.builder(
+                          options: CarouselOptions(
+                            height: 31 * SizeConfig.heightMultiplier,
+                            autoPlay: false,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            viewportFraction: 1,
+                            // aspectRatio: 2.0,
+                            // initialPage: 2,
+                          ),
+                          itemCount: controller.popularPodcastList.length,
+                          itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) {
+                            return CustomCupertinoButton(
+                              onTap: () {
+                                Get.toNamed(Routes.userPodCastDetail,
+                                    arguments: [
+                                      controller.popularPodcastList[itemIndex]
+                                    ]);
+                              },
+                              child: UserPodCastContainer(
+                                podCastModel:
+                                    controller.popularPodcastList[itemIndex],
+                              ),
+                            );
+                          }),
+            ),
 
             30.verticalSpace,
 

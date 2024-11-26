@@ -45,7 +45,8 @@ class UserPresenterProfileScreen
             ),
           ),
         ),
-        body: Column(
+        body: ListView(
+          shrinkWrap: true,
           children: [
             Container(
               height: 22 * SizeConfig.heightMultiplier,

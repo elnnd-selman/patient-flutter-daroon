@@ -22,7 +22,7 @@ class PodcastTab extends GetView<UserPresenterProfileController> {
         7.verticalSpace,
         Obx(
           () => Text(
-            "${controller.popularPodcastList.length} Podcasts",
+            "${controller.podcastList.length} Podcasts",
             style: AppTextStyles.medium
                 .copyWith(color: AppColors.lightgreyColor, fontSize: 16),
           ),
@@ -35,7 +35,7 @@ class PodcastTab extends GetView<UserPresenterProfileController> {
                       vertical: 15 * SizeConfig.heightMultiplier),
                   child: const Center(child: LoadingWidget()),
                 )
-              : controller.popularPodcastList.isEmpty
+              : controller.podcastList.isEmpty
                   ? Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 15 * SizeConfig.heightMultiplier),
@@ -45,17 +45,15 @@ class PodcastTab extends GetView<UserPresenterProfileController> {
                   : ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: controller.popularPodcastList.length,
+                      itemCount: controller.podcastList.length,
                       itemBuilder: (context, index) {
                         return CustomCupertinoButton(
                           onTap: () {
                             Get.toNamed(Routes.presenterPodCastDetail,
-                                arguments: [
-                                  controller.popularPodcastList[index]
-                                ]);
+                                arguments: [controller.podcastList[index]]);
                           },
                           child: UserPodCastContainer(
-                            podCastModel: controller.popularPodcastList[index],
+                            podCastModel: controller.podcastList[index],
                           ),
                         );
                       },

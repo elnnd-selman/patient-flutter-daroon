@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/upcoming_custom_container.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,46 +27,43 @@ class RequestAppointmentContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: 3 * SizeConfig.widthMultiplier,
           vertical: 1.5 * SizeConfig.heightMultiplier),
-      child: CupertinoButton(
-        pressedOpacity: 0,
-        padding: EdgeInsets.zero,
-        minSize: 0,
-        onPressed: () {
-          Get.toNamed(
-            Routes.userAppointmentDetail,
-            arguments: [
-              "requesting",
-              "requesting",
-              const Color(0xffFD9E46),
-              false,
-              "Request Appointment",
-              false,
-              true,
-              appointmentModel,
-            ],
-          );
-        },
-        child: CustomPaint(
-          size: Size(MediaQuery.of(context).size.width * 0.8,
-              (MediaQuery.of(context).size.height * 0.32)),
-          painter: RPSCustomPainters(),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 1,
-            height: (MediaQuery.of(context).size.height * 0.285).toDouble(),
-            child: Stack(
-              children: [
-                _startButton(),
-                Positioned(
-                  top: 0,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 5 * SizeConfig.widthMultiplier),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 3 * SizeConfig.heightMultiplier),
-                        Center(
+      child: CustomPaint(
+        size: Size(MediaQuery.of(context).size.width * 0.8,
+            (MediaQuery.of(context).size.height * 0.32)),
+        painter: RPSCustomPainters(),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 1,
+          height: (MediaQuery.of(context).size.height * 0.35).toDouble(),
+          child: Stack(
+            children: [
+              _startButton(),
+              Positioned(
+                top: 0,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 5 * SizeConfig.widthMultiplier),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 3 * SizeConfig.heightMultiplier),
+                      CustomCupertinoButton(
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.userAppointmentDetail,
+                            arguments: [
+                              "requesting",
+                              "requesting",
+                              const Color(0xffFD9E46),
+                              false,
+                              "Request Appointment",
+                              true,
+                              true,
+                              appointmentModel,
+                            ],
+                          );
+                        },
+                        child: Center(
                           child: Container(
                             color: Colors.transparent,
                             width: MediaQuery.of(context).size.width * 0.83,
@@ -136,8 +135,25 @@ class RequestAppointmentContainer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                        Container(
+                      ),
+                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                      CustomCupertinoButton(
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.userAppointmentDetail,
+                            arguments: [
+                              "requesting",
+                              "requesting",
+                              const Color(0xffFD9E46),
+                              false,
+                              "Request Appointment",
+                              true,
+                              true,
+                              appointmentModel,
+                            ],
+                          );
+                        },
+                        child: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
                           padding: EdgeInsets.symmetric(
                               horizontal: SizeConfig.widthMultiplier * 4,
@@ -193,13 +209,90 @@ class RequestAppointmentContainer extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // SizedBox(height: 2.5 * SizeConfig.heightMultiplier),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 2.5 * SizeConfig.heightMultiplier),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomCupertinoButton(
+                                onTap: () {
+                                  Get.toNamed(
+                                    Routes.cancelAppointment,
+                                    arguments: [
+                                      appointmentModel,
+                                      "upcoming",
+                                      true
+                                    ],
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    // horizontal: SizeConfig.widthMultiplier * 2,
+                                    vertical: SizeConfig.heightMultiplier * 1.4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: AppColors.primaryColor)),
+                                  child: Center(
+                                    child: Text(
+                                      "Cancel",
+                                      style: AppTextStyles.medium.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.primaryColor,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 1.7,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            20.horizontalSpace,
+                            Expanded(
+                              child: CustomCupertinoButton(
+                                onTap: () {
+                                  Get.find<UserAppointmentController>()
+                                      .confirmAppointment(
+                                    appointmentModel,
+                                    context,
+                                    "confirmed",
+                                    true,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          SizeConfig.heightMultiplier * 1.4),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.primaryColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: AppColors.primaryColor)),
+                                  child: Center(
+                                    child: Text(
+                                      "Confirm",
+                                      style: AppTextStyles.medium.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.whiteBGColor,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 1.7,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
