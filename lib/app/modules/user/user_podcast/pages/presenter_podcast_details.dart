@@ -579,6 +579,7 @@ class PresenterPodcastDetails extends GetView<PresenterPodcastDetailCtrl> {
     );
   }
 
+  // ignore: unused_element
   Padding _buildHeader() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4 * SizeConfig.widthMultiplier),

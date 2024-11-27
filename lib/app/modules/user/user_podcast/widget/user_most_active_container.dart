@@ -64,7 +64,7 @@ class UserMostActiveContainer extends StatelessWidget {
                       imageURL: userPresenterModel.profilePicture!.bg!,
                       height: 10 * SizeConfig.heightMultiplier,
                       width: 10 * SizeConfig.heightMultiplier,
-                      containerColor: const Color(0xffFFFFFF).withOpacity(.3),
+                      // containerColor: const Color(0xffFFFFFF).withOpacity(.3),
                       shape: BoxShape.circle,
                       boxFit: BoxFit.fill,
                     ),

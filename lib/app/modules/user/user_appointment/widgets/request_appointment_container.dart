@@ -4,7 +4,6 @@ import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appoi
 import 'package:daroon_user/app/modules/user/user_home/widget/upcoming_custom_container.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';

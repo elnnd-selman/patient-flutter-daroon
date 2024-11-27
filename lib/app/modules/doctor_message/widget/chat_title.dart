@@ -45,7 +45,8 @@ class ChatTitle extends StatelessWidget {
                           '${firstName![0].toUpperCase()}${lastName![0].toUpperCase()}',
                           style: AppTextStyles.bold.copyWith(
                             color: Colors.white,
-                            fontSize: Spaces.fontSize(fontSize: 16),
+                            fontSize: Spaces.fontSize(
+                                fontSize: 1.7 * SizeConfig.heightMultiplier),
                           ),
                         ),
                       ),
@@ -61,12 +62,16 @@ class ChatTitle extends StatelessWidget {
                   )
             : Text(
                 '$time',
-                style: AppTextStyles.normal
-                    .copyWith(fontSize: 14, color: const Color(0xff535353)),
+                style: AppTextStyles.normal.copyWith(
+                    fontSize: 1.4 * SizeConfig.heightMultiplier,
+                    color: const Color(0xff535353)),
               ),
         Flexible(
           child: Container(
-            margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
+            margin: EdgeInsets.only(
+                left: 1 * SizeConfig.widthMultiplier,
+                right: 1 * SizeConfig.widthMultiplier,
+                top: 2 * SizeConfig.heightMultiplier),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: chat == 0
@@ -86,16 +91,18 @@ class ChatTitle extends StatelessWidget {
             ),
             child: Text(
               '$message',
-              style: AppTextStyles.normal
-                  .copyWith(color: const Color(0xff11142D), fontSize: 16),
+              style: AppTextStyles.normal.copyWith(
+                  color: const Color(0xff11142D),
+                  fontSize: 1.7 * SizeConfig.heightMultiplier),
             ),
           ),
         ),
         chat == 1
             ? Text(
                 '$time',
-                style: AppTextStyles.normal
-                    .copyWith(fontSize: 14, color: const Color(0xff535353)),
+                style: AppTextStyles.normal.copyWith(
+                    fontSize: 1.4 * SizeConfig.heightMultiplier,
+                    color: const Color(0xff535353)),
               )
             : const SizedBox(),
       ],

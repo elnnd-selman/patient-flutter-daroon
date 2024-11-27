@@ -4,6 +4,7 @@ import 'package:daroon_user/app/modules/user/user_home/controller/user_home_cont
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,8 @@ class CreateAppointmentController extends GetxController {
   final _selectedTab = 0.obs;
   int get selectedTab => _selectedTab.value;
 
-  RxInt selectedPacakge = RxInt(-1);
+  // RxInt selectedPacakge = RxInt(-1);
+  RxList selectedPacakgeList = [].obs;
 
   void selectTab(int value) async {
     currentTimeIndex.value = -1;
@@ -121,7 +123,7 @@ class CreateAppointmentController extends GetxController {
   checkValidation(BuildContext context) {
     if (currentIndex.value == -1 ||
         currentTimeIndex.value == -1 ||
-        selectedPacakge.value == -1) {
+        selectedPacakgeList.isEmpty) {
       if (currentIndex.value == -1) {
         showToastMessage(
             message: "Please select day",
@@ -194,9 +196,21 @@ class CreateAppointmentController extends GetxController {
     }
   }
 
+  RxList<String> packageList = <String>[
+    "feeClinic",
+    "feeMessage",
+    "feeCall",
+    "feeVideoCall",
+  ].obs;
+
+//
   RxBool loading = false.obs;
   createAppointment(BuildContext context) async {
     loading.value = true;
+    List<String> selectPackage = [];
+    for (int i = 0; i < selectedPacakgeList.length; i++) {
+      selectPackage.add(packageList[selectedPacakgeList[i]]);
+    }
     FocusManager.instance.primaryFocus?.unfocus();
     final response = await ApiService.postwithHeader(
       userToken: {
@@ -225,15 +239,7 @@ class CreateAppointmentController extends GetxController {
         "age": int.parse(age.text),
         "fullName": name.text,
         "gender": selectedGender.value == 0 ? "male" : 'female',
-        "appointmentType": [
-          selectedPacakge.value == 0
-              ? "feeClinic"
-              : selectedPacakge.value == 1
-                  ? "feeMessage"
-                  : selectedPacakge.value == 2
-                      ? "feeCall"
-                      : "feeVideoCall"
-        ],
+        "appointmentType": selectPackage,
         "dateOfBirth": "2004-08-09",
         "extraInformation": extraInfo.text,
         "bookedFor": bookFor.value
@@ -253,7 +259,7 @@ class CreateAppointmentController extends GetxController {
         loading.value = false;
       } else {
         showToastMessage(
-            message: response.body,
+            message: response.body.extractErrorMessage(),
             context: context,
             color: const Color(0xffEC1C24),
             icon: Icons.close);

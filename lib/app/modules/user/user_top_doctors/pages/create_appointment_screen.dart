@@ -270,7 +270,12 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
           SizedBox(width: 3 * SizeConfig.widthMultiplier),
           CustomCupertinoButton(
               onTap: () {
-                controller.selectedPacakge.value = index;
+                if (controller.selectedPacakgeList.contains(index)) {
+                  controller.selectedPacakgeList
+                      .removeWhere((item) => item == index);
+                } else {
+                  controller.selectedPacakgeList.add(index);
+                }
               },
               child: Obx(
                 () => Container(
@@ -278,11 +283,11 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
                   width: 6 * SizeConfig.widthMultiplier,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: controller.selectedPacakge.value == index
+                    color: controller.selectedPacakgeList.contains(index)
                         ? AppColors.primaryColor
                         : Colors.white,
                     border: Border.all(
-                        color: controller.selectedPacakge.value == index
+                        color: controller.selectedPacakgeList.contains(index)
                             ? AppColors.primaryColor
                             : const Color(0xffE8E8E8),
                         width: 0.5),

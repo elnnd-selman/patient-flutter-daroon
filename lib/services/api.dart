@@ -126,6 +126,17 @@ class ApiService {
     return response;
   }
 
+  static Future<http.Response?> deleteWithHeader({
+    required endPoint,
+    required Map<String, dynamic>? body,
+    required Map<String, String>? userToken,
+  }) async {
+    final response = await http.delete(Uri.parse(endPoint),
+        headers: userToken, body: jsonEncode(body));
+
+    return response;
+  }
+
   static Future<http.Response> uploadContentApi({
     required String userToken,
     required List<String> imageList,

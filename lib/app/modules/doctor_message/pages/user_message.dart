@@ -146,34 +146,34 @@ CustomCupertinoButton _buildChatContainer(
       margin: const EdgeInsets.only(top: 20),
       child: Row(
         children: [
-          // doctorMessageModelData.patient!.profilePicture == null
-          //     ? Container(
-          //         height: 6 * SizeConfig.heightMultiplier,
-          //         width: 6 * SizeConfig.heightMultiplier,
-          //         padding: const EdgeInsets.all(10),
-          //         decoration: const BoxDecoration(
-          //             color: AppColors.blackBGColor, shape: BoxShape.circle),
-          //         child: Center(
-          //           child: FittedBox(
-          //             child: Text(
-          //               '${doctorMessageModelData.patient!.firstName![0].toUpperCase()}${doctorMessageModelData.patient!.lastNameEn![0].toUpperCase()}',
-          //               style: AppTextStyles.bold.copyWith(
-          //                 color: Colors.white,
-          //                 fontSize: Spaces.fontSize(fontSize: 18),
-          //               ),
-          //             ),
-          //           ),
-          //         ))
-          //     : ClipOval(
-          //         child: NetWorkImageLoader(
-          //           shape: BoxShape.circle,
-          //           boxFit: BoxFit.cover,
-          //           height: 6 * SizeConfig.heightMultiplier,
-          //           width: 6 * SizeConfig.heightMultiplier,
-          //           imageURL:
-          //               doctorMessageModelData.patient!.profilePicture!.md!,
-          //         ),
-          //       ),
+          doctorMessageModelData.doctor!.profilePicture == null
+              ? Container(
+                  height: 6 * SizeConfig.heightMultiplier,
+                  width: 6 * SizeConfig.heightMultiplier,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: AppColors.blackBGColor, shape: BoxShape.circle),
+                  child: Center(
+                    child: FittedBox(
+                      child: Text(
+                        '${doctorMessageModelData.doctor!.firstName![0].toUpperCase()}${doctorMessageModelData.doctor!.lastNameEn![0].toUpperCase()}',
+                        style: AppTextStyles.bold.copyWith(
+                          color: Colors.white,
+                          fontSize: Spaces.fontSize(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ))
+              : ClipOval(
+                  child: NetWorkImageLoader(
+                    shape: BoxShape.circle,
+                    boxFit: BoxFit.cover,
+                    height: 6 * SizeConfig.heightMultiplier,
+                    width: 6 * SizeConfig.heightMultiplier,
+                    imageURL:
+                        doctorMessageModelData.doctor!.profilePicture!.md!,
+                  ),
+                ),
           const SizedBox(
             width: 20,
           ),
@@ -182,7 +182,7 @@ CustomCupertinoButton _buildChatContainer(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                doctorMessageModelData.patient!.firstName!,
+                "${doctorMessageModelData.doctor!.firstName!.capitalizeFirst!} ${doctorMessageModelData.doctor!.lastNameEn!.capitalizeFirst!}",
                 style: AppTextStyles.medium.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackBGColor,
@@ -190,9 +190,7 @@ CustomCupertinoButton _buildChatContainer(
                 ),
               ),
               Text(
-                doctorMessageModelData.messages.isEmpty
-                    ? '--'
-                    : doctorMessageModelData.messages[0],
+                "@${doctorMessageModelData.doctor!.username!}",
                 style: AppTextStyles.medium.copyWith(
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff707281),

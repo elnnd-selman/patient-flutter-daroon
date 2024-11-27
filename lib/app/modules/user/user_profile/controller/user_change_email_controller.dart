@@ -3,6 +3,7 @@ import 'package:daroon_user/app/modules/user/user_profile/controller/user_edit_p
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
@@ -94,7 +95,7 @@ class UserChangeEmailController extends GetxController {
           );
         } else {
           showToastMessage(
-              message: response.body,
+              message: response.body.extractErrorMessage(),
               // ignore: use_build_context_synchronously
               context: context,
               color: const Color(0xffEC1C24),

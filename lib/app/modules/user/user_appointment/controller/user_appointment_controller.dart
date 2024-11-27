@@ -5,6 +5,7 @@ import 'package:daroon_user/app/model/user_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/foundation.dart';
@@ -166,7 +167,7 @@ class UserAppointmentController extends GetxController {
               icon: Icons.close);
         } else {
           showToastMessage(
-              message: response.body,
+              message: response.body.extractErrorMessage(),
               // ignore: use_build_context_synchronously
               context: context,
               color: const Color(0xffEC1C24),
@@ -218,7 +219,7 @@ class UserAppointmentController extends GetxController {
         } else {
           _confirmProcessing.value = false;
           showToastMessage(
-              message: response.body,
+              message: response.body.extractErrorMessage(),
               // ignore: use_build_context_synchronously
               context: context,
               color: const Color(0xffEC1C24),
@@ -282,7 +283,49 @@ class UserAppointmentController extends GetxController {
     }
   }
 
-  ////////////////
+  removeAppointment(
+    AppointmentModel appointmentModel,
+    BuildContext context,
+  ) async {
+    try {
+      processing.value = true;
+      final response = await ApiService.deleteWithHeader(
+        userToken: {
+          'Content-Type': 'application/json',
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+        endPoint:
+            '${AppTokens.apiURl}/appointments/${appointmentModel.id}/delete',
+        body: {},
+      );
+      // print(response!.body);
+      if (response != null) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          cancelAppointmentList
+              .removeWhere((item) => item.id == appointmentModel.id);
+          processing.value = false;
+          successTextMessage(
+              message: "Successfully deleted appointment.",
+              // ignore: use_build_context_synchronously
+
+              color: const Color(0xff5BA66B),
+              icon: Icons.check);
+        } else {
+          processing.value = false;
+
+          successTextMessage(
+              message: response.body.extractErrorMessage(),
+              // ignore: use_build_context_synchronously
+              color: const Color(0xffEC1C24),
+              icon: Icons.close);
+        }
+      }
+    } catch (e) {
+      processing.value = false;
+      printInfo(info: e.toString());
+    }
+  }
 
   RxList<Day> appointmentTimeList = <Day>[].obs;
   setAppointmentData(AppointmentTimes appointmentTimes) {

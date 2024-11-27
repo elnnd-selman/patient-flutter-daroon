@@ -9,7 +9,11 @@ import 'package:get/get.dart';
 
 class UserPodcastController extends GetxController {
   RxBool processing = false.obs;
-  RxList<PodCastModel> popularPodcastList = <PodCastModel>[].obs;
+  RxList<PodCastModel> popularVideoPodcastList = <PodCastModel>[].obs;
+  final RxList<PodCastModel> _popularPodcastList = <PodCastModel>[].obs;
+
+  RxList<PodCastModel> recentPodcastList = <PodCastModel>[].obs;
+
   getPodCast() async {
     processing.value = true;
 
@@ -23,9 +27,16 @@ class UserPodcastController extends GetxController {
     if (response!.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
 
-      popularPodcastList.value = List<PodCastModel>.from(
+      _popularPodcastList.value = List<PodCastModel>.from(
           jsonData["data"]!.map((x) => PodCastModel.fromJson(x)));
 
+      for (int i = 0; i < _popularPodcastList.length; i++) {
+        if (_popularPodcastList[i].type == "video") {
+          popularVideoPodcastList.add(_popularPodcastList[i]);
+          recentPodcastList.add(_popularPodcastList[i]);
+        }
+      }
+      recentPodcastList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       processing.value = false;
     }
   }

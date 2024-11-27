@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/widgets/change_appointment_time.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/upcoming_custom_container.dart';
@@ -215,23 +216,31 @@ class CancelAppointmentContainer extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  // horizontal: SizeConfig.widthMultiplier * 2,
-                                  vertical: SizeConfig.heightMultiplier * 1.4,
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        color: AppColors.primaryColor)),
-                                child: Center(
-                                  child: Text(
-                                    "Remove",
-                                    style: AppTextStyles.medium.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.primaryColor,
-                                      fontSize:
-                                          SizeConfig.heightMultiplier * 1.7,
+                              child: CustomCupertinoButton(
+                                onTap: () {
+                                  // success();
+                                  Get.find<UserAppointmentController>()
+                                      .removeAppointment(
+                                          appointmentModel, Get.context!);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    // horizontal: SizeConfig.widthMultiplier * 2,
+                                    vertical: SizeConfig.heightMultiplier * 1.4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: AppColors.primaryColor)),
+                                  child: Center(
+                                    child: Text(
+                                      "Remove",
+                                      style: AppTextStyles.medium.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.primaryColor,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 1.7,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:daroon_user/app/binding/initial_binding.dart';
 import 'package:daroon_user/app/model/user_model.dart';
 import 'package:flutter/foundation.dart';
@@ -57,6 +58,8 @@ class MyApp extends StatelessWidget {
           key: MyApp.navigatorKey,
           debugShowCheckedModeBanner: false,
           title: 'Daroon',
+          builder: BotToastInit(), //1. call BotToastInit
+          navigatorObservers: [BotToastNavigatorObserver()],
           getPages: AppPages.routes,
           defaultTransition: Transition.cupertino,
           initialRoute: AppPages.initial,

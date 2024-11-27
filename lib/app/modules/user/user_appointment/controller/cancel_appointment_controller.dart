@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
-import 'package:daroon_user/app/modules/user/user_appointment/model/cancel_appointment_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class CancelAppointmentController extends GetxController {
               icon: Icons.check);
         } else {
           showToastMessage(
-              message: response.body,
+              message: response.body.extractErrorMessage(),
               context: context,
               color: const Color(0xffEC1C24),
               icon: Icons.check);

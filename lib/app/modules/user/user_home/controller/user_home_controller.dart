@@ -5,6 +5,7 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:daroon_user/app/model/user_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/model/public_ads_model.dart';
+import 'package:daroon_user/app/modules/user/user_home/model/speciality_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
@@ -44,6 +45,7 @@ class UserHomeController extends GetxController {
     getTopDoctorData();
     getVIPDoctorData();
     getPublicAds();
+    getSpecialityAds();
     if (kDebugMode) {
       print(userModel.value!.token!);
       print(userModel.value!.user!.id!);
@@ -192,6 +194,31 @@ class UserHomeController extends GetxController {
       isAdsLoading.value = false;
     } catch (e) {
       isAdsLoading.value = false;
+      printInfo(info: e.toString());
+    }
+  }
+
+  RxList<SpecialityModel> specialityList = <SpecialityModel>[].obs;
+  RxBool isSpecialityLoading = false.obs;
+  getSpecialityAds() async {
+    try {
+      publicADSList.value = [];
+      isSpecialityLoading.value = true;
+      final response = await ApiService.getwithUserToken(
+        endPoint: "${AppTokens.apiURl}/users/speciality",
+        userToken: {
+          "Authorization":
+              "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+        },
+      );
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        specialityList.value =
+            jsonResponse.map((data) => SpecialityModel.fromJson(data)).toList();
+      }
+      isSpecialityLoading.value = false;
+    } catch (e) {
+      isSpecialityLoading.value = false;
       printInfo(info: e.toString());
     }
   }

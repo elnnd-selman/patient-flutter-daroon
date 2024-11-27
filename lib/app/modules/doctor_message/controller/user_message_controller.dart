@@ -29,6 +29,8 @@ class UserMessageController extends GetxController {
             .map((data) => UserMessageModelData.fromJson(data))
             .toList();
       }
+      doctorConversationList
+          .sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

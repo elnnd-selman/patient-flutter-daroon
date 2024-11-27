@@ -52,7 +52,7 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
                           vertical: 15 * SizeConfig.heightMultiplier),
                       child: const Center(child: LoadingWidget()),
                     )
-                  : controller.popularPodcastList.isEmpty
+                  : controller.popularVideoPodcastList.isEmpty
                       ? Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 15 * SizeConfig.heightMultiplier),
@@ -69,19 +69,20 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
                             // aspectRatio: 2.0,
                             // initialPage: 2,
                           ),
-                          itemCount: controller.popularPodcastList.length,
+                          itemCount: controller.popularVideoPodcastList.length,
                           itemBuilder: (BuildContext context, int itemIndex,
                               int pageViewIndex) {
                             return CustomCupertinoButton(
                               onTap: () {
                                 Get.toNamed(Routes.userPodCastDetail,
                                     arguments: [
-                                      controller.popularPodcastList[itemIndex]
+                                      controller
+                                          .popularVideoPodcastList[itemIndex]
                                     ]);
                               },
                               child: UserPodCastContainer(
-                                podCastModel:
-                                    controller.popularPodcastList[itemIndex],
+                                podCastModel: controller
+                                    .popularVideoPodcastList[itemIndex],
                               ),
                             );
                           }),

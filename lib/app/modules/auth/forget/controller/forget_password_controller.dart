@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:country_phone_validator/country_phone_validator.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
@@ -115,7 +116,7 @@ class ForgetPasswordCtrl extends GetxController {
             icon: Icons.check);
       } else {
         showToastMessage(
-            message: response.body,
+            message: response.body.extractErrorMessage(),
             // ignore: use_build_context_synchronously
             context: context,
             color: const Color(0xffEC1C24),
@@ -151,7 +152,7 @@ class ForgetPasswordCtrl extends GetxController {
       } else {
         _processing.value = false;
         showToastMessage(
-            message: response.body,
+            message: response.body.extractErrorMessage(),
             // ignore: use_build_context_synchronously
             context: context,
             color: const Color(0xffEC1C24),
@@ -160,7 +161,7 @@ class ForgetPasswordCtrl extends GetxController {
     } else {
       _processing.value = false;
       showToastMessage(
-          message: response!.body,
+          message: response!.body.extractErrorMessage(),
           // ignore: use_build_context_synchronously
           context: context,
           color: const Color(0xffEC1C24),

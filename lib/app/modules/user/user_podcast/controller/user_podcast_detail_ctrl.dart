@@ -252,4 +252,7 @@ class UserPodcastDetailCtrl extends GetxController {
       }
     }
   }
+
+
+  
 }
