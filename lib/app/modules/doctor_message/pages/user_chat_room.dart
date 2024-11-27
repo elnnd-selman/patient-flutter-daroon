@@ -84,7 +84,9 @@ class _UserChatPageState extends State<UserChatPage> {
 
     //When an event recieved from server, data is added to the stream
     socket.on('new_message', (data) {
-      print(data);
+      if (kDebugMode) {
+        print(data);
+      }
     });
     // ignore: avoid_print
     socket.onDisconnect((_) => print('disconnect'));
