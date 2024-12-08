@@ -1,7 +1,8 @@
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
+import 'package:daroon_user/app/modules/user/user_home/pages/user_home_screen.dart';
+import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
-import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,11 +17,15 @@ class UserDoctorSpecialtyContainer extends GetView<UserHomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => controller.isSpecialityLoading.value
-          ? Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: 6 * SizeConfig.heightMultiplier),
-              child: const Center(
-                  child: NoDataWidget(text: "No Speciality available")))
+          ? ShimmerLoader(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10)),
+                width: MediaQuery.of(context).size.width * 1,
+                height: (MediaQuery.of(context).size.height * 0.15).toDouble(),
+              ),
+            )
           : controller.specialityList.isEmpty
               ? Padding(
                   padding: EdgeInsets.symmetric(
@@ -49,6 +54,7 @@ class UserDoctorSpecialtyContainer extends GetView<UserHomeController> {
                           child: Padding(
                               padding: const EdgeInsets.all(18),
                               child: NetWorkImageLoader(
+                                shape: BoxShape.circle,
                                 imageURL:
                                     controller.specialityList[index].image!.md!,
                                 height:
@@ -60,12 +66,15 @@ class UserDoctorSpecialtyContainer extends GetView<UserHomeController> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.004,
                         ),
-                        Text(
-                          controller.specialityList[index].specialityEn!,
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff1C1B1F),
-                            fontSize: SizeConfig.heightMultiplier * 1.6,
+                        Flexible(
+                          child: Text(
+                            controller.specialityList[index].specialityEn!
+                                .capitalizeFirst!,
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff1C1B1F),
+                              fontSize: SizeConfig.heightMultiplier * 1.6,
+                            ),
                           ),
                         ),
                       ],

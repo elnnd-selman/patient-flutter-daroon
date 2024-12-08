@@ -121,7 +121,8 @@ class BookedBy {
           ? []
           : List<Education>.from(
               json["education"]!.map((x) => Education.fromJson(x))),
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       level: json["level"] == null ? null : Level.fromJson(json["level"]),
@@ -511,7 +512,7 @@ class Doctor {
   final String? typeOfUser;
   final List<String> languages;
   final String? appLang;
-  final String? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
@@ -550,7 +551,10 @@ class Doctor {
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),

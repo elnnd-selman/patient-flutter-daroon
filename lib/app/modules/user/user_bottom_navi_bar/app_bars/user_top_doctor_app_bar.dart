@@ -11,11 +11,13 @@ class UserTopDoctorAppBar extends GetView<UserCustomNaviController> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      foregroundColor: Colors.black,
+      foregroundColor: Colors.white,
+      bottomOpacity: 0.0,
+      elevation: 0.0,
+      scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       shadowColor: Colors.white,
       surfaceTintColor: Colors.white,
-      elevation: 0,
       automaticallyImplyLeading: false,
       title: Padding(
         padding: const EdgeInsets.only(left: 8),
@@ -28,14 +30,6 @@ class UserTopDoctorAppBar extends GetView<UserCustomNaviController> {
           ),
         ),
       ),
-      // actions: [
-      //   SvgPicture.asset(
-      //     "assets/icons/locationRound.svg",
-      //     height: 30,
-      //     width: 30,
-      //   ),
-      //   const SizedBox(width: 20),
-      // ],
     );
   }
 }

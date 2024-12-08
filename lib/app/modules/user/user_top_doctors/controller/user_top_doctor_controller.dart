@@ -36,4 +36,14 @@ class UserTopDoctorController extends GetxController {
     super.onInit();
     getTopDoctorData();
   }
+
+  RxList<TopDoctorModel> searchDoctorModelList = <TopDoctorModel>[].obs;
+  RxBool isSearch = false.obs;
+  searchDoctor(String query) {
+    searchDoctorModelList.value = [];
+    searchDoctorModelList.value = topDoctorModelList
+        .where((message) =>
+            message.firstName!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
 }

@@ -17,6 +17,8 @@ class UserDrawerScreen extends StatelessWidget {
         setIndex: (index) {
           if (index == 0) {
             Get.toNamed(Routes.userOfferScreen);
+          } else if (index == 1) {
+            Get.toNamed(Routes.inVoiceScreen);
           }
         },
       ),

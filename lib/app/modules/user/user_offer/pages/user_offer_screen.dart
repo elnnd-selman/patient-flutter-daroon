@@ -59,7 +59,16 @@ class UserOfferScreen extends GetView<UserOffersController> {
                 onPressButton: (open) {
                   controller.isAppBarOpen.value = open;
                 },
-                textEditingController: TextEditingController(),
+                textEditingController: controller.offerTextField,
+                onChanged: (val) {
+                  final query = val.toString();
+                  if (query.isEmpty) {
+                    controller.isSearch.value = false;
+                  } else {
+                    controller.isSearch.value = true;
+                    controller.searchOffer(query);
+                  }
+                },
                 trailingWidget: SvgPicture.asset(
                   Assets.serachIcon,
                   colorFilter: const ColorFilter.mode(
@@ -99,17 +108,36 @@ class UserOfferScreen extends GetView<UserOffersController> {
                             text: "No Offer Fund",
                           ),
                         )
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: controller.userOfferModelList.length,
-                            itemBuilder: (context, index) {
-                              return UserOfferContainer(
-                                userOfferModel:
-                                    controller.userOfferModelList[index],
-                              );
-                            },
-                          ),
-                        ),
+                      : controller.isSearch.value
+                          ? controller.searchOfferList.isEmpty
+                              ? const Expanded(
+                                  child: NoDataWidget(
+                                    text: "No Offer Fund",
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.builder(
+                                    itemCount:
+                                        controller.searchOfferList.length,
+                                    itemBuilder: (context, index) {
+                                      return UserOfferContainer(
+                                        userOfferModel:
+                                            controller.searchOfferList[index],
+                                      );
+                                    },
+                                  ),
+                                )
+                          : Expanded(
+                              child: ListView.builder(
+                                itemCount: controller.userOfferModelList.length,
+                                itemBuilder: (context, index) {
+                                  return UserOfferContainer(
+                                    userOfferModel:
+                                        controller.userOfferModelList[index],
+                                  );
+                                },
+                              ),
+                            ),
             )
           ],
         ),

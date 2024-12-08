@@ -6,7 +6,6 @@ import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/auth_text_field.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,7 +53,13 @@ class CreatePatientDetailScreen extends GetView<CreateAppointmentController> {
                   ),
                   13.verticalSpace,
                   DropdownButtonFormField2<String>(
+                    value: controller.bookFor.value,
                     isExpanded: true,
+                    style: AppTextStyles.medium.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: AppColors.blackBGColor,
+                    ),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffF7F7F8),
@@ -133,41 +138,67 @@ class CreatePatientDetailScreen extends GetView<CreateAppointmentController> {
                     showicon: false,
                     scanIcons: false,
                   ),
-                  24.verticalSpace,
-                  Text(
-                    "Age",
-                    style: AppTextStyles.medium.copyWith(fontSize: 16),
-                  ),
-                  13.verticalSpace,
-                  CommonTextfeild(
-                    obscuretext: false,
-                    hinttext: "e.g 24 Years",
-                    validations: (val) {},
-                    controller: controller.age,
-                    keyboardType: TextInputType.number,
-                    showicon: false,
-                    scanIcons: false,
-                  ),
-                  24.verticalSpace,
-                  Text(
-                    "Gender",
-                    style: AppTextStyles.medium.copyWith(fontSize: 16),
-                  ),
-                  13.verticalSpace,
-                  Row(
-                    children: [
-                      ...List.generate(2, (index) {
-                        return CustomCupertinoButton(
-                          onTap: () {
-                            controller.selectedGender.value = index;
-                          },
-                          child: _buildGenderContainer(
-                            index: index,
-                            title: index == 0 ? "Male" : "Female",
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 24),
+                            child: Text(
+                              "Age",
+                              style:
+                                  AppTextStyles.medium.copyWith(fontSize: 16),
+                            ),
                           ),
-                        );
-                      })
-                    ],
+                  ),
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 13),
+                            child: CommonTextfeild(
+                              obscuretext: false,
+                              hinttext: "e.g 24 Years",
+                              validations: (val) {},
+                              controller: controller.age,
+                              keyboardType: TextInputType.number,
+                              showicon: false,
+                              scanIcons: false,
+                            ),
+                          ),
+                  ),
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 24),
+                            child: Text(
+                              "Gender",
+                              style:
+                                  AppTextStyles.medium.copyWith(fontSize: 16),
+                            ),
+                          ),
+                  ),
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 24),
+                            child: Row(
+                              children: [
+                                ...List.generate(2, (index) {
+                                  return CustomCupertinoButton(
+                                    onTap: () {
+                                      controller.selectedGender.value = index;
+                                    },
+                                    child: _buildGenderContainer(
+                                      index: index,
+                                      title: index == 0 ? "Male" : "Female",
+                                    ),
+                                  );
+                                })
+                              ],
+                            ),
+                          ),
                   ),
                   24.verticalSpace,
                   Text(
@@ -186,21 +217,18 @@ class CreatePatientDetailScreen extends GetView<CreateAppointmentController> {
                     scanIcons: false,
                   ),
                   24.verticalSpace,
-                  CommonButton(
-                      ontap: () {
-                        controller.checkPaitentValidation(context);
-                      },
-                      name: "Done"),
+                  Obx(
+                    () => CommonButton(
+                        isLoading: controller.loading.value,
+                        ontap: () {
+                          controller.checkPaitentValidation(context);
+                        },
+                        name: "Done"),
+                  ),
                 ],
               ),
             ),
           ),
-          Obx(() {
-            if (controller.loading.value) {
-              return const LoadingOverlay();
-            }
-            return const SizedBox();
-          }),
         ],
       ),
     );
@@ -241,7 +269,11 @@ class CreatePatientDetailScreen extends GetView<CreateAppointmentController> {
             14.horizontalSpace,
             Text(
               title,
-              style: AppTextStyles.semiBold.copyWith(fontSize: 18),
+              style: AppTextStyles.medium.copyWith(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+                color: AppColors.blackBGColor,
+              ),
             )
           ],
         ),

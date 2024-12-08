@@ -49,10 +49,19 @@ class LoginCtrl extends GetxController {
           await Get.find<LocalStorageController>()
               .daroonBox!
               .put("userRole", userModel.user!.typeOfUser!);
-          await Get.find<LocalStorageController>()
-              .daroonBox!
-              .put("isLogin", true);
-          Get.offAllNamed(Routes.userdrawerScreen);
+          if (userModel.user!.typeOfUser == "user") {
+            await Get.find<LocalStorageController>()
+                .daroonBox!
+                .put("isLogin", true);
+
+            Get.offAllNamed(Routes.userdrawerScreen);
+          } else {
+            successTextMessage(
+                message: "Please use user account",
+                color: const Color(0xffEC1C24),
+                icon: Icons.close);
+          }
+
           // if (jsonData["typeOfUser"] == userModel.user!.typeOfUser!) {
           //   Get.offAllNamed(Routes.userdrawerScreen);
           // } else {

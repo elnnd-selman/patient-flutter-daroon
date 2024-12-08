@@ -32,12 +32,13 @@ class UserDrawerOption extends StatelessWidget {
             ),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
             _drawerTexttile(
-                icon: Assets.offerIcon, text: "My Offers", index: 0),
-            // SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
-            // _drawerTexttile(
-            //     icon: Assets.assistantsIcon, text: "My Assistants", index: 1),
+                icon: "assets/icons/offers.svg", text: "My Offers", index: 0),
+            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+            _drawerTexttile(
+                icon: Assets.inVoiceIcon, text: "My InVoice", index: 1),
             const Spacer(),
             _drawerTexttile(icon: Assets.aboutIcon, text: "About Us", index: 2),
+            SizedBox(height: 1 * SizeConfig.heightMultiplier),
             _drawerTexttile(
                 icon: Assets.settingIcon, text: "Setting", index: 3),
             SizedBox(height: 20 * SizeConfig.heightMultiplier),
@@ -63,12 +64,18 @@ class UserDrawerOption extends StatelessWidget {
             width: 8 * SizeConfig.widthMultiplier,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
+              color: AppColors.whiteBGColor.withOpacity(.18),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(icon),
+                SvgPicture.asset(
+                  icon,
+                  height: 3.8 * SizeConfig.imageSizeMultiplier,
+                  colorFilter: const ColorFilter.mode(
+                      AppColors.whiteBGColor, BlendMode.srcIn),
+                ),
               ],
             ),
           ),

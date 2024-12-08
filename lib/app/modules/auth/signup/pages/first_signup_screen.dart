@@ -70,13 +70,13 @@ class FirstSignupScreen extends GetView<SignUpCtrl> {
                         CommonTextfeild(
                           scanIcons: false,
                           obscuretext: false,
-                          hinttext: "First name EN",
+                          hinttext: "First name",
                           controller: controller.firstNameEN,
                           keyboardType: TextInputType.emailAddress,
                           showicon: false,
                           validations: (value) {
                             if (value!.isEmpty) {
-                              return "Enter First name EN";
+                              return "Enter First name ";
                             }
                             return null;
                           },
@@ -85,73 +85,13 @@ class FirstSignupScreen extends GetView<SignUpCtrl> {
                         CommonTextfeild(
                           scanIcons: false,
                           obscuretext: false,
-                          hinttext: "First name KU",
-                          controller: controller.firstNameKU,
-                          keyboardType: TextInputType.emailAddress,
-                          showicon: false,
-                          validations: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter First name KU";
-                            }
-                            return null;
-                          },
-                        ),
-                        15.verticalSpace,
-                        CommonTextfeild(
-                          scanIcons: false,
-                          obscuretext: false,
-                          hinttext: "First name AR",
-                          controller: controller.firstNameAR,
-                          keyboardType: TextInputType.emailAddress,
-                          showicon: false,
-                          validations: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter First name AR";
-                            }
-                            return null;
-                          },
-                        ),
-                        15.verticalSpace,
-                        CommonTextfeild(
-                          scanIcons: false,
-                          obscuretext: false,
-                          hinttext: "Last name EN",
+                          hinttext: "Last name",
                           controller: controller.lastNameEN,
                           keyboardType: TextInputType.emailAddress,
                           showicon: false,
                           validations: (value) {
                             if (value!.isEmpty) {
-                              return "Enter Last name EN";
-                            }
-                            return null;
-                          },
-                        ),
-                        15.verticalSpace,
-                        CommonTextfeild(
-                          scanIcons: false,
-                          obscuretext: false,
-                          hinttext: "Last name KU",
-                          controller: controller.lastNameKU,
-                          keyboardType: TextInputType.emailAddress,
-                          showicon: false,
-                          validations: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Last name KU";
-                            }
-                            return null;
-                          },
-                        ),
-                        15.verticalSpace,
-                        CommonTextfeild(
-                          scanIcons: false,
-                          obscuretext: false,
-                          hinttext: "Last name AR",
-                          controller: controller.lastNameAR,
-                          keyboardType: TextInputType.emailAddress,
-                          showicon: false,
-                          validations: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Last name AR";
+                              return "Enter Last name ";
                             }
                             return null;
                           },
@@ -224,8 +164,8 @@ class FirstSignupScreen extends GetView<SignUpCtrl> {
                                   color: AppColors.borderColor),
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 22),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 2.2 * SizeConfig.heightMultiplier),
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                   color: AppColors.borderColor),
@@ -336,7 +276,8 @@ class FirstSignupScreen extends GetView<SignUpCtrl> {
       onTap: ontap,
       child: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: 4 * SizeConfig.widthMultiplier, vertical: 22),
+            horizontal: 4 * SizeConfig.widthMultiplier,
+            vertical: 2.2 * SizeConfig.heightMultiplier),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: const Color(0xffF7F7F8),

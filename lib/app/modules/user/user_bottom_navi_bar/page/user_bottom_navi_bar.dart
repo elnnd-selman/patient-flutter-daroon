@@ -3,6 +3,7 @@ import 'package:daroon_user/app/modules/user/user_appointment/pages/user_appoint
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_appointment_app_bar.dart';
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_podcast_app_bar.dart';
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/app_bars/user_profile_app_bar.dart';
+import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/controller/user_podcast_controller.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/pages/user_podcast.dart';
 import 'package:daroon_user/app/modules/user/user_profile/controller/user_profile_controller.dart';
@@ -252,6 +253,8 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller5!.reverse();
                           HapticFeedback.lightImpact();
                         });
+                        Get.find<UserHomeController>().searchTextField =
+                            TextEditingController();
 
                         if (Get.isRegistered<UserAppointmentController>()) {
                           Get.find<UserAppointmentController>()

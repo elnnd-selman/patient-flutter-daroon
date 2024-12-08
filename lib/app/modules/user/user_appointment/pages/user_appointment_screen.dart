@@ -17,8 +17,8 @@ class UserAppointmentScreen extends StatefulWidget {
   State<UserAppointmentScreen> createState() => _UserAppointmentScreenState();
 }
 
-class _UserAppointmentScreenState extends State<UserAppointmentScreen> {
-  TabController? _tabController;
+class _UserAppointmentScreenState extends State<UserAppointmentScreen>
+    with SingleTickerProviderStateMixin {
   final controller = Get.put(UserAppointmentController());
 
   List<Widget> appointmentBasetabs = [
@@ -30,6 +30,12 @@ class _UserAppointmentScreenState extends State<UserAppointmentScreen> {
       text: "Cancelled",
     ),
   ];
+  @override
+  void initState() {
+    super.initState();
+    controller.tabController = TabController(vsync: this, length: 5);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -43,7 +49,7 @@ class _UserAppointmentScreenState extends State<UserAppointmentScreen> {
             child: Padding(
               padding: const EdgeInsets.only(right: 25),
               child: TabBar(
-                controller: _tabController,
+                controller: controller.tabController,
                 tabAlignment: TabAlignment.start,
                 labelPadding: const EdgeInsets.only(left: 25, bottom: 10),
                 isScrollable: true,
@@ -52,6 +58,10 @@ class _UserAppointmentScreenState extends State<UserAppointmentScreen> {
                   fontSize: 15,
                   color: AppColors.primaryColor,
                 ),
+                onTap: (vv) {
+                  controller.isSearch.value = false;
+                  FocusScope.of(context).unfocus();
+                },
                 overlayColor: WidgetStateProperty.all(Colors.transparent),
                 indicatorColor: AppColors.primaryColor,
                 unselectedLabelStyle: AppTextStyles.semiBold.copyWith(
@@ -65,7 +75,7 @@ class _UserAppointmentScreenState extends State<UserAppointmentScreen> {
           ),
           Expanded(
             child: TabBarView(
-              controller: _tabController,
+              controller: controller.tabController,
               children: const [
                 RequestAppointmentScreen(),
                 UpcomingAppointment(),

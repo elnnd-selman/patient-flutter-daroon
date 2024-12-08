@@ -7,6 +7,7 @@ import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appoi
 import 'package:daroon_user/app/modules/user/user_home/model/public_ads_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/model/speciality_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +19,7 @@ import 'package:daroon_user/global/constants/app_colors.dart';
 class UserHomeController extends GetxController {
   RxInt isSelected = 0.obs;
 
+  TextEditingController searchTextField = TextEditingController();
   final _selectedTab = 0.obs;
   int get selectedTab => _selectedTab.value;
 
@@ -37,6 +39,7 @@ class UserHomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    // signOutUser();
     // Get.find<LocalStorageController>().daroonBox!.delete("isLogin");
     userModel.value = await Get.find<LocalStorageController>()
         .daroonBox!
@@ -121,6 +124,11 @@ class UserHomeController extends GetxController {
       isLoading.value = false;
     } else {
       isLoading.value = false;
+
+      final jsonData = jsonDecode(response.body);
+      if (jsonData["message"] == 'unauthorized') {
+        signOutUser();
+      }
     }
   }
 
@@ -171,6 +179,11 @@ class UserHomeController extends GetxController {
       isVipLoading.value = false;
       printInfo(info: e.toString());
     }
+  }
+
+  signOutUser() {
+    Get.find<LocalStorageController>().daroonBox!.delete("isLogin");
+    Get.offAllNamed(Routes.login);
   }
 
   RxList<PublicAdsModel> publicADSList = <PublicAdsModel>[].obs;

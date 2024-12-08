@@ -1,4 +1,5 @@
 import 'package:daroon_user/app/modules/user/user_appointment/controller/user_appointment_controller.dart';
+import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,9 @@ import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class UserAppointmentAppBar extends GetView<UserAppointmentController> {
-  const UserAppointmentAppBar({super.key});
+  const UserAppointmentAppBar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,8 @@ class UserAppointmentAppBar extends GetView<UserAppointmentController> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Obx(
             () => SearchBarAnimation(
+              textEditingController:
+                  Get.find<UserHomeController>().searchTextField,
               isOriginalAnimation: false,
               buttonColour: controller.isAppBarOpen.value
                   ? const Color(0xffF7F7F8)
@@ -45,7 +50,7 @@ class UserAppointmentAppBar extends GetView<UserAppointmentController> {
               isSearchBoxOnRightSide: true,
               enableBoxShadow: false,
               enableButtonShadow: false,
-              hintText: "Search Patient",
+              hintText: "Search Appointment",
               buttonBorderColour: Colors.black45,
               searchBoxWidth: MediaQuery.of(context).size.width * 0.94,
               onFieldSubmitted: (String value) {
@@ -54,7 +59,16 @@ class UserAppointmentAppBar extends GetView<UserAppointmentController> {
               onPressButton: (open) {
                 controller.isAppBarOpen.value = open;
               },
-              textEditingController: TextEditingController(),
+              onChanged: (val) {
+                final query = val.toString();
+                if (query.isEmpty) {
+                  controller.isSearch.value = false;
+                } else {
+                  controller.isSearch.value = true;
+                  controller.serachAppointment(query);
+                }
+              },
+              // textEditingController: searchTextField,
               trailingWidget: SvgPicture.asset(
                 Assets.serachIcon,
                 colorFilter:

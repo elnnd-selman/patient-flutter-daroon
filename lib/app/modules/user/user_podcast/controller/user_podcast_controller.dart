@@ -5,6 +5,7 @@ import 'package:daroon_user/app/modules/user/user_podcast/model/user_podcast_mod
 import 'package:daroon_user/app/modules/user/user_podcast/model/user_presenter_model.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserPodcastController extends GetxController {
@@ -36,7 +37,7 @@ class UserPodcastController extends GetxController {
           recentPodcastList.add(_popularPodcastList[i]);
         }
       }
-      recentPodcastList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      recentPodcastList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       processing.value = false;
     }
   }
@@ -68,5 +69,16 @@ class UserPodcastController extends GetxController {
     super.onInit();
     getPodCast();
     getPresenter();
+  }
+
+  RxList<PodCastModel> searchPodCastModelList = <PodCastModel>[].obs;
+  RxBool isSearch = false.obs;
+  final searchPodTextField = TextEditingController();
+  searchPodCast(String query) {
+    searchPodCastModelList.value = [];
+    searchPodCastModelList.value = popularVideoPodcastList
+        .where((message) =>
+            message.titleEn!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }

@@ -8,6 +8,7 @@ import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
+import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -97,29 +98,20 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
                           )),
                       30.verticalSpace,
                       Obx(
-                        () => GridView.builder(
-                            padding: EdgeInsets.zero,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 14,
-                              crossAxisCount: 3,
-                              childAspectRatio: 2,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.selectedTab == 0
-                                ? controller.morningList.length
-                                : controller.eveningList.length,
-                            itemBuilder: (context, index) {
-                              return _buildTimeContainer(
-                                  context,
-                                  controller.selectedTab == 0
-                                      ? controller.morningList[index]
-                                      : controller.eveningList[index],
-                                  index);
-                            }),
-                      )
+                        () => controller.currentIndex.value == -1
+                            ? const NoDataWidget(
+                                text:
+                                    "Please select the day to see\navailables time")
+                            : controller.selectedTab == 0
+                                ? controller.morningList.isEmpty
+                                    ? const NoDataWidget(
+                                        text: "No time avaiable in\nmorning")
+                                    : _buildTimeGridContainer()
+                                : controller.eveningList.isEmpty
+                                    ? const NoDataWidget(
+                                        text: "No time avaiable in\nevening")
+                                    : _buildTimeGridContainer(),
+                      ),
                     ],
                   ),
                 ),
@@ -191,6 +183,32 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
         ),
       );
     });
+  }
+
+  Obx _buildTimeGridContainer() {
+    return Obx(
+      () => GridView.builder(
+          padding: EdgeInsets.zero,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 14,
+            crossAxisCount: 3,
+            childAspectRatio: 2,
+          ),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: controller.selectedTab == 0
+              ? controller.morningList.length
+              : controller.eveningList.length,
+          itemBuilder: (context, index) {
+            return _buildTimeContainer(
+                context,
+                controller.selectedTab == 0
+                    ? controller.morningList[index]
+                    : controller.eveningList[index],
+                index);
+          }),
+    );
   }
 
   Container _buildFeeContainer({
@@ -329,11 +347,6 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
                   width: MediaQuery.of(context).size.width * 0.12,
                   margin: EdgeInsets.only(right: index == 7 ? 0 : 10),
                   decoration: BoxDecoration(
-                      // border: Border.all(
-                      //     // color: controller.currentIndex.value == index
-                      //     //     ? Colors.transparent
-                      //     //     : const Color(0xffE0E0E0),
-                      //     ),
                       color: controller.currentIndex.value == index
                           ? AppColors.primaryColor
                           : Colors.transparent,

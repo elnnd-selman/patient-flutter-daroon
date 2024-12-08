@@ -1,3 +1,4 @@
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/forget/controller/forget_password_controller.dart';
@@ -73,8 +74,13 @@ class ForgetEmailScreen extends GetView<ForgetPasswordCtrl> {
               CommonButton(
                   ontap: () {
                     if (form.currentState!.validate()) {
-                      // LoaderIndicator.loadingProgressIndicator(context);
-                      controller.sendOtptoUser();
+                      Get.toNamed(
+                        Routes.forgetOTPScreen,
+                        arguments: {
+                          "type": "email",
+                          "data": controller.email.text,
+                        },
+                      );
                     }
                   },
                   name: "Send Code"),

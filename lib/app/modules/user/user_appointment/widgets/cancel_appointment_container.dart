@@ -48,6 +48,7 @@ class CancelAppointmentContainer extends StatelessWidget {
                       SizedBox(height: 3 * SizeConfig.heightMultiplier),
                       CustomCupertinoButton(
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           Get.toNamed(
                             Routes.userAppointmentDetail,
                             arguments: [
@@ -139,6 +140,7 @@ class CancelAppointmentContainer extends StatelessWidget {
                       SizedBox(height: 2 * SizeConfig.heightMultiplier),
                       CustomCupertinoButton(
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           Get.toNamed(
                             Routes.userAppointmentDetail,
                             arguments: [
@@ -218,7 +220,7 @@ class CancelAppointmentContainer extends StatelessWidget {
                             Expanded(
                               child: CustomCupertinoButton(
                                 onTap: () {
-                                  // success();
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   Get.find<UserAppointmentController>()
                                       .removeAppointment(
                                           appointmentModel, Get.context!);
@@ -250,6 +252,7 @@ class CancelAppointmentContainer extends StatelessWidget {
                             Expanded(
                               child: CustomCupertinoButton(
                                 onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   Get.bottomSheet(
                                     ChangeAppointmentTimeBottomSheet(
                                       appointmentModel: appointmentModel,

@@ -27,8 +27,6 @@ Future<void> main() async {
   Hive.registerAdapter(PhoneAdapter());
 
   await Hive.openBox('DaroonBox');
-
-  // runApp(const MyApp());
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -65,6 +63,11 @@ class MyApp extends StatelessWidget {
           initialRoute: AppPages.initial,
           initialBinding: InitialBindings(),
           theme: ThemeData(
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: AppColors.primaryColor,
+              selectionColor: AppColors.whiteBGColor,
+              selectionHandleColor: AppColors.primaryColor,
+            ),
             fontFamily: kFontFamily,
             brightness: Brightness.light,
             scaffoldBackgroundColor: Colors.white,

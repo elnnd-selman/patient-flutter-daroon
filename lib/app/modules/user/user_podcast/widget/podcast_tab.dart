@@ -6,7 +6,6 @@ import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -30,10 +29,13 @@ class PodcastTab extends GetView<UserPresenterProfileController> {
         10.verticalSpace,
         Obx(
           () => controller.processing.value
-              ? Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 15 * SizeConfig.heightMultiplier),
-                  child: const Center(child: LoadingWidget()),
+              ? ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return const UserPodCastContainer(isLoading: true);
+                  },
                 )
               : controller.podcastList.isEmpty
                   ? Padding(
@@ -53,6 +55,7 @@ class PodcastTab extends GetView<UserPresenterProfileController> {
                                 arguments: [controller.podcastList[index]]);
                           },
                           child: UserPodCastContainer(
+                            isLoading: false,
                             podCastModel: controller.podcastList[index],
                           ),
                         );

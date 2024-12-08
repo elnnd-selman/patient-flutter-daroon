@@ -9,7 +9,6 @@ import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:daroon_user/global/widgets/search_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,12 +30,21 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
           children: [
             // SizedBox(height: 2 * SizeConfig.heightMultiplier),
             SearchTextField(
-                hintText: "Search...",
-                textEditingController: TextEditingController(),
-                showSuffix: false,
-                showPrefix: true,
-                prefixIcon: Assets.serachIcon,
-                suffixIcon: ""),
+              hintText: "Search...",
+              textEditingController: controller.searchPodTextField,
+              showSuffix: false,
+              showPrefix: true,
+              prefixIcon: Assets.serachIcon,
+              suffixIcon: "",
+              onChange: (val) {
+                if (val.isEmpty) {
+                  controller.isSearch.value = false;
+                } else {
+                  controller.isSearch.value = true;
+                  controller.searchPodCast(val);
+                }
+              },
+            ),
             30.verticalSpace,
             Text(
               "Popular Podcasts",
@@ -47,11 +55,23 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
 
             Obx(
               () => controller.processing.value
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15 * SizeConfig.heightMultiplier),
-                      child: const Center(child: LoadingWidget()),
-                    )
+                  ? CarouselSlider.builder(
+                      options: CarouselOptions(
+                        height: 31 * SizeConfig.heightMultiplier,
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1,
+                        // aspectRatio: 2.0,
+                        // initialPage: 2,
+                      ),
+                      itemCount: 3,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) {
+                        return const UserPodCastContainer(
+                          isLoading: true,
+                        );
+                      })
                   : controller.popularVideoPodcastList.isEmpty
                       ? Padding(
                           padding: EdgeInsets.symmetric(
@@ -59,33 +79,74 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
                           child: const Center(
                               child: NoDataWidget(text: "No Podcast Found")),
                         )
-                      : CarouselSlider.builder(
-                          options: CarouselOptions(
-                            height: 31 * SizeConfig.heightMultiplier,
-                            autoPlay: false,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            viewportFraction: 1,
-                            // aspectRatio: 2.0,
-                            // initialPage: 2,
-                          ),
-                          itemCount: controller.popularVideoPodcastList.length,
-                          itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) {
-                            return CustomCupertinoButton(
-                              onTap: () {
-                                Get.toNamed(Routes.userPodCastDetail,
-                                    arguments: [
-                                      controller
-                                          .popularVideoPodcastList[itemIndex]
-                                    ]);
-                              },
-                              child: UserPodCastContainer(
-                                podCastModel: controller
-                                    .popularVideoPodcastList[itemIndex],
+                      : controller.isSearch.value
+                          ? controller.searchPodCastModelList.isEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          15 * SizeConfig.heightMultiplier),
+                                  child: const Center(
+                                      child: NoDataWidget(
+                                          text: "No Podcast Found")),
+                                )
+                              : CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                    height: 31 * SizeConfig.heightMultiplier,
+                                    autoPlay: false,
+                                    enlargeCenterPage: true,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1,
+                                    // aspectRatio: 2.0,
+                                    // initialPage: 2,
+                                  ),
+                                  itemCount:
+                                      controller.searchPodCastModelList.length,
+                                  itemBuilder: (BuildContext context,
+                                      int itemIndex, int pageViewIndex) {
+                                    return CustomCupertinoButton(
+                                      onTap: () {
+                                        Get.toNamed(Routes.userPodCastDetail,
+                                            arguments: [
+                                              controller.searchPodCastModelList[
+                                                  itemIndex]
+                                            ]);
+                                      },
+                                      child: UserPodCastContainer(
+                                        isLoading: false,
+                                        podCastModel: controller
+                                            .searchPodCastModelList[itemIndex],
+                                      ),
+                                    );
+                                  })
+                          : CarouselSlider.builder(
+                              options: CarouselOptions(
+                                height: 31 * SizeConfig.heightMultiplier,
+                                autoPlay: false,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1,
+                                // aspectRatio: 2.0,
+                                // initialPage: 2,
                               ),
-                            );
-                          }),
+                              itemCount:
+                                  controller.popularVideoPodcastList.length,
+                              itemBuilder: (BuildContext context, int itemIndex,
+                                  int pageViewIndex) {
+                                return CustomCupertinoButton(
+                                  onTap: () {
+                                    Get.toNamed(Routes.userPodCastDetail,
+                                        arguments: [
+                                          controller.popularVideoPodcastList[
+                                              itemIndex]
+                                        ]);
+                                  },
+                                  child: UserPodCastContainer(
+                                    isLoading: false,
+                                    podCastModel: controller
+                                        .popularVideoPodcastList[itemIndex],
+                                  ),
+                                );
+                              }),
             ),
 
             30.verticalSpace,
@@ -113,11 +174,21 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
             10.verticalSpace,
 
             Obx(() => controller.loading.value
-                ? Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 7 * SizeConfig.heightMultiplier),
-                    child: const Center(child: LoadingWidget()),
-                  )
+                ? CarouselSlider.builder(
+                    options: CarouselOptions(
+                      height: 18 * SizeConfig.heightMultiplier,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      viewportFraction: 1,
+                    ),
+                    itemCount: 2,
+                    itemBuilder: (BuildContext context, int itemIndex,
+                        int pageViewIndex) {
+                      return const UserMostActiveContainer(
+                        isLoading: true,
+                      );
+                    })
                 : controller.presenterList.isEmpty
                     ? Padding(
                         padding: EdgeInsets.symmetric(
@@ -137,6 +208,7 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
                         itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) {
                           return UserMostActiveContainer(
+                            isLoading: false,
                             userPresenterModel:
                                 controller.presenterList[itemIndex],
                           );
@@ -151,6 +223,59 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
               "Recent Podcasts",
               style: AppTextStyles.semiBold
                   .copyWith(color: AppColors.lighttextColor, fontSize: 20),
+            ),
+            10.verticalSpace,
+            Obx(
+              () => controller.processing.value
+                  ? CarouselSlider.builder(
+                      options: CarouselOptions(
+                        height: 31 * SizeConfig.heightMultiplier,
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1,
+                        // aspectRatio: 2.0,
+                        // initialPage: 2,
+                      ),
+                      itemCount: 3,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) {
+                        return const UserPodCastContainer(
+                          isLoading: true,
+                        );
+                      })
+                  : controller.recentPodcastList.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15 * SizeConfig.heightMultiplier),
+                          child: const Center(
+                              child: NoDataWidget(text: "No Podcast Found")),
+                        )
+                      : CarouselSlider.builder(
+                          options: CarouselOptions(
+                            height: 31 * SizeConfig.heightMultiplier,
+                            autoPlay: false,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            viewportFraction: 1,
+                          ),
+                          itemCount: controller.recentPodcastList.length,
+                          itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) {
+                            return CustomCupertinoButton(
+                              onTap: () {
+                                Get.toNamed(Routes.userPodCastDetail,
+                                    arguments: [
+                                      controller.recentPodcastList[itemIndex]
+                                    ]);
+                              },
+                              child: UserPodCastContainer(
+                                isLoading: false,
+                                podCastModel:
+                                    controller.recentPodcastList[itemIndex],
+                              ),
+                            );
+                          }),
             ),
             100.verticalSpace,
           ],

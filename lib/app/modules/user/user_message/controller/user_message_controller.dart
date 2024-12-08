@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:daroon_user/app/modules/doctor_message/model/user_message_model.dart';
+import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
@@ -42,5 +41,17 @@ class UserMessageController extends GetxController {
   void onInit() {
     super.onInit();
     getDoctorAllConversation();
+  }
+
+  RxList<UserMessageModelData> searchDoctorList = <UserMessageModelData>[].obs;
+
+  RxBool isSearch = false.obs;
+  searchUserMessage(String query) {
+    searchDoctorList.value = [];
+    searchDoctorList.value = doctorConversationList
+        .where((message) => message.doctor!.firstNameEn!
+            .toLowerCase()
+            .contains(query.toLowerCase()))
+        .toList();
   }
 }

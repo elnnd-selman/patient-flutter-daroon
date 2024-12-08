@@ -9,7 +9,6 @@ import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/auth_text_field.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignUpScreen extends GetView<SignUpCtrl> {
@@ -34,134 +33,119 @@ class SignUpScreen extends GetView<SignUpCtrl> {
             )),
       ),
       backgroundColor: AppColors.whiteBGColor,
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Form(
-                key: form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 30),
-                    Text("Create account",
-                        style: AppTextStyles.bold.copyWith(
-                          fontSize: 25,
-                          color: AppColors.darkBlackBGColor,
-                        )),
-                    const SizedBox(height: 30),
-                    Text("create account to use app features.",
-                        style: AppTextStyles.medium.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff707281),
-                        )),
-                    14.verticalSpace,
-                    CommonTextfeild(
-                      inputFormat: [
-                        FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                      ],
-                      scanIcons: false,
-                      obscuretext: false,
-                      hinttext: "Username",
-                      controller: controller.userName,
-                      keyboardType: TextInputType.name,
-                      showicon: false,
-                      validations: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Username";
-                        }
-                        return null;
-                      },
-                    ),
-                    15.verticalSpace,
-                    CommonTextfeild(
-                      scanIcons: false,
-                      obscuretext: false,
-                      hinttext: "E-mail",
-                      controller: controller.email,
-                      keyboardType: TextInputType.emailAddress,
-                      showicon: false,
-                      validations: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter E-mail";
-                        } else if (!isEmailValidator(value)) {
-                          return "Email Invalid";
-                        }
-                        return null;
-                      },
-                    ),
-                    15.verticalSpace,
-                    _buildPhoneContainer(),
-                    Obx(
-                      () => controller.phoneEmpty.value
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 10, left: 16),
-                              child: Text(
-                                controller.errorMessage.value,
-                                style: AppTextStyles.medium.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: const Color(0xff8B0000)),
-                              ),
-                            )
-                          : const SizedBox(),
-                    ),
-                    15.verticalSpace,
-                    CommonTextfeild(
-                      scanIcons: false,
-                      obscuretext: true,
-                      hinttext: "Password",
-                      controller: controller.password,
-                      keyboardType: TextInputType.visiblePassword,
-                      showicon: true,
-                      validations: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Password";
-                        } else if (value.length < 6) {
-                          return "Password length should at least 6";
-                        }
-                        return null;
-                      },
-                    ),
-                    15.verticalSpace,
-                    CommonTextfeild(
-                      scanIcons: false,
-                      obscuretext: true,
-                      hinttext: "Confirm Password",
-                      controller: controller.confirmpassword,
-                      keyboardType: TextInputType.emailAddress,
-                      showicon: true,
-                      validations: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Password";
-                        } else if (controller.password.text !=
-                            controller.confirmpassword.text) {
-                          return "Password donot match";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 4 * SizeConfig.heightMultiplier),
-                    CommonButton(
-                        ontap: () {
-                          if (form.currentState!.validate()) {
-                            if (controller.phone.text.isEmpty) {
-                              controller.phoneEmpty.value = true;
-                            } else {
-                              String newText =
-                                  controller.phone.text.replaceAll(' ', '');
-
-                              controller.checkPhoneValidation(
-                                newText,
-                                controller.dialCode.value,
-                              );
-                            }
-                            if (!controller.phoneEmpty.value) {
-                              controller.registerUser(context);
-                            }
-                          }
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Form(
+            key: form,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 30),
+                Text("Create account",
+                    style: AppTextStyles.bold.copyWith(
+                      fontSize: 25,
+                      color: AppColors.darkBlackBGColor,
+                    )),
+                const SizedBox(height: 30),
+                Text("create account to use app features.",
+                    style: AppTextStyles.medium.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff707281),
+                    )),
+                14.verticalSpace,
+                CommonTextfeild(
+                  inputFormat: [
+                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  ],
+                  scanIcons: false,
+                  obscuretext: false,
+                  hinttext: "Username",
+                  controller: controller.userName,
+                  keyboardType: TextInputType.name,
+                  showicon: false,
+                  validations: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter Username";
+                    }
+                    return null;
+                  },
+                ),
+                15.verticalSpace,
+                CommonTextfeild(
+                  scanIcons: false,
+                  obscuretext: false,
+                  hinttext: "E-mail",
+                  controller: controller.email,
+                  keyboardType: TextInputType.emailAddress,
+                  showicon: false,
+                  validations: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter E-mail";
+                    } else if (!isEmailValidator(value)) {
+                      return "Email Invalid";
+                    }
+                    return null;
+                  },
+                ),
+                15.verticalSpace,
+                _buildPhoneContainer(),
+                Obx(
+                  () => controller.phoneEmpty.value
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 10, left: 16),
+                          child: Text(
+                            controller.errorMessage.value,
+                            style: AppTextStyles.medium.copyWith(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: const Color(0xff8B0000)),
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
+                15.verticalSpace,
+                CommonTextfeild(
+                  scanIcons: false,
+                  obscuretext: true,
+                  hinttext: "Password",
+                  controller: controller.password,
+                  keyboardType: TextInputType.visiblePassword,
+                  showicon: true,
+                  validations: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter Password";
+                    } else if (value.length < 6) {
+                      return "Password length should at least 6";
+                    }
+                    return null;
+                  },
+                ),
+                15.verticalSpace,
+                CommonTextfeild(
+                  scanIcons: false,
+                  obscuretext: true,
+                  hinttext: "Confirm Password",
+                  controller: controller.confirmpassword,
+                  keyboardType: TextInputType.emailAddress,
+                  showicon: true,
+                  validations: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter Password";
+                    } else if (controller.password.text !=
+                        controller.confirmpassword.text) {
+                      return "Password donot match";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 4 * SizeConfig.heightMultiplier),
+                Obx(
+                  () => CommonButton(
+                      isLoading: controller.processing,
+                      ontap: () {
+                        if (form.currentState!.validate()) {
                           if (controller.phone.text.isEmpty) {
                             controller.phoneEmpty.value = true;
                           } else {
@@ -173,36 +157,44 @@ class SignUpScreen extends GetView<SignUpCtrl> {
                               controller.dialCode.value,
                             );
                           }
-                        },
-                        name: "Next"),
-                    // 10.verticalSpace,
-                    // HaveAccount(
-                    //   title: "Already have an account? ",
-                    //   subtitle: "Log in",
-                    //   titleStyle: AppTextStyles.medium.copyWith(
-                    //     fontSize: 14,
-                    //     fontWeight: FontWeight.w500,
-                    //     color: const Color(0xff11142D),
-                    //   ),
-                    //   subtitleStyle: AppTextStyles.bold
-                    //       .copyWith(fontSize: 16, color: AppColors.primaryColor),
-                    //   ontap: () {
-                    //     Get.back();
-                    //   },
-                    // ),
-                    20.verticalSpace,
-                  ],
+                          if (!controller.phoneEmpty.value) {
+                            controller.registerUser(context);
+                          }
+                        }
+                        if (controller.phone.text.isEmpty) {
+                          controller.phoneEmpty.value = true;
+                        } else {
+                          String newText =
+                              controller.phone.text.replaceAll(' ', '');
+
+                          controller.checkPhoneValidation(
+                            newText,
+                            controller.dialCode.value,
+                          );
+                        }
+                      },
+                      name: "Next"),
                 ),
-              ),
+                // 10.verticalSpace,
+                // HaveAccount(
+                //   title: "Already have an account? ",
+                //   subtitle: "Log in",
+                //   titleStyle: AppTextStyles.medium.copyWith(
+                //     fontSize: 14,
+                //     fontWeight: FontWeight.w500,
+                //     color: const Color(0xff11142D),
+                //   ),
+                //   subtitleStyle: AppTextStyles.bold
+                //       .copyWith(fontSize: 16, color: AppColors.primaryColor),
+                //   ontap: () {
+                //     Get.back();
+                //   },
+                // ),
+                20.verticalSpace,
+              ],
             ),
           ),
-          Obx(() {
-            if (controller.processing) {
-              return const LoadingOverlay();
-            }
-            return const SizedBox();
-          }),
-        ],
+        ),
       ),
     );
   }

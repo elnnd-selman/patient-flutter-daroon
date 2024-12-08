@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:country_phone_validator/country_phone_validator.dart';
 import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:flutter/material.dart';
@@ -21,23 +22,40 @@ class ForgetPasswordCtrl extends GetxController {
   Rx<String> dialCode = "+964".obs;
   Rx<String> errorMessage = "Enter Phone Number".obs;
 
-  sendOtptoUser() async {
+  sendEmailOTPUser(String emails, BuildContext context) async {
+    startDuration.value = 60;
+    _startTimer();
     final response = await ApiService.post(
-        endPoint: '${AppTokens.apiURl}/users/forgotPasswordViaEmail',
+        endPoint: '${AppTokens.apiURl}/users/forgot-password-via-email',
         body: {
-          "email": email.text,
+          "email": emails,
         });
 
     if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 201) {
-        Get.toNamed(
-          Routes.forgetOTPScreen,
-          arguments: {
-            "type": "email",
-            "data": email.text,
-          },
-        );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showToastMessage(
+            message: "Successfully send opt to email.",
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xff5BA66B),
+            icon: Icons.check);
       }
+    } else {
+      showToastMessage(
+          message: response!.body.extractErrorMessage(),
+          // ignore: use_build_context_synchronously
+          context: context,
+          color: const Color(0xffEC1C24),
+          icon: Icons.close);
+      {}
+    }
+  }
+
+  setData(String type, String data, BuildContext context) {
+    if (type == "email") {
+      sendEmailOTPUser(data, context);
+    } else {
+      sendPhoneOTP(data, context);
     }
   }
 
@@ -46,32 +64,52 @@ class ForgetPasswordCtrl extends GetxController {
 
     if (isValid) {
       phoneEmpty.value = false;
-      sendOtptoUserPhone();
+      String newText = phone.text.replaceAll(' ', '');
+      Get.toNamed(Routes.forgetOTPScreen, arguments: {
+        "type": "phone",
+        "data": "$dialCode$newText",
+      });
     } else {
       phoneEmpty.value = true;
       errorMessage.value = "Phone number is invalid";
     }
   }
 
-  sendOtptoUserPhone() async {
-    String newText = phone.text.replaceAll(' ', '');
-
+  sendPhoneOTP(
+    String phone,
+    BuildContext context,
+  ) async {
+    startDuration.value = 60;
+    _startTimer();
     final response = await ApiService.post(
-        endPoint: '${AppTokens.apiURl}/users/forgotPasswordViaPhoneNumber',
+        endPoint: '${AppTokens.apiURl}/users/forgot-password-via-phone-number',
         body: {
-          "phoneNumber": "$dialCode$newText",
+          "phoneNumber": phone,
         });
 
     if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 201) {
-        Get.toNamed(
-          Routes.forgetOTPScreen,
-          arguments: {
-            "type": "phone",
-            "data": "$dialCode$newText",
-          },
-        );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        showToastMessage(
+            message: "Successfully Send Otp Code to phone",
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xff5BA66B),
+            icon: Icons.check);
+      } else {
+        showToastMessage(
+            message: response.body.extractErrorMessage(),
+            // ignore: use_build_context_synchronously
+            context: context,
+            color: const Color(0xffEC1C24),
+            icon: Icons.close);
       }
+    } else {
+      showToastMessage(
+          message: "Response is empty",
+          // ignore: use_build_context_synchronously
+          context: context,
+          color: const Color(0xffEC1C24),
+          icon: Icons.close);
     }
   }
 
@@ -95,77 +133,51 @@ class ForgetPasswordCtrl extends GetxController {
     );
   }
 
-  resendCode(BuildContext context) async {
-    startDuration.value = 60;
-    _startTimer();
-    String newText = phone.text.replaceAll(' ', '');
-
-    final response = await ApiService.post(
-        endPoint: '${AppTokens.apiURl}/users/forgotPasswordViaPhoneNumber',
-        body: {
-          "phoneNumber": "$dialCode$newText",
-        });
-
-    if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        showToastMessage(
-            message: "Successfully Send Otp Code",
-            // ignore: use_build_context_synchronously
-            context: context,
-            color: const Color(0xff5BA66B),
-            icon: Icons.check);
-      } else {
-        showToastMessage(
-            message: response.body.extractErrorMessage(),
-            // ignore: use_build_context_synchronously
-            context: context,
-            color: const Color(0xffEC1C24),
-            icon: Icons.close);
-      }
-    } else {
-      showToastMessage(
-          message: "Issue while sending Otp Try Again",
-          // ignore: use_build_context_synchronously
-          context: context,
-          color: const Color(0xffEC1C24),
-          icon: Icons.close);
-    }
-  }
-
-  verifyOtpCode({
+  verifyOTPCode({
     required String code,
     required BuildContext context,
   }) async {
-    _processing.value = true;
-    final response = await ApiService.post(
-        endPoint: '${AppTokens.apiURl}/users/verifyPhone/$code', body: {});
+    try {
+      _processing.value = true;
+      final response = await ApiService.post(
+        endPoint: '${AppTokens.apiURl}/users/verify-forgot-password/$code',
+        body: {},
+      );
 
-    if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 201) {
-        showToastMessage(
-            message: "Successfully Verify Code",
-            // ignore: use_build_context_synchronously
-            context: context,
-            color: const Color(0xff5BA66B),
-            icon: Icons.check);
-        _processing.value = false;
+      if (response != null) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          showToastMessage(
+              message: "Successfully Verify Code",
+              // ignore: use_build_context_synchronously
+              context: context,
+              color: const Color(0xff5BA66B),
+              icon: Icons.check);
+          _processing.value = false;
+
+          final jsonData = jsonDecode(response.body);
+          Get.offAndToNamed(Routes.resetPasswordScreen, arguments: [
+            jsonData['token'],
+          ]);
+        } else {
+          _processing.value = false;
+          showToastMessage(
+              message: response.body.extractErrorMessage(),
+              // ignore: use_build_context_synchronously
+              context: context,
+              color: const Color(0xffEC1C24),
+              icon: Icons.close);
+        }
       } else {
         _processing.value = false;
         showToastMessage(
-            message: response.body.extractErrorMessage(),
+            message: "Response is empty",
             // ignore: use_build_context_synchronously
             context: context,
             color: const Color(0xffEC1C24),
             icon: Icons.close);
       }
-    } else {
+    } catch (e) {
       _processing.value = false;
-      showToastMessage(
-          message: response!.body.extractErrorMessage(),
-          // ignore: use_build_context_synchronously
-          context: context,
-          color: const Color(0xffEC1C24),
-          icon: Icons.close);
     }
   }
 }

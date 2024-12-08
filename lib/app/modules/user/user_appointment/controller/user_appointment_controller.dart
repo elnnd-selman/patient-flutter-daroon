@@ -38,56 +38,64 @@ class UserAppointmentController extends GetxController {
 // }
 
   getDoctorAppointments() async {
-    isLoading.value = true;
-    cancelAppointmentList.value = [];
+    try {
+      isLoading.value = true;
+      cancelAppointmentList.value = [];
 
-    upcomingAppointmentList.value = [];
-    confirmedAppointmentList.value = [];
+      upcomingAppointmentList.value = [];
+      confirmedAppointmentList.value = [];
 
-    completedAppointmentList.value = [];
-    requestAppointmentList.value = [];
+      completedAppointmentList.value = [];
+      requestAppointmentList.value = [];
 
-    final response = await ApiService.getwithUserToken(
-      endPoint: "${AppTokens.apiURl}/appointments",
-      userToken: {
-        "Authorization": "Bearer ${userModel.value!.token!}",
-      },
-    );
-    if (response!.statusCode == 200 || response.statusCode == 201) {
-      List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
-      appointmentModelList.value =
-          jsonResponse.map((data) => AppointmentModel.fromJson(data)).toList();
+      final response = await ApiService.getwithUserToken(
+        endPoint: "${AppTokens.apiURl}/appointments",
+        userToken: {
+          "Authorization": "Bearer ${userModel.value!.token!}",
+        },
+      );
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        appointmentModelList.value = jsonResponse
+            .map((data) => AppointmentModel.fromJson(data))
+            .toList();
 
-      if (appointmentModelList.isNotEmpty) {
-        for (int i = 0; i < appointmentModelList.length; i++) {
-          if (appointmentModelList[i].status == "requesting") {
-            requestAppointmentList.add(appointmentModelList[i]);
-          } else if (appointmentModelList[i].status == "confirmed") {
-            confirmedAppointmentList.add(appointmentModelList[i]);
-          } else if (appointmentModelList[i].status == "cancelled") {
-            cancelAppointmentList.add(appointmentModelList[i]);
-          } else if (appointmentModelList[i].status == "upcoming") {
-            upcomingAppointmentList.add(appointmentModelList[i]);
-          } else {
-            completedAppointmentList.add(appointmentModelList[i]);
+        if (appointmentModelList.isNotEmpty) {
+          for (int i = 0; i < appointmentModelList.length; i++) {
+            if (appointmentModelList[i].status == "requesting") {
+              requestAppointmentList.add(appointmentModelList[i]);
+            } else if (appointmentModelList[i].status == "confirmed") {
+              confirmedAppointmentList.add(appointmentModelList[i]);
+            } else if (appointmentModelList[i].status == "cancelled") {
+              cancelAppointmentList.add(appointmentModelList[i]);
+            } else if (appointmentModelList[i].status == "upcoming") {
+              upcomingAppointmentList.add(appointmentModelList[i]);
+            } else {
+              completedAppointmentList.add(appointmentModelList[i]);
+            }
           }
         }
+
+        upcomingAppointmentList
+            .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+        cancelAppointmentList
+            .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+        completedAppointmentList
+            .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+        confirmedAppointmentList
+            .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+        requestAppointmentList
+            .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+
+        isLoading.value = false;
+      } else {
+        isLoading.value = false;
       }
-
-      upcomingAppointmentList
-          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
-      cancelAppointmentList
-          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
-      completedAppointmentList
-          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
-      confirmedAppointmentList
-          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
-      requestAppointmentList
-          .sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
-
+    } catch (e) {
       isLoading.value = false;
-    } else {
-      isLoading.value = false;
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 
@@ -346,5 +354,33 @@ class UserAppointmentController extends GetxController {
     } else if (currentIndex.value == 6) {
       appointmentTimeList.value = appointmentTimes.saturday;
     }
+  }
+
+  //////////
+  RxBool isSearch = false.obs;
+  final searchTextField = TextEditingController();
+
+  TabController? tabController;
+  RxList<AppointmentModel> serachAppointmentList = RxList();
+  serachAppointment(String query) {
+    // FocusManager.instance.primaryFocus?.unfocus();
+    serachAppointmentList.value = [];
+    List<AppointmentModel> tempAppointment = [];
+    if (tabController!.index == 0) {
+      tempAppointment = requestAppointmentList;
+    } else if (tabController!.index == 1) {
+      tempAppointment = upcomingAppointmentList;
+    } else if (tabController!.index == 2) {
+      tempAppointment = confirmedAppointmentList;
+    } else if (tabController!.index == 3) {
+      tempAppointment = completedAppointmentList;
+    } else if (tabController!.index == 4) {
+      tempAppointment = cancelAppointmentList;
+    }
+
+    serachAppointmentList.value = tempAppointment
+        .where((message) =>
+            message.fullName!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }

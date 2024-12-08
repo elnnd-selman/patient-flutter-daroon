@@ -4,6 +4,7 @@ import 'package:daroon_user/app/modules/user/user_home/controller/user_home_cont
 import 'package:daroon_user/app/modules/user/user_offer/model/user_offer_model.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
 import 'package:daroon_user/services/api.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserOffersController extends GetxController {
@@ -49,5 +50,16 @@ class UserOffersController extends GetxController {
   void onInit() {
     super.onInit();
     getDoctorOfersData();
+  }
+
+  RxList<UserOfferModel> searchOfferList = <UserOfferModel>[].obs;
+  final offerTextField = TextEditingController();
+  RxBool isSearch = false.obs;
+  searchOffer(String query) {
+    searchOfferList.value = [];
+    userOfferModelList.value = userOfferModelList
+        .where((message) =>
+            message.titleEn!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }

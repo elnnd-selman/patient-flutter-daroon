@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
-import 'package:daroon_user/app/modules/doctor_message/controller/chat_room_controller.dart';
-import 'package:daroon_user/app/modules/doctor_message/model/user_message_model.dart';
-import 'package:daroon_user/app/modules/doctor_message/widget/chat_title.dart';
+import 'package:daroon_user/app/modules/user/user_message/controller/chat_room_controller.dart';
+import 'package:daroon_user/app/modules/user/user_message/model/user_chat_model.dart';
+import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
+import 'package:daroon_user/app/modules/user/user_message/widget/chat_title.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
@@ -54,6 +57,8 @@ class _UserChatPageState extends State<UserChatPage> {
     super.initState();
     ctrl.hasScrolled.value = false;
     userMessageModelData = Get.arguments[0];
+    ctrl.setUserData(
+        userMessageModelData.patient!, userMessageModelData.doctor!);
     connectAndListen();
     ctrl.getUserChatConversation(userMessageModelData.id!);
   }
@@ -84,9 +89,12 @@ class _UserChatPageState extends State<UserChatPage> {
 
     //When an event recieved from server, data is added to the stream
     socket.on('new_message', (data) {
-      if (kDebugMode) {
-        print(data);
-      }
+      log(data.toString());
+      final encode = jsonEncode(data);
+      Map<String, dynamic> jsonData = jsonDecode(encode);
+      final chatData = UserChatModel.fromJson(jsonData);
+      ctrl.userChatList.add(chatData);
+      ctrl.endtoChat();
     });
     // ignore: avoid_print
     socket.onDisconnect((_) => print('disconnect'));
@@ -112,6 +120,8 @@ class _UserChatPageState extends State<UserChatPage> {
   }
 
   sendMessage() {
+    ctrl.addNewMessagetoList(
+        conversationID: userMessageModelData.id!, message: message.text);
     socket.emit(
       "send_message",
       {
@@ -142,12 +152,16 @@ class _UserChatPageState extends State<UserChatPage> {
                 ),
               ),
               SizedBox(width: 2 * SizeConfig.widthMultiplier),
-              Text(
-                "${userMessageModelData.doctor!.firstNameEn!.capitalizeFirst!} ${userMessageModelData.doctor!.lastNameEn!.capitalizeFirst!}",
-                style: TextStyle(
-                    fontSize: 3 * SizeConfig.heightMultiplier,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Text(
+                  "${userMessageModelData.doctor!.firstNameEn!.capitalizeFirst!} ${userMessageModelData.doctor!.lastNameEn!.capitalizeFirst!}",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 2.5 * SizeConfig.heightMultiplier,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -189,9 +203,10 @@ class _UserChatPageState extends State<UserChatPage> {
     return Expanded(
       child: Container(
           padding: EdgeInsets.only(
-              left: 2.3 * SizeConfig.widthMultiplier,
-              right: 2.3 * SizeConfig.widthMultiplier,
-              top: 0),
+            left: 2.3 * SizeConfig.widthMultiplier,
+            right: 2.3 * SizeConfig.widthMultiplier,
+            top: 0,
+          ),
           width: double.infinity,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -298,8 +313,11 @@ class _UserChatPageState extends State<UserChatPage> {
   }
 
   formateDate(String dateString) {
-    DateTime dateTime = DateTime.parse(dateString);
-    String formattedTime = DateFormat('HH:mm').format(dateTime);
+    DateTime utcDateTime = DateTime.parse(dateString);
+    DateTime localDateTime = utcDateTime.toLocal();
+
+    String formattedTime = DateFormat('HH:mm').format(localDateTime);
+
     return formattedTime;
   }
 

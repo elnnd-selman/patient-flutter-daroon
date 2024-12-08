@@ -1,3 +1,4 @@
+import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,8 +59,8 @@ class _CommonTextfeildState extends State<CommonTextfeild> {
       obscureText: widget.obscuretext,
       onChanged: widget.onChange,
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 22, horizontal: 14),
+        contentPadding: EdgeInsets.symmetric(
+            vertical: 2.2 * SizeConfig.heightMultiplier, horizontal: 14),
         fillColor: const Color(0xffF7F7F8),
         filled: true,
         errorBorder: OutlineInputBorder(

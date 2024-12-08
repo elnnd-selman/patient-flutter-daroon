@@ -131,7 +131,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     CustomCupertinoButton(
                       onTap: () {
                         currentIndex == 2
-                            ? Get.offNamed(Routes.loginSelectionScreen)
+                            ? Get.offNamed(Routes.login)
                             : _controller!.nextPage(
                                 curve: Curves.ease,
                                 duration: const Duration(milliseconds: 400),

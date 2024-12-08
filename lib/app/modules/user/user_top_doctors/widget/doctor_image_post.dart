@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daroon_user/app/modules/user/user_home/model/top_doctor_content_model.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/widget/video_player_post.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/post_comment_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/top_doctor_profile_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
-import 'package:daroon_user/app/modules/user/user_top_doctors/widget/video_player_post.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
@@ -23,11 +23,13 @@ class DoctorImagePostContainer extends StatefulWidget {
   final ContentData contentData;
   final int index;
   final TopDoctorModel topDoctorModel;
-  const DoctorImagePostContainer(
-      {super.key,
-      required this.contentData,
-      required this.index,
-      required this.topDoctorModel});
+
+  const DoctorImagePostContainer({
+    super.key,
+    required this.contentData,
+    required this.index,
+    required this.topDoctorModel,
+  });
 
   @override
   State<DoctorImagePostContainer> createState() =>
@@ -172,6 +174,7 @@ class _DoctorImagePostContainerState extends State<DoctorImagePostContainer> {
                             borderRadius: BorderRadius.circular(0),
                             color: Colors.transparent),
                         child: VideoPlayerPost(
+                          showRadius: true,
                           videoPath:
                               widget.contentData.imageVideoUrl[itemIndex].url!,
                         ),

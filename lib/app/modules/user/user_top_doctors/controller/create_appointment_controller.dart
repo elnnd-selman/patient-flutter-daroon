@@ -33,7 +33,7 @@ class CreateAppointmentController extends GetxController {
     "Your Self",
     "other",
   ].obs;
-  RxString bookFor = ''.obs;
+  RxString bookFor = 'Your Self'.obs;
 
   final _selectedTab = 0.obs;
   int get selectedTab => _selectedTab.value;
@@ -156,33 +156,28 @@ class CreateAppointmentController extends GetxController {
   final TextEditingController extraInfo = TextEditingController();
 
   checkPaitentValidation(BuildContext context) {
-    if (bookFor.value == "") {
-      showToastMessage(
-          message: "Please booking  for",
-          context: context,
-          color: const Color(0xffEC1C24),
-          icon: Icons.close);
-      return;
-    } else if (name.text.isEmpty) {
+    if (name.text.isEmpty) {
       showToastMessage(
           message: "Please enter name",
           context: context,
           color: const Color(0xffEC1C24),
           icon: Icons.close);
       return;
-    } else if (age.text.isEmpty) {
+    } else if (bookFor.value != "Your Self" && age.text.isEmpty) {
       showToastMessage(
           message: "Please enter age",
           context: context,
           color: const Color(0xffEC1C24),
           icon: Icons.close);
+
       return;
-    } else if (selectedGender.value == -1) {
+    } else if (bookFor.value != "Your Self" && selectedGender.value == -1) {
       showToastMessage(
           message: "Please select gender",
           context: context,
           color: const Color(0xffEC1C24),
           icon: Icons.close);
+
       return;
     } else if (extraInfo.text.isEmpty) {
       showToastMessage(
@@ -236,9 +231,13 @@ class CreateAppointmentController extends GetxController {
                                 ? "friday"
                                 : "saturday",
         "selectedTime": selectedTime.value,
-        "age": int.parse(age.text),
+        "age": bookFor.value == "Your Self" ? 20 : int.parse(age.text),
         "fullName": name.text,
-        "gender": selectedGender.value == 0 ? "male" : 'female',
+        "gender": bookFor.value == "Your Self"
+            ? Get.find<UserHomeController>().userModel.value!.user!.gender!
+            : selectedGender.value == 0
+                ? "male"
+                : 'female',
         "appointmentType": selectPackage,
         "dateOfBirth": "2004-08-09",
         "extraInformation": extraInfo.text,
@@ -252,7 +251,7 @@ class CreateAppointmentController extends GetxController {
         Get.back();
         Get.back();
         showToastMessage(
-            message: "Successfully book appointmetn.",
+            message: "Successfully book appointment.",
             context: context,
             color: const Color(0xff5BA66B),
             icon: Icons.check);

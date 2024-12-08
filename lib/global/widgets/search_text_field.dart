@@ -12,6 +12,7 @@ class SearchTextField extends StatelessWidget {
   final String prefixIcon;
   final String suffixIcon;
   final Function()? onTap;
+  final Function(String)? onChange;
 
   const SearchTextField(
       {super.key,
@@ -21,6 +22,7 @@ class SearchTextField extends StatelessWidget {
       required this.showPrefix,
       required this.prefixIcon,
       required this.suffixIcon,
+      this.onChange,
       this.onTap});
 
   @override
@@ -31,6 +33,7 @@ class SearchTextField extends StatelessWidget {
         fontSize: 15,
         color: AppColors.blackBGColor,
       ),
+      onChanged: onChange,
       cursorColor: Colors.black12,
       cursorWidth: 1,
       controller: textEditingController,

@@ -71,11 +71,11 @@ class SignUpCtrl extends GetxController {
           endPoint: '${AppTokens.apiURl}/users/register',
           body: {
             "firstName": "${firstNameEN.text.trim()} ${lastNameEN.text.trim()}",
-            "firstName_ku": firstNameKU.text.trim(),
-            "firstName_ar": firstNameAR.text.trim(),
+            "firstName_ku": "",
+            "firstName_ar": "",
             "firstName_en": firstNameEN.text.trim(),
-            "lastName_ku": lastNameKU.text.trim(),
-            "lastName_ar": lastNameAR.text.trim(),
+            "lastName_ku": "",
+            "lastName_ar": "",
             "lastName_en": lastNameEN.text.trim(),
             "username": userName.text.trim(),
             "gender": selectedGender.value.toLowerCase(),
@@ -86,14 +86,6 @@ class SignUpCtrl extends GetxController {
             "appLang": "ku",
             "profilePicture": "",
             "dateOfBirth": birthDate.value.toString(),
-            // "name": firstName.text,
-            // "fullName": "${firstName.text} ${lastName.text}",
-            // "username": userName.text,
-            // "gender": selectedGender.value.toLowerCase(),
-            // "email": email.text,
-            // "password": password.text,
-            // "confirmPassword": confirmpassword.text,
-            // "phoneNumber": "$dialCode$newText"
           });
       if (response != null) {
         if (response.statusCode == 201 || response.statusCode == 200) {
@@ -103,7 +95,6 @@ class SignUpCtrl extends GetxController {
               color: const Color(0xff5BA66B),
               icon: Icons.check);
           final jsonData = jsonDecode(response.body);
-          Get.find<LocalStorageController>().daroonBox!.put("isLogin", true);
           await sendOtptoUser(jsonData["token"]);
 
           await sendOtptoUserInEmail(jsonData["token"]);

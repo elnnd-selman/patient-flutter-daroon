@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:daroon_user/app/controllers/local_storage_controller.dart';
 import 'package:daroon_user/global/utils/json_message_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -114,9 +115,8 @@ class OptController extends GetxController {
         userToken: {"Authorization": "Bearer $userToken"},
         endPoint: '${AppTokens.apiURl}/users/verify-phone/$code',
         body: {});
-
     if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         showToastMessage(
             message: "Successfully Verify Code",
             // ignore: use_build_context_synchronously
@@ -125,6 +125,9 @@ class OptController extends GetxController {
             icon: Icons.check);
         _processing.value = false;
 
+        await Get.find<LocalStorageController>()
+            .daroonBox!
+            .put("isLogin", true);
         Get.offAllNamed(Routes.emailOTPScreen, arguments: {
           "userToken": userToken,
           "email": email,
@@ -162,9 +165,8 @@ class OptController extends GetxController {
         userToken: {"Authorization": "Bearer $userToken"},
         endPoint: '${AppTokens.apiURl}/users/verify-email-by-code/$code',
         body: {});
-
     if (response != null) {
-      if (response.statusCode == 201 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         showToastMessage(
             message: "Successfully Verify Code",
             // ignore: use_build_context_synchronously

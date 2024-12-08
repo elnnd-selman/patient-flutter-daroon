@@ -9,6 +9,7 @@ class Assets {
   static const phone = 'assets/icons/phone.png';
   static const menuIcon = 'assets/icons/menuIcon.svg';
   static const assistantsIcon = "assets/icons/assistantsIcon.svg";
+  static const inVoiceIcon = "assets/icons/invoice.svg";
   static const offerIcon = "assets/icons/offerIcon.svg";
 
   static const aboutIcon = "assets/icons/about.svg";

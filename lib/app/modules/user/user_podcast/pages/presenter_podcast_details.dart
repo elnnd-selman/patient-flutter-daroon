@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/controller/presenter_podcast_detail_ctrl.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/model/user_podcast_model.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/widget/presenter_comment_setion.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/widget/video_player_post.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
@@ -316,8 +317,15 @@ class PresenterPodcastDetails extends GetView<PresenterPodcastDetailCtrl> {
                                     ),
                                   )
                                 : Container(
-                                    height: 24 * SizeConfig.heightMultiplier,
-                                    color: Colors.amber,
+                                    height: 25 * SizeConfig.heightMultiplier,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(0),
+                                        color: Colors.transparent),
+                                    child: VideoPlayerPost(
+                                      showRadius: false,
+                                      videoPath: podcastData.videos[0],
+                                    ),
                                   ),
                             20.verticalSpace,
                             podcastData.type == "video"

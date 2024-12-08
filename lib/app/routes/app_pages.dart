@@ -1,7 +1,12 @@
+import 'package:daroon_user/app/modules/auth/reset_password/pages/reset_sucessfully.dart';
 import 'package:daroon_user/app/modules/auth/signup/pages/email_otp_screen.dart';
-import 'package:daroon_user/app/modules/doctor_message/binding/user_mesaage_binding.dart';
-import 'package:daroon_user/app/modules/doctor_message/pages/user_chat_room.dart';
-import 'package:daroon_user/app/modules/doctor_message/pages/user_message.dart';
+import 'package:daroon_user/app/modules/user/user_invoice/binding/user_invoice_binding.dart';
+import 'package:daroon_user/app/modules/user/user_invoice/pages/payment_succesfully.dart';
+import 'package:daroon_user/app/modules/user/user_invoice/pages/user_invoice_detail.dart';
+import 'package:daroon_user/app/modules/user/user_invoice/pages/user_invoice_screen.dart';
+import 'package:daroon_user/app/modules/user/user_message/binding/user_mesaage_binding.dart';
+import 'package:daroon_user/app/modules/user/user_message/pages/user_chat_room.dart';
+import 'package:daroon_user/app/modules/user/user_message/pages/user_message.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/binding/user_appointment_binding.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/pages/appointment_detail_screen.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/pages/cancel_appointment_detail.dart';
@@ -38,7 +43,6 @@ import 'package:daroon_user/app/modules/auth/signup/pages/otp_screen.dart';
 import 'package:daroon_user/app/modules/auth/signup/pages/profile_picture_screen.dart';
 import 'package:daroon_user/app/modules/auth/signup/pages/singup_screen.dart';
 import 'package:daroon_user/app/modules/auth/signup/pages/welcome_screen.dart';
-import 'package:daroon_user/app/modules/on_boarding/pages/login_selection_screen.dart';
 import 'package:daroon_user/app/modules/on_boarding/pages/onboarding_screen.dart';
 import 'package:daroon_user/app/modules/splash/splash_screen.dart';
 import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/binding/user_home_binding.dart';
@@ -64,10 +68,10 @@ class AppPages {
       name: Routes.onboarding,
       page: () => const OnBoardingScreen(),
     ),
-    GetPage(
-      name: Routes.loginSelectionScreen,
-      page: () => const LoginSelectionScreen(),
-    ),
+    // GetPage(
+    //   name: Routes.loginSelectionScreen,
+    //   page: () => const LoginSelectionScreen(),
+    // ),
     GetPage(
       name: Routes.login,
       page: () => LoginScreen(),
@@ -109,13 +113,17 @@ class AppPages {
     ),
     GetPage(
       name: Routes.forgetOTPScreen,
-      page: () => const ForgetOtpScreen(),
+      page: () => ForgetOtpScreen(),
       binding: ForgetPasswordBindings(),
     ),
     GetPage(
       name: Routes.forgetEmail,
       page: () => ForgetEmailScreen(),
       binding: ForgetPasswordBindings(),
+    ),
+    GetPage(
+      name: Routes.resetSucessfully,
+      page: () => const ResetSucessfully(),
     ),
     GetPage(
       name: Routes.resetPasswordScreen,
@@ -212,110 +220,20 @@ class AppPages {
       page: () => const UserChatPage(),
       binding: UserMesaageBinding(),
     ),
-    // GetPage(
-    //   name: Routes.doctordrawerScreen,
-    //   page: () => const DoctorDrawerScreen(),
-    //   binding: DoctorHomeBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorBottomNaviBar,
-    //   page: () => const DoctorBottomNaviBar(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorOffers,
-    //   page: () => const DoctorOffersPage(),
-    //   binding: DoctorOffersBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorOffersDetails,
-    //   page: () => const DoctorOfferDetailScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAppointmentDetail,
-    //   page: () => const AppointmentDetailScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAddOffers,
-    //   page: () => const DoctorAddOfferScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.cancelAppointment,
-    //   page: () => const CancelAppointmentDetail(),
-    //   binding: DoctorAppointmentBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAssistant,
-    //   page: () => const DoctorAssistantsScreen(),
-    //   binding: DoctorAssistantBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAssistantDetail,
-    //   page: () => const DoctorAssistantDetailScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAssistantEditAddress,
-    //   page: () => const DoctorAssistentEditAddress(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAssistantEditProfile,
-    //   page: () => const EditAssistantProfile(),
-    // ),
-    // GetPage(
-    //   name: Routes.adddoctorAssistant,
-    //   page: () => const AddAssistantScreen(),
-    //   binding: DoctorAssistantBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorProfile,
-    //   page: () => const DoctorProfileScreen(),
-    //   binding: DoctorHomeBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorEditProfile,
-    //   page: () => const DoctorEditProfile(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorchangeLanguage,
-    //   page: () => const DoctorLanguageScreen(),
-    //   binding: DoctorProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorEditSpeciality,
-    //   page: () => const DoctorEditSpeciality(),
-    //   binding: DoctorProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorEditLevel,
-    //   page: () => const DoctorEditLevel(),
-    //   binding: DoctorProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorMessage,
-    //   page: () => const DoctorMessageScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorChatRoom,
-    //   page: () => const DoctorChatRoom(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorNotification,
-    //   page: () => const DoctorNotificationScreen(),
-    // ),
-    // GetPage(
-    //   name: Routes.addDoctorAdress,
-    //   page: () => const AddDoctorAddressScreen(),
-    //   binding: DoctorAddressBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.addDoctorAdressDetail,
-    //   page: () => const AddAdressDetailScreen(),
-    //   binding: DoctorAddressBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.doctorAdressDetail,
-    //   page: () => const DoctorAddressDetailsScreen(),
-    //   binding: DoctorAddressBinding(),
-    // ),
+    GetPage(
+      name: Routes.inVoiceScreen,
+      page: () => const UserInvoiceScreen(),
+      binding: UserInvoiceBinding(),
+    ),
+    GetPage(
+      name: Routes.inVoiceDetail,
+      page: () => const UserInvoiceDetail(),
+      binding: UserInvoiceBinding(),
+    ),
+    GetPage(
+      name: Routes.paymentStatus,
+      page: () => PaymentSuccesfully(),
+    ),
 
     /////////////// User Side Screens///
     GetPage(

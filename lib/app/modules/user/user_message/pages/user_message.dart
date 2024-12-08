@@ -1,5 +1,5 @@
-import 'package:daroon_user/app/modules/doctor_message/controller/user_message_controller.dart';
-import 'package:daroon_user/app/modules/doctor_message/model/user_message_model.dart';
+import 'package:daroon_user/app/modules/user/user_message/controller/user_message_controller.dart';
+import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -57,18 +57,37 @@ class UserMessageScreen extends GetView<UserMessageController> {
                           child: NoDataWidget(
                           text: "No chat available",
                         ))
-                      : Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount:
-                                  controller.doctorConversationList.length,
-                              itemBuilder: (context, int index) {
-                                return _buildChatContainer(
-                                    controller.doctorConversationList[index],
-                                    context);
-                              }),
-                        ),
+                      : controller.isSearch.value
+                          ? controller.searchDoctorList.isEmpty
+                              ? const Expanded(
+                                  child: NoDataWidget(
+                                  text: "No search user available",
+                                ))
+                              : Expanded(
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount:
+                                          controller.searchDoctorList.length,
+                                      itemBuilder: (context, int index) {
+                                        return _buildChatContainer(
+                                            controller.searchDoctorList[index],
+                                            context);
+                                      }),
+                                )
+                          : Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount:
+                                      controller.doctorConversationList.length,
+                                  itemBuilder: (context, int index) {
+                                    return _buildChatContainer(
+                                        controller
+                                            .doctorConversationList[index],
+                                        context);
+                                  }),
+                            ),
             )
           ],
         ),
@@ -130,6 +149,14 @@ class UserMessageScreen extends GetView<UserMessageController> {
           color: const Color(0xff787B80),
         ),
       ),
+      onChanged: (val) {
+        if (val.isEmpty) {
+          controller.isSearch.value = false;
+        } else {
+          controller.isSearch.value = true;
+          controller.searchUserMessage(val);
+        }
+      },
     );
   }
 }

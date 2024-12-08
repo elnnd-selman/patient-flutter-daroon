@@ -43,9 +43,10 @@ class SeeOnMapAppointment extends GetView<OfficeOnMapController> {
                             controller.markers.map((marker) => marker),
                           ),
                           mapType: MapType.terrain,
-                          initialCameraPosition: controller.kGooglePlex,
+                          initialCameraPosition: controller.kGooglePlex.value,
                           myLocationEnabled: true,
                           onMapCreated: (GoogleMapController googleCtrl) {
+                            controller.mapController = googleCtrl;
                             controller.completer.complete(googleCtrl);
                           },
                         ),
@@ -63,6 +64,13 @@ class SeeOnMapAppointment extends GetView<OfficeOnMapController> {
                         enlargeCenterPage: true,
                         enableInfiniteScroll: false,
                         viewportFraction: .9,
+                        onPageChanged: (val, v) {
+                          onMapInitialized(
+                              topDoctorModel
+                                  .offices[val].address!.coordinate!.latitude!,
+                              topDoctorModel.offices[val].address!.coordinate!
+                                  .longitude!);
+                        },
                       ),
                       itemCount: topDoctorModel.offices.length,
                       itemBuilder: (BuildContext context, int itemIndex,
@@ -79,6 +87,15 @@ class SeeOnMapAppointment extends GetView<OfficeOnMapController> {
         ),
       );
     });
+  }
+
+  void onMapInitialized(double lat, double long) {
+    controller.mapController.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(lat, long),
+        16,
+      ),
+    );
   }
 }
 

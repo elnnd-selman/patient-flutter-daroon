@@ -48,6 +48,7 @@ class CompleteAppointmentContainer extends StatelessWidget {
                       SizedBox(height: 3 * SizeConfig.heightMultiplier),
                       CustomCupertinoButton(
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           Get.toNamed(
                             Routes.userAppointmentDetail,
                             arguments: [
@@ -139,6 +140,7 @@ class CompleteAppointmentContainer extends StatelessWidget {
                       SizedBox(height: 2 * SizeConfig.heightMultiplier),
                       CustomCupertinoButton(
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           Get.toNamed(
                             Routes.userAppointmentDetail,
                             arguments: [
@@ -218,6 +220,7 @@ class CompleteAppointmentContainer extends StatelessWidget {
                             Expanded(
                               child: CustomCupertinoButton(
                                 onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   Get.bottomSheet(
                                     ReviewAppointmentBottomSheet(
                                       appointmentModel: appointmentModel,

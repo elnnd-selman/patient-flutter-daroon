@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -89,7 +88,7 @@ class ProfilePicController extends GetxController {
         selectedimageName!.value = value.path;
 
         isNoPhoto.value = false;
-        image = await compress(image: image);
+        // image = await compress(image: image);
         selectedImageName = path.basename(image.path);
         update();
       } else {
@@ -120,18 +119,18 @@ class ProfilePicController extends GetxController {
     });
   }
 
-  static Future<File> compress({
-    required File image,
-    int quality = 100,
-    int percentage = 70,
-  }) async {
-    final path = await FlutterNativeImage.compressImage(
-      image.absolute.path,
-      quality: quality,
-      percentage: percentage,
-    );
-    return path;
-  }
+  // static Future<File> compress({
+  //   required File image,
+  //   int quality = 100,
+  //   int percentage = 70,
+  // }) async {
+  //   final path = await FlutterNativeImage.compressImage(
+  //     image.absolute.path,
+  //     quality: quality,
+  //     percentage: percentage,
+  //   );
+  //   return path;
+  // }
 
   uploadProfilePic({
     required String image,

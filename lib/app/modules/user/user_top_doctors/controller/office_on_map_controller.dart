@@ -9,10 +9,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class OfficeOnMapController extends GetxController {
   final Completer<GoogleMapController> completer =
       Completer<GoogleMapController>();
-  CameraPosition kGooglePlex = const CameraPosition(
+  Rx<CameraPosition> kGooglePlex = const CameraPosition(
     target: LatLng(51.174179, 6.610550),
     zoom: 12.4746,
-  );
+  ).obs;
+
+  late GoogleMapController mapController;
 
   RxList<Marker> markers = <Marker>[].obs;
   RxBool isSetting = false.obs;
@@ -22,10 +24,10 @@ class OfficeOnMapController extends GetxController {
         await getBytesFromAsset('assets/icons_png/location_icon.png', 80);
     for (int i = 0; i < doctorData.offices.length; i++) {
       if (i == 0) {
-        kGooglePlex = CameraPosition(
+        kGooglePlex.value = CameraPosition(
           target: LatLng(doctorData.offices[i].address!.coordinate!.latitude!,
               doctorData.offices[i].address!.coordinate!.longitude!),
-          zoom: 12.4746,
+          zoom: 16,
         );
       }
       markers.add(

@@ -1,3 +1,5 @@
+import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
+
 class UserChatModel {
   UserChatModel({
     required this.id,
@@ -33,6 +35,17 @@ class UserChatModel {
       v: json["__v"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "conversation": conversation,
+        "senderId": senderId?.toJson(),
+        "receiverId": receiverId?.toJson(),
+        "text": text,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+      };
 }
 
 class ErId {
@@ -44,7 +57,6 @@ class ErId {
     required this.firstNameAr,
     required this.username,
     required this.gender,
-    required this.education,
     required this.lastNameKu,
     required this.lastNameAr,
     required this.lastNameEn,
@@ -52,8 +64,6 @@ class ErId {
     required this.isThirdParty,
     required this.usePictureAsLink,
     required this.dateOfBirth,
-    required this.level,
-    required this.speciality,
   });
 
   final String? id;
@@ -63,16 +73,13 @@ class ErId {
   final String? firstNameAr;
   final String? username;
   final String? gender;
-  final List<dynamic> education;
   final String? lastNameKu;
   final String? lastNameAr;
   final String? lastNameEn;
-  final ProfilePicture? profilePicture;
+  ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
-  final dynamic level;
-  final dynamic speciality;
 
   factory ErId.fromJson(Map<String, dynamic> json) {
     return ErId(
@@ -83,40 +90,33 @@ class ErId {
       firstNameAr: json["firstName_ar"],
       username: json["username"],
       gender: json["gender"],
-      education: json["education"] == null
-          ? []
-          : List<dynamic>.from(json["education"]!.map((x) => x)),
       lastNameKu: json["lastName_ku"],
       lastNameAr: json["lastName_ar"],
       lastNameEn: json["lastName_en"],
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"] == "image key (optional)"
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
-      level: json["level"],
-      speciality: json["speciality"],
     );
   }
-}
 
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "firstName": firstName,
+        "firstName_ku": firstNameKu,
+        "firstName_en": firstNameEn,
+        "firstName_ar": firstNameAr,
+        "username": username,
+        "gender": gender,
+        "lastName_ku": lastNameKu,
+        "lastName_ar": lastNameAr,
+        "lastName_en": lastNameEn,
+        "profilePicture": profilePicture?.toJson(),
+        "isThirdParty": isThirdParty,
+        "usePictureAsLink": usePictureAsLink,
+        "dateOfBirth": dateOfBirth?.toIso8601String(),
+      };
 }

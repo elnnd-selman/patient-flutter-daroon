@@ -41,3 +41,18 @@ class LoadingWidget extends StatelessWidget {
     );
   }
 }
+
+class ButtonLoader extends StatelessWidget {
+  const ButtonLoader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SpinKitSpinningLines(
+      itemCount: 3,
+      color: AppColors.whiteBGColor,
+      size: 2.3 * SizeConfig.heightMultiplier,
+    );
+  }
+}

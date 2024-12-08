@@ -2,18 +2,18 @@ import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/modules/auth/forget/controller/forget_password_controller.dart';
-import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:pinput/pinput.dart';
 
 class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
-  const ForgetOtpScreen({super.key});
+  ForgetOtpScreen({super.key});
 
+  final type = Get.arguments["type"] as String;
+  final data = Get.arguments["data"] as String;
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -47,23 +47,26 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
         borderRadius: BorderRadius.circular(10),
       ),
     );
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-            )),
-      ),
-      body: Stack(
-        children: [
-          Padding(
+    return GetBuilder<ForgetPasswordCtrl>(
+      initState: (_) {
+        controller.setData(type, data, context);
+      },
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.white,
+            shadowColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                )),
+          ),
+          body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
@@ -83,7 +86,7 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                     color: const Color(0xff707281),
                   ),
                 ),
-                Get.arguments["type"] == "email"
+                type == "email"
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,8 +102,7 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                           ),
                           6.horizontalSpace,
                           Text(
-                            Get.arguments["data"],
-                            // Get.arguments["email"],
+                            data,
                             textAlign: TextAlign.center,
                             style: AppTextStyles.medium.copyWith(
                               fontSize: 14,
@@ -125,7 +127,7 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                           ),
                           6.horizontalSpace,
                           Text(
-                            Get.arguments["data"],
+                            data,
                             // Get.arguments["email"],
                             textAlign: TextAlign.center,
                             style: AppTextStyles.medium.copyWith(
@@ -150,7 +152,7 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                 CustomCupertinoButton(
                   onTap: () {
                     if (controller.startDuration.value == 0) {
-                      controller.resendCode(context);
+                      controller.setData(type, data, context);
                     }
                   },
                   child: Row(
@@ -182,34 +184,30 @@ class ForgetOtpScreen extends GetView<ForgetPasswordCtrl> {
                   ),
                 ),
                 const Spacer(),
-                CommonButton(
-                    ontap: () {
-                      if (controller.otpCode.value.length == 6) {
-                        Get.toNamed(Routes.resetPasswordScreen);
-                        // controller.verifyOtpCode(
-                        //     code: controller.otpCode.value, context: context);
-                      } else {
-                        showToastMessage(
-                            message: "Complete Otp Code",
-                            // ignore: use_build_context_synchronously
-                            context: context,
-                            color: const Color(0xffEC1C24),
-                            icon: Icons.close);
-                      }
-                    },
-                    name: "Verify"),
+                Obx(
+                  () => CommonButton(
+                      isLoading: controller.processing,
+                      ontap: () {
+                        if (controller.otpCode.value.length == 6) {
+                          controller.verifyOTPCode(
+                              code: controller.otpCode.value, context: context);
+                        } else {
+                          showToastMessage(
+                              message: "Complete Otp Code",
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              color: const Color(0xffEC1C24),
+                              icon: Icons.close);
+                        }
+                      },
+                      name: "Verify"),
+                ),
                 20.verticalSpace,
               ],
             ),
           ),
-          Obx(() {
-            if (controller.processing) {
-              return const LoadingOverlay();
-            }
-            return const SizedBox();
-          }),
-        ],
-      ),
+        );
+      },
     );
   }
 }

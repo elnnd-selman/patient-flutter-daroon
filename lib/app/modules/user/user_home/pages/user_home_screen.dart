@@ -5,7 +5,6 @@ import 'package:daroon_user/app/modules/user/user_home/widget/vip_doctor_contain
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/top_doctor_conatiner.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
-import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:daroon_user/app/modules/user/user_home/widget/user_doctor_specia
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserHomeScreen extends GetView<UserHomeController> {
   const UserHomeScreen({super.key});
@@ -31,13 +31,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
           children: [
             Obx(
               () => controller.isAdsLoading.value
-                  ? Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      decoration: BoxDecoration(
-                          color: AppColors.lightgreyColor,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Center(child: LoadingWidget()),
-                    )
+                  ? _buildImageShimmerLoader(context)
                   : controller.publicADSList.isEmpty
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.2,
@@ -57,7 +51,16 @@ class UserHomeScreen extends GetView<UserHomeController> {
               width: MediaQuery.of(context).size.width,
               child: Obx(
                 () => controller.isVipLoading.value
-                    ? const Center(child: LoadingWidget())
+                    ? ShimmerLoader(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: (MediaQuery.of(context).size.height * 0.2)
+                              .toDouble(),
+                        ),
+                      )
                     : controller.vipDoctorModelList.isEmpty
                         ? const Center(
                             child:
@@ -111,10 +114,15 @@ class UserHomeScreen extends GetView<UserHomeController> {
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
             Obx(
               () => controller.isLoading.value
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 7 * SizeConfig.heightMultiplier),
-                      child: const Center(child: LoadingWidget()),
+                  ? ShimmerLoader(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: (MediaQuery.of(context).size.height * 0.15)
+                            .toDouble(),
+                      ),
                     )
                   : controller.topDoctorModelList.isEmpty
                       ? Padding(
@@ -139,6 +147,22 @@ class UserHomeScreen extends GetView<UserHomeController> {
               height: 60 * SizeConfig.heightMultiplier,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  _buildImageShimmerLoader(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: 100 * SizeConfig.widthMultiplier,
+        padding: EdgeInsets.only(left: 2 * SizeConfig.widthMultiplier),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
@@ -211,7 +235,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
       itemCount: controller.publicADSList.length,
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
           Container(
-        margin: const EdgeInsets.symmetric(horizontal: 2),
+        // margin: const EdgeInsets.symmetric(horizontal: 2),
         height: MediaQuery.of(context).size.height * 0.2,
         width: 100 * SizeConfig.widthMultiplier,
         padding: EdgeInsets.only(left: 3 * SizeConfig.widthMultiplier),
@@ -276,6 +300,20 @@ class UserHomeScreen extends GetView<UserHomeController> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ShimmerLoader extends StatelessWidget {
+  final Widget child;
+  const ShimmerLoader({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: child,
     );
   }
 }

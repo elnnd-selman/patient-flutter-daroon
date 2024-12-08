@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/controller/user_podcast_detail_ctrl.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/model/user_podcast_model.dart';
 import 'package:daroon_user/app/modules/user/user_podcast/widget/comment_setion.dart';
+import 'package:daroon_user/app/modules/user/user_podcast/widget/video_player_post.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -68,9 +69,23 @@ class UserPodcastDetailScreen extends GetView<UserPodcastDetailCtrl> {
                             _buildHeader(),
                             20.verticalSpace,
                             Container(
-                              height: 24 * SizeConfig.heightMultiplier,
-                              color: Colors.amber,
+                              height: 25 * SizeConfig.heightMultiplier,
+                              width: MediaQuery.of(context).size.width,
+                              // margin: EdgeInsets.only(
+                              //     right: MediaQuery.of(context).size.width *
+                              //         0.028),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(0),
+                                  color: Colors.transparent),
+                              child: VideoPlayerPost(
+                                showRadius: false,
+                                videoPath: podcastData.videos[0],
+                              ),
                             ),
+                            // Container(
+                            //   height: 24 * SizeConfig.heightMultiplier,
+                            //   color: Colors.amber,
+                            // ),
                             20.verticalSpace,
                             _buildPostDescription(),
                             const CommentSection(),

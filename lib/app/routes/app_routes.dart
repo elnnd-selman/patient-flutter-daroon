@@ -3,7 +3,7 @@ abstract class Routes {
 
   static const splash = '/splash';
   static const onboarding = '/onboarding';
-  static const loginSelectionScreen = '/loginSelectionScreen';
+  // static const loginSelectionScreen = '/loginSelectionScreen';
   static const login = '/login';
   static const singup = '/signup';
   static const firstsignup = '/firstsignup';
@@ -17,7 +17,11 @@ abstract class Routes {
   static const resetPasswordScreen = '/resetPasswordScreen';
   static const profilePic = '/profilePic';
   static const welcome = '/welcome';
-
+  static const resetSucessfully = '/resetSucessfully';
+  static const inVoiceScreen = '/inVoiceScreen';
+  static const inVoiceDetail = '/inVoiceDetail';
+  static const paymentStatus = '/paymentStatus';
+//
   ////// Doctor  Screen/////
 
   // static const doctordrawerScreen = "/doctordrawerHomeScreen";
