@@ -21,6 +21,7 @@ abstract class Routes {
   static const inVoiceScreen = '/inVoiceScreen';
   static const inVoiceDetail = '/inVoiceDetail';
   static const paymentStatus = '/paymentStatus';
+  static const meetingScreen = '/meetingScreen';
 //
   ////// Doctor  Screen/////
 

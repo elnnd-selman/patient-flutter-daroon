@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:country_phone_validator/country_phone_validator.dart';
 import 'package:daroon_user/global/utils/json_message_extension.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
@@ -23,31 +24,43 @@ class ForgetPasswordCtrl extends GetxController {
   Rx<String> errorMessage = "Enter Phone Number".obs;
 
   sendEmailOTPUser(String emails, BuildContext context) async {
-    startDuration.value = 60;
-    _startTimer();
-    final response = await ApiService.post(
-        endPoint: '${AppTokens.apiURl}/users/forgot-password-via-email',
-        body: {
-          "email": emails,
-        });
+    try {
+      startDuration.value = 60;
+      _startTimer();
+      final response = await ApiService.post(
+          endPoint: '${AppTokens.apiURl}/users/forgot-password-via-email',
+          body: {
+            "email": emails,
+          });
 
-    if (response != null) {
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response != null) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          showToastMessage(
+              message: "Successfully send opt to email.",
+              // ignore: use_build_context_synchronously
+              context: context,
+              color: const Color(0xff5BA66B),
+              icon: Icons.check);
+        } else {
+          showToastMessage(
+              message: response.body.extractErrorMessage(),
+              // ignore: use_build_context_synchronously
+              context: context,
+              color: const Color(0xffEC1C24),
+              icon: Icons.close);
+        }
+      } else {
         showToastMessage(
-            message: "Successfully send opt to email.",
+            message: "Please try again",
             // ignore: use_build_context_synchronously
             context: context,
-            color: const Color(0xff5BA66B),
-            icon: Icons.check);
+            color: const Color(0xffEC1C24),
+            icon: Icons.close);
       }
-    } else {
-      showToastMessage(
-          message: response!.body.extractErrorMessage(),
-          // ignore: use_build_context_synchronously
-          context: context,
-          color: const Color(0xffEC1C24),
-          icon: Icons.close);
-      {}
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 

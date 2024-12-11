@@ -38,14 +38,24 @@ class _UserChatPageState extends State<UserChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _topChat(),
-            _bodyChat(),
-            _formChat(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                _topChat(),
+                _bodyChat(),
+                _formChat(),
+              ],
+            ),
+          ),
+          Obx(() {
+            if (ctrl.processing.value) {
+              return const LoadingOverlay();
+            }
+            return const SizedBox();
+          }),
+        ],
       ),
     );
   }
@@ -167,29 +177,39 @@ class _UserChatPageState extends State<UserChatPage> {
           ),
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.black12,
-                ),
-                child: Icon(
-                  Icons.call,
-                  size: 2.2 * SizeConfig.heightMultiplier,
-                  color: Colors.white,
+              CustomCupertinoButton(
+                onTap: () {
+                  ctrl.setVideoData(userMessageModelData);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black12,
+                  ),
+                  child: Icon(
+                    Icons.call,
+                    size: 2.2 * SizeConfig.heightMultiplier,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               SizedBox(width: 2 * SizeConfig.heightMultiplier),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.black12,
-                ),
-                child: Icon(
-                  Icons.videocam,
-                  size: 2.2 * SizeConfig.heightMultiplier,
-                  color: Colors.white,
+              CustomCupertinoButton(
+                onTap: () {
+                  ctrl.setVideoData(userMessageModelData);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black12,
+                  ),
+                  child: Icon(
+                    Icons.videocam,
+                    size: 2.2 * SizeConfig.heightMultiplier,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

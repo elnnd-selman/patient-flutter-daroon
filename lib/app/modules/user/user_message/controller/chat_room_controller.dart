@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:daroon_user/app/modules/user/user_message/model/user_chat_model.dart';
 import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
 import 'package:daroon_user/app/modules/user/user_home/controller/user_home_controller.dart';
+import 'package:daroon_user/app/modules/user/user_message/model/video_call_model.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/constants/app_tokens.dart';
+import 'package:daroon_user/global/utils/json_message_extension.dart';
+import 'package:daroon_user/global/widgets/toast_message.dart';
 import 'package:daroon_user/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -128,6 +132,60 @@ class ChatRoomController extends GetxController {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
+    }
+  }
+
+  RxBool processing = false.obs;
+  /////////////// Video Call ////////////
+  setVideoData(UserMessageModelData data) async {
+    processing.value = true;
+
+    if (data.meetingInfo == null) {
+      successTextMessage(
+          message: "Wait for doctor to create meeting",
+          color: const Color(0xffEC1C24),
+          icon: Icons.close);
+    } else {
+      await joinMeeting(data.id!, data);
+    }
+
+    processing.value = false;
+  }
+
+  Rxn<VideoCallModel> videoModel = Rxn();
+  joinMeeting(String conversationID, UserMessageModelData userdata) async {
+    try {
+      processing.value = true;
+      final response = await ApiService.postwithHeader(
+          endPoint: "${AppTokens.apiURl}/meeting/$conversationID/participants",
+          userToken: {
+            "Authorization":
+                "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+          },
+          body: {
+            "conversation_id": conversationID,
+          });
+      if (response!.statusCode == 200 || response.statusCode == 201) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        videoModel.value = VideoCallModel.fromJson(jsonResponse);
+
+        Get.toNamed(Routes.meetingScreen, arguments: [
+          userdata,
+          true,
+          true,
+          videoModel.value,
+        ]);
+      } else {
+        successTextMessage(
+            message: response.body.extractErrorMessage(),
+            color: const Color(0xffEC1C24),
+            icon: Icons.close);
+      }
+
+      processing.value = false;
+    } catch (e) {
+      processing.value = false;
+      printInfo(info: e.toString());
     }
   }
 }

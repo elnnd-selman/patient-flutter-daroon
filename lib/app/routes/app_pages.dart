@@ -5,6 +5,7 @@ import 'package:daroon_user/app/modules/user/user_invoice/pages/payment_succesfu
 import 'package:daroon_user/app/modules/user/user_invoice/pages/user_invoice_detail.dart';
 import 'package:daroon_user/app/modules/user/user_invoice/pages/user_invoice_screen.dart';
 import 'package:daroon_user/app/modules/user/user_message/binding/user_mesaage_binding.dart';
+import 'package:daroon_user/app/modules/user/user_message/pages/doctor_meeting.dart';
 import 'package:daroon_user/app/modules/user/user_message/pages/user_chat_room.dart';
 import 'package:daroon_user/app/modules/user/user_message/pages/user_message.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/binding/user_appointment_binding.dart';
@@ -254,6 +255,11 @@ class AppPages {
       name: Routes.filterScreen,
       page: () => const FilterScreen(),
       binding: UserTopDoctorBinding(),
+    ),
+    GetPage(
+      name: Routes.meetingScreen,
+      page: () => const VideoMeetingPages(),
+      binding: UserMesaageBinding(),
     ),
   ];
 }

@@ -350,6 +350,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  dyte_core:
+    dependency: "direct main"
+    description:
+      name: dyte_core
+      sha256: a27548ff154f0e75a47eb655d12278f6d8aa7fab17f95d59361b23837d045bf0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
+  dyte_core_android:
+    dependency: transitive
+    description:
+      name: dyte_core_android
+      sha256: "62f8de2b7295db309faead4a29d8ca463419222a8ba585ffb77c4100d25a8136"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
+  dyte_core_ios:
+    dependency: transitive
+    description:
+      name: dyte_core_ios
+      sha256: "7525157cb364a7c62c3b2bb6e00a0e5dee1cf87631046c24d355ee12d69204ec"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
+  dyte_core_platform_interface:
+    dependency: transitive
+    description:
+      name: dyte_core_platform_interface
+      sha256: "15647550fdd80aac8d013be8792df80b60d6f2b3daa0652a269ad94df1367ece"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
   equatable:
     dependency: transitive
     description:
@@ -570,6 +602,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.2.8"
+  focus_detector_v2:
+    dependency: transitive
+    description:
+      name: focus_detector_v2
+      sha256: d4abc4c755ba894238ab92f42f6eee7ade78aa285199e112f45926c7053f90c6
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0+1"
   freezed_annotation:
     dependency: transitive
     description:
@@ -1607,6 +1647,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.3"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:

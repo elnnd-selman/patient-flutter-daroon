@@ -1,4 +1,4 @@
-import 'package:daroon_user/app/modules/user/user_message/model/user_message_model.dart';
+import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 
 class UserChatModel {
   UserChatModel({
@@ -114,7 +114,6 @@ class ErId {
         "lastName_ku": lastNameKu,
         "lastName_ar": lastNameAr,
         "lastName_en": lastNameEn,
-        "profilePicture": profilePicture?.toJson(),
         "isThirdParty": isThirdParty,
         "usePictureAsLink": usePictureAsLink,
         "dateOfBirth": dateOfBirth?.toIso8601String(),

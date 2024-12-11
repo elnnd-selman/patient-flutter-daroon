@@ -55,10 +55,7 @@ class User {
     required this.gender,
     required this.phone,
     required this.bio,
-    required this.education,
-    required this.experienceByYear,
     required this.typeOfUser,
-    required this.listOfAssistants,
     required this.language,
     required this.createdAt,
     required this.updatedAt,
@@ -91,28 +88,23 @@ class User {
   @HiveField(11)
   final String? bio;
   @HiveField(12)
-  final List<Education> education;
-  @HiveField(13)
-  final int? experienceByYear;
-  @HiveField(14)
   final String? typeOfUser;
-  @HiveField(15)
-  final List<dynamic> listOfAssistants;
-  @HiveField(16)
+  @HiveField(13)
   final String? language;
-  @HiveField(17)
+  @HiveField(14)
   final DateTime? createdAt;
-  @HiveField(18)
+  @HiveField(15)
   final DateTime? updatedAt;
-  @HiveField(19)
+  @HiveField(16)
   final int? v;
-  @HiveField(20)
+  @HiveField(17)
   final String? sessionToken;
-  @HiveField(21)
+  @HiveField(18)
   final dynamic profilePicture;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      typeOfUser: json["typeOfUser"],
       id: json["_id"],
       name: json["name"],
       username: json["username"],
@@ -125,15 +117,6 @@ class User {
       gender: json["gender"],
       phone: json["phone"] == null ? null : Phone.fromJson(json["phone"]),
       bio: json["bio"],
-      education: json["education"] == null
-          ? []
-          : List<Education>.from(
-              json["education"]!.map((x) => Education.fromJson(x))),
-      experienceByYear: json["experienceByYear"],
-      typeOfUser: json["typeOfUser"],
-      listOfAssistants: json["listOfAssistants"] == null
-          ? []
-          : List<dynamic>.from(json["listOfAssistants"]!.map((x) => x)),
       language: json["language"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
@@ -156,10 +139,6 @@ class User {
         "gender": gender,
         "phone": phone?.toJson(),
         "bio": bio,
-        "education": education.map((x) => x.toJson()).toList(),
-        "experienceByYear": experienceByYear,
-        "typeOfUser": typeOfUser,
-        "listOfAssistants": listOfAssistants.map((x) => x).toList(),
         "language": language,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
@@ -167,11 +146,6 @@ class User {
         "sessionToken": sessionToken,
         "profilePicture": profilePicture,
       };
-
-  @override
-  String toString() {
-    return "$id, $name, $username, $fullName, $email, $isEmailVerified, $level, $password, $isActive, $gender, $phone, $bio, $education, $experienceByYear, $typeOfUser, $listOfAssistants, $language, $createdAt, $updatedAt, $v, $sessionToken, $profilePicture, ";
-  }
 }
 
 @HiveType(typeId: 3)

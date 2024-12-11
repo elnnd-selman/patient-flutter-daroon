@@ -72,23 +72,20 @@ class UserAdapter extends TypeAdapter<User> {
       gender: fields[9] as String?,
       phone: fields[10] as Phone?,
       bio: fields[11] as String?,
-      education: (fields[12] as List).cast<Education>(),
-      experienceByYear: fields[13] as int?,
-      typeOfUser: fields[14] as String?,
-      listOfAssistants: (fields[15] as List).cast<dynamic>(),
-      language: fields[16] as String?,
-      createdAt: fields[17] as DateTime?,
-      updatedAt: fields[18] as DateTime?,
-      v: fields[19] as int?,
-      sessionToken: fields[20] as String?,
-      profilePicture: fields[21] as dynamic,
+      typeOfUser: fields[12] as String?,
+      language: fields[13] as String?,
+      createdAt: fields[14] as DateTime?,
+      updatedAt: fields[15] as DateTime?,
+      v: fields[16] as int?,
+      sessionToken: fields[17] as String?,
+      profilePicture: fields[18] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -114,24 +111,18 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(11)
       ..write(obj.bio)
       ..writeByte(12)
-      ..write(obj.education)
-      ..writeByte(13)
-      ..write(obj.experienceByYear)
-      ..writeByte(14)
       ..write(obj.typeOfUser)
-      ..writeByte(15)
-      ..write(obj.listOfAssistants)
-      ..writeByte(16)
+      ..writeByte(13)
       ..write(obj.language)
-      ..writeByte(17)
+      ..writeByte(14)
       ..write(obj.createdAt)
-      ..writeByte(18)
+      ..writeByte(15)
       ..write(obj.updatedAt)
-      ..writeByte(19)
+      ..writeByte(16)
       ..write(obj.v)
-      ..writeByte(20)
+      ..writeByte(17)
       ..write(obj.sessionToken)
-      ..writeByte(21)
+      ..writeByte(18)
       ..write(obj.profilePicture);
   }
 
