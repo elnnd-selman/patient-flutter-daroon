@@ -194,6 +194,9 @@ class _UserBottomNaviBarState extends State<UserBottomNaviBar>
                           _controller5!.reverse();
                           HapticFeedback.lightImpact();
                         });
+                        if (Get.isRegistered<UserHomeController>()) {
+                          Get.find<UserHomeController>().getUserAppointments();
+                        }
                       }),
                   _bottomIcons(
                       size: _animation2!.value,

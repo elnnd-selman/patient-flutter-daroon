@@ -1,3 +1,5 @@
+import 'package:daroon_user/app/model/level_model.dart';
+
 class TopDoctorModel {
   TopDoctorModel({
     required this.id,
@@ -138,41 +140,6 @@ class Education {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
-    );
-  }
-}
-
-class Level {
-  Level({
-    required this.id,
-    required this.levelKu,
-    required this.levelAr,
-    required this.levelEn,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-  });
-
-  final String? id;
-  final String? levelKu;
-  final String? levelAr;
-  final String? levelEn;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final bool? isDeleted;
-
-  factory Level.fromJson(Map<String, dynamic> json) {
-    return Level(
-      id: json["_id"],
-      levelKu: json["level_ku"],
-      levelAr: json["level_ar"],
-      levelEn: json["level_en"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-      isDeleted: json["isDeleted"],
     );
   }
 }

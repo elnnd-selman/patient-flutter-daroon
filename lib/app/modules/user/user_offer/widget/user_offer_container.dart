@@ -23,6 +23,7 @@ class UserOfferContainer extends StatelessWidget {
         userOfferModel,
       ]),
       child: Container(
+        margin: EdgeInsets.only(bottom: 2 * SizeConfig.heightMultiplier),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(

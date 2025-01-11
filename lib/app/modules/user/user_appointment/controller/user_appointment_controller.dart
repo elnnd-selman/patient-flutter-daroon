@@ -383,4 +383,9 @@ class UserAppointmentController extends GetxController {
             message.fullName!.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
+
+  Future<void> refreshAppointment() async {
+    await getDoctorAppointments();
+    await Future.delayed(const Duration(seconds: 2));
+  }
 }

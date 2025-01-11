@@ -22,6 +22,9 @@ abstract class Routes {
   static const inVoiceDetail = '/inVoiceDetail';
   static const paymentStatus = '/paymentStatus';
   static const meetingScreen = '/meetingScreen';
+  static const doctorSpecialtyDetail = '/doctorSpecialtyDetail';
+
+  // Get.to(()=>)
 //
   ////// Doctor  Screen/////
 

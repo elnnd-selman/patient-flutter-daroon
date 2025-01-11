@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,8 @@ class NetWorkImageLoader extends StatelessWidget {
   final BoxShape? shape;
   final Color? containerColor;
   final BoxFit? boxFit;
+  final bool? showAvatar;
+  final Color? avatarColor;
 
   const NetWorkImageLoader({
     super.key,
@@ -19,6 +22,8 @@ class NetWorkImageLoader extends StatelessWidget {
     this.containerColor = Colors.black54,
     required this.width,
     this.boxFit = BoxFit.cover,
+    this.avatarColor = Colors.grey,
+    this.showAvatar = false,
   });
 
   @override
@@ -44,7 +49,13 @@ class NetWorkImageLoader extends StatelessWidget {
             color: containerColor,
             shape: shape!,
           ),
-          child: const Icon(Icons.error),
+          child: showAvatar!
+              ? Image.asset(
+                  Assets.maleGender,
+                  color: avatarColor!.withOpacity(.7),
+                  fit: boxFit,
+                )
+              : const Icon(Icons.error),
         );
       },
       placeholder: (context, url) {

@@ -48,7 +48,7 @@ class UserHomeController extends GetxController {
     getTopDoctorData();
     getVIPDoctorData();
     getPublicAds();
-    getSpecialityAds();
+    getSpeciality();
     if (kDebugMode) {
       print(userModel.value!.token!);
       print(userModel.value!.user!.id!);
@@ -213,7 +213,7 @@ class UserHomeController extends GetxController {
 
   RxList<SpecialityModel> specialityList = <SpecialityModel>[].obs;
   RxBool isSpecialityLoading = false.obs;
-  getSpecialityAds() async {
+  getSpeciality() async {
     try {
       publicADSList.value = [];
       isSpecialityLoading.value = true;

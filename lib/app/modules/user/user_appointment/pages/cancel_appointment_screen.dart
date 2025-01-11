@@ -73,26 +73,34 @@ class CancelAppointmentScreen extends GetView<UserAppointmentController> {
                                   ),
                                 );
                               })
-                      : ListView.builder(
-                          padding: EdgeInsets.only(
-                              top: 2 * SizeConfig.heightMultiplier),
-                          shrinkWrap: true,
-                          itemCount: controller.cancelAppointmentList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
+                      : RefreshIndicator(
+                          backgroundColor: AppColors.primaryColor,
+                          edgeOffset: 0,
+                          displacement: 0,
+                          strokeWidth: 0,
+                          onRefresh: controller.refreshAppointment,
+                          child: ListView.builder(
                               padding: EdgeInsets.only(
-                                  bottom: index ==
-                                          controller.cancelAppointmentList
-                                                  .length -
-                                              1
-                                      ? 12 * SizeConfig.heightMultiplier
-                                      : 0),
-                              child: CancelAppointmentContainer(
-                                appointmentModel:
-                                    controller.cancelAppointmentList[index],
-                              ),
-                            );
-                          }),
+                                  top: 2 * SizeConfig.heightMultiplier),
+                              shrinkWrap: true,
+                              itemCount:
+                                  controller.cancelAppointmentList.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: index ==
+                                              controller.cancelAppointmentList
+                                                      .length -
+                                                  1
+                                          ? 12 * SizeConfig.heightMultiplier
+                                          : 0),
+                                  child: CancelAppointmentContainer(
+                                    appointmentModel:
+                                        controller.cancelAppointmentList[index],
+                                  ),
+                                );
+                              }),
+                        ),
     );
   }
 }

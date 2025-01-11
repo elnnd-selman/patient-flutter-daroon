@@ -57,7 +57,7 @@ class LoginCtrl extends GetxController {
             Get.offAllNamed(Routes.userdrawerScreen);
           } else {
             successTextMessage(
-                message: "Please use user account",
+                message: "Please use doctor account",
                 color: const Color(0xffEC1C24),
                 icon: Icons.close);
           }

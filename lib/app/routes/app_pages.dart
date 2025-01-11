@@ -1,5 +1,6 @@
 import 'package:daroon_user/app/modules/auth/reset_password/pages/reset_sucessfully.dart';
 import 'package:daroon_user/app/modules/auth/signup/pages/email_otp_screen.dart';
+import 'package:daroon_user/app/modules/user/user_home/pages/doctor_specialty_detail.dart';
 import 'package:daroon_user/app/modules/user/user_invoice/binding/user_invoice_binding.dart';
 import 'package:daroon_user/app/modules/user/user_invoice/pages/payment_succesfully.dart';
 import 'package:daroon_user/app/modules/user/user_invoice/pages/user_invoice_detail.dart';
@@ -51,7 +52,6 @@ import 'package:daroon_user/app/modules/user/user_bottom_navi_bar/page/user_draw
 import 'package:daroon_user/app/modules/user/user_offer/binding/user_offers_binding.dart';
 import 'package:daroon_user/app/modules/user/user_offer/pages/user_offer_detail.dart';
 import 'package:daroon_user/app/modules/user/user_offer/pages/user_offer_screen.dart';
-import 'package:daroon_user/app/modules/user/user_top_doctors/binding/user_top_doctor_binding.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/pages/filter_screen.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
 
@@ -254,12 +254,17 @@ class AppPages {
     GetPage(
       name: Routes.filterScreen,
       page: () => const FilterScreen(),
-      binding: UserTopDoctorBinding(),
+      binding: TopDoctorBindng(),
     ),
     GetPage(
       name: Routes.meetingScreen,
       page: () => const VideoMeetingPages(),
       binding: UserMesaageBinding(),
+    ),
+    GetPage(
+      name: Routes.doctorSpecialtyDetail,
+      page: () => const DoctorSpecialtyDetail(),
+      binding: UserHomeBinding(),
     ),
   ];
 }

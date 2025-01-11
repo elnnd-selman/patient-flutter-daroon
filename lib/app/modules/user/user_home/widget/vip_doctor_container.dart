@@ -1,25 +1,32 @@
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
+import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
+import 'package:daroon_user/global/widgets/network_image_loader.dart';
+import 'package:daroon_user/global/widgets/no_profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class VipDoctorContainer extends StatelessWidget {
   final TopDoctorModel topDoctorModel;
+  final int index;
   const VipDoctorContainer({
     super.key,
     required this.topDoctorModel,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primaryColor.withOpacity(0.9),
+        color: index == 1 || index == 2
+            ? AppColors.blackBGColor.withOpacity(0.5)
+            : AppColors.primaryColor.withOpacity(1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -136,24 +143,42 @@ class VipDoctorContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: MediaQuery.of(context).size.width * 0.04,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.18,
-                      width: MediaQuery.of(context).size.width * 0.32,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/onboarding3.png"),
-                          // colorFilter: ColorFilter.mode(
-                          //     AppColors.whiteBGColor
-                          //         .withOpacity(.1),
-                          //     BlendMode.srcIn),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
+                  topDoctorModel.profilePicture == null
+                      ? NoProfileImage(
+                          height: MediaQuery.of(context).size.height * 0.18,
+                          width: MediaQuery.of(context).size.width * 0.32,
+                          imageUrl:
+                              topDoctorModel.gender!.toLowerCase() == "male"
+                                  ? Assets.maleGender
+                                  : Assets.femaleGender)
+                      : Positioned(
+                          bottom: 0,
+                          child: NetWorkImageLoader(
+                            containerColor: Colors.transparent,
+                            showAvatar: true,
+                            boxFit: BoxFit.contain,
+                            imageURL: topDoctorModel.profilePicture!.md!,
+                            height: MediaQuery.of(context).size.height * 0.18,
+                            width: MediaQuery.of(context).size.width * 0.32,
+                          ),
+                        )
+                  // Positioned(
+                  //   bottom: 0,
+                  //   right: MediaQuery.of(context).size.width * 0.04,
+                  //   child: Container(
+                  //
+                  //     decoration: const BoxDecoration(
+                  //       image: DecorationImage(
+                  //         image: AssetImage("assets/images/onboarding3.png"),
+                  //         // colorFilter: ColorFilter.mode(
+                  //         //     AppColors.whiteBGColor
+                  //         //         .withOpacity(.1),
+                  //         //     BlendMode.srcIn),
+                  //         fit: BoxFit.contain,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               )
             ],

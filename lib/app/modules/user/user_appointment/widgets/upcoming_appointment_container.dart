@@ -10,6 +10,7 @@ import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
+import 'package:daroon_user/global/widgets/no_profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -91,18 +92,33 @@ class UpcomingAppointmentContainer extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: NetWorkImageLoader(
-                                          containerColor: Colors.black54,
-                                          imageURL: appointmentModel!
-                                              .bookedBy!.profilePicture!.bg!,
-                                          height:
-                                              9 * SizeConfig.heightMultiplier,
-                                          width:
-                                              18 * SizeConfig.widthMultiplier,
-                                        ),
-                                      ),
+                                      appointmentModel!
+                                                  .bookedBy!.profilePicture ==
+                                              null
+                                          ? NoProfileImage(
+                                              boxFit: BoxFit.contain,
+                                              height: 9 *
+                                                  SizeConfig.heightMultiplier,
+                                              width: 18 *
+                                                  SizeConfig.widthMultiplier,
+                                              imageUrl: Assets.maleGender)
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: NetWorkImageLoader(
+                                                boxFit: BoxFit.contain,
+                                                showAvatar: true,
+                                                containerColor: Colors.black54,
+                                                imageURL: appointmentModel!
+                                                    .bookedBy!
+                                                    .profilePicture!
+                                                    .bg!,
+                                                height: 9 *
+                                                    SizeConfig.heightMultiplier,
+                                                width: 18 *
+                                                    SizeConfig.widthMultiplier,
+                                              ),
+                                            ),
                                       // Container(
                                       //   height: 9 * SizeConfig.heightMultiplier,
                                       //   width: 18 * SizeConfig.widthMultiplier,

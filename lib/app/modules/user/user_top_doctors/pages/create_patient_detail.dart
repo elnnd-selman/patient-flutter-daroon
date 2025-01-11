@@ -124,19 +124,29 @@ class CreatePatientDetailScreen extends GetView<CreateAppointmentController> {
                     ),
                   ),
                   24.verticalSpace,
-                  Text(
-                    "Name",
-                    style: AppTextStyles.medium.copyWith(fontSize: 16),
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Text(
+                            "Name",
+                            style: AppTextStyles.medium.copyWith(fontSize: 16),
+                          ),
                   ),
-                  13.verticalSpace,
-                  CommonTextfeild(
-                    obscuretext: false,
-                    hinttext: "Full Name",
-                    validations: (val) {},
-                    controller: controller.name,
-                    keyboardType: TextInputType.name,
-                    showicon: false,
-                    scanIcons: false,
+                  Obx(
+                    () => controller.bookFor.value == "Your Self"
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 13),
+                            child: CommonTextfeild(
+                              obscuretext: false,
+                              hinttext: "Full Name",
+                              validations: (val) {},
+                              controller: controller.name,
+                              keyboardType: TextInputType.name,
+                              showicon: false,
+                              scanIcons: false,
+                            ),
+                          ),
                   ),
                   Obx(
                     () => controller.bookFor.value == "Your Self"

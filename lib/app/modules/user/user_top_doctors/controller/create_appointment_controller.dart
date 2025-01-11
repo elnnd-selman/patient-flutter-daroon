@@ -105,7 +105,7 @@ class CreateAppointmentController extends GetxController {
     for (int i = 0; i < times.length; i++) {
       var hour = int.parse(times[i].time!.split(':')[0]);
 
-      if (hour >= 8 && hour < 12) {
+      if (hour >= 0 && hour < 12) {
         // Morning: 8 AM to 11:59 AM
         morningTimes.add(times[i]);
       } else {
@@ -156,7 +156,7 @@ class CreateAppointmentController extends GetxController {
   final TextEditingController extraInfo = TextEditingController();
 
   checkPaitentValidation(BuildContext context) {
-    if (name.text.isEmpty) {
+    if (bookFor.value != "Your Self" && name.text.isEmpty) {
       showToastMessage(
           message: "Please enter name",
           context: context,
@@ -232,7 +232,9 @@ class CreateAppointmentController extends GetxController {
                                 : "saturday",
         "selectedTime": selectedTime.value,
         "age": bookFor.value == "Your Self" ? 20 : int.parse(age.text),
-        "fullName": name.text,
+        "fullName": bookFor.value == "Your Self"
+            ? Get.find<UserHomeController>().userModel.value!.user!.username!
+            : name.text,
         "gender": bookFor.value == "Your Self"
             ? Get.find<UserHomeController>().userModel.value!.user!.gender!
             : selectedGender.value == 0

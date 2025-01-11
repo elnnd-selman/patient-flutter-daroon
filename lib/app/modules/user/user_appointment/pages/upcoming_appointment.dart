@@ -73,28 +73,35 @@ class UpcomingAppointment extends GetView<UserAppointmentController> {
                             );
                           },
                         )
-                  : ListView.builder(
-                      padding:
-                          EdgeInsets.only(top: 2 * SizeConfig.heightMultiplier),
-                      shrinkWrap: true,
-                      itemCount: controller.upcomingAppointmentList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              bottom: index ==
-                                      controller
-                                              .upcomingAppointmentList.length -
-                                          1
-                                  ? 12 * SizeConfig.heightMultiplier
-                                  : 0),
-                          child: UpcomingAppointmentContainer(
-                            isLoading: false,
-                            isPadding: true,
-                            appointmentModel:
-                                controller.upcomingAppointmentList[index],
-                          ),
-                        );
-                      },
+                  : RefreshIndicator(
+                      backgroundColor: AppColors.primaryColor,
+                      edgeOffset: 0,
+                      displacement: 0,
+                      strokeWidth: 0,
+                      onRefresh: controller.refreshAppointment,
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(
+                            top: 2 * SizeConfig.heightMultiplier),
+                        shrinkWrap: true,
+                        itemCount: controller.upcomingAppointmentList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                bottom: index ==
+                                        controller.upcomingAppointmentList
+                                                .length -
+                                            1
+                                    ? 12 * SizeConfig.heightMultiplier
+                                    : 0),
+                            child: UpcomingAppointmentContainer(
+                              isLoading: false,
+                              isPadding: true,
+                              appointmentModel:
+                                  controller.upcomingAppointmentList[index],
+                            ),
+                          );
+                        },
+                      ),
                     ),
     );
   }

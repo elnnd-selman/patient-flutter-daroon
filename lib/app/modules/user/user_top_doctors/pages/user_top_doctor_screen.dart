@@ -1,5 +1,7 @@
 import 'package:daroon_user/app/modules/user/user_home/pages/user_home_screen.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/user_top_doctor_controller.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
+import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,39 +52,35 @@ class UserTopDoctorScreen extends GetView<UserTopDoctorController> {
                     ),
                   )
                 : controller.topDoctorModelList.isEmpty
-                    ? const Expanded(
-                        child: NoDataWidget(text: "No Doctor Found"))
-                    : controller.isSearch.value
-                        ? controller.searchDoctorModelList.isEmpty
-                            ? const Expanded(
-                                child: NoDataWidget(text: "No Doctor Found"))
-                            : Expanded(
-                                child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount:
-                                      controller.searchDoctorModelList.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return TopDoctorContainer(
-                                      topDoctorModel: controller
-                                          .searchDoctorModelList[index],
-                                    );
-                                  },
-                                ),
-                              )
-                        : Expanded(
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: controller.topDoctorModelList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return TopDoctorContainer(
-                                  topDoctorModel:
-                                      controller.topDoctorModelList[index],
-                                );
-                              },
-                            ),
+                    ? Expanded(
+                        child: RefreshIndicator(
+                            backgroundColor: AppColors.primaryColor,
+                            edgeOffset: 0,
+                            displacement: 0,
+                            strokeWidth: 0,
+                            onRefresh: controller.refreshTopDoctor,
+                            child: const NoDataWidget(text: "No Doctor Found")),
+                      )
+                    : Expanded(
+                        child: RefreshIndicator(
+                          backgroundColor: AppColors.primaryColor,
+                          edgeOffset: 0,
+                          displacement: 0,
+                          strokeWidth: 0,
+                          onRefresh: controller.refreshTopDoctor,
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: controller.topDoctorModelList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return TopDoctorContainer(
+                                topDoctorModel:
+                                    controller.topDoctorModelList[index],
+                              );
+                            },
                           ),
+                        ),
+                      ),
           ),
           SizedBox(height: 2 * SizeConfig.heightMultiplier),
         ],
@@ -136,18 +134,17 @@ class UserTopDoctorScreen extends GetView<UserTopDoctorController> {
                 AppColors.lighttextColor, BlendMode.srcIn),
           ),
         ),
-
-        // suffixIcon: CustomCupertinoButton(
-        //   onTap: () => Get.toNamed(Routes.filterScreen),
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(20),
-        //     child: SvgPicture.asset(
-        //       Assets.filterIcon,
-        //       colorFilter: const ColorFilter.mode(
-        //           AppColors.primaryColor, BlendMode.srcIn),
-        //     ),
-        //   ),
-        // ),
+        suffixIcon: CustomCupertinoButton(
+          onTap: () => Get.toNamed(Routes.filterScreen),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: SvgPicture.asset(
+              Assets.filterIcon,
+              colorFilter: const ColorFilter.mode(
+                  AppColors.primaryColor, BlendMode.srcIn),
+            ),
+          ),
+        ),
         isDense: true,
         hintText: "Search Doctor",
         hintStyle: AppTextStyles.medium.copyWith(
@@ -156,14 +153,28 @@ class UserTopDoctorScreen extends GetView<UserTopDoctorController> {
           color: const Color(0xff787B80),
         ),
       ),
-      onChanged: (val) {
-        if (val.isEmpty) {
-          controller.isSearch.value = false;
-        } else {
-          controller.isSearch.value = true;
+      onSaved: (val) {
+        if (val!.isNotEmpty) {
           controller.searchDoctor(val);
+        } else {
+          controller.getTopDoctorData();
         }
       },
+      onFieldSubmitted: (val) {
+        if (val.isNotEmpty) {
+          controller.searchDoctor(val);
+        } else {
+          controller.getTopDoctorData();
+        }
+      },
+      // onChanged: (val) {
+      //   if (val.isEmpty) {
+      //     controller.isSearch.value = false;
+      //   } else {
+      //     controller.isSearch.value = true;
+      //     controller.searchDoctor(val);
+      //   }
+      // },
     );
   }
 }

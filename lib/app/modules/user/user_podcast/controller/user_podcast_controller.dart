@@ -81,4 +81,10 @@ class UserPodcastController extends GetxController {
             message.titleEn!.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
+
+  Future<void> refreshTopDoctor() async {
+    getPodCast();
+    getPresenter();
+    await Future.delayed(const Duration(seconds: 2));
+  }
 }

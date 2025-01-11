@@ -179,7 +179,17 @@ class SeeOnMapContainer extends StatelessWidget {
               SizedBox(width: 2 * SizeConfig.heightMultiplier),
               Flexible(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      officeAddreesModel.title!,
+                      maxLines: 1,
+                      style: AppTextStyles.black.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.blackBGColor,
+                        fontSize: 14,
+                      ),
+                    ),
                     Text(
                       officeAddreesModel.description!,
                       maxLines: 2,

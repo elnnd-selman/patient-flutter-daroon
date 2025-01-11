@@ -180,7 +180,6 @@ class HomeUpcomingAppointmentContainer extends StatelessWidget {
                             CustomCupertinoButton(
                               onTap: () {
                                 Get.lazyPut(() => UserAppointmentController());
-
                                 Get.toNamed(
                                   Routes.userAppointmentDetail,
                                   arguments: [
@@ -331,30 +330,49 @@ class HomeUpcomingAppointmentContainer extends StatelessWidget {
       right: 1 * SizeConfig.widthMultiplier,
       top: 4,
       child: FadeInRight(
-          child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.widthMultiplier * 3.5,
-            vertical: SizeConfig.heightMultiplier * 1),
-        decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(20)),
-        child: Row(
-          children: [
-            Text(
-              "Details",
-              style: AppTextStyles.medium.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.whiteBGColor,
-                fontSize: SizeConfig.heightMultiplier * 1.2,
+          child: CustomCupertinoButton(
+        onTap: () {
+          Get.lazyPut(() => UserAppointmentController());
+
+          Get.toNamed(
+            Routes.userAppointmentDetail,
+            arguments: [
+              "Confirm",
+              "upcoming",
+              const Color(0xffFFC000),
+              false,
+              "Upcoming Appointment",
+              false,
+              true,
+              appointmentModel,
+            ],
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.widthMultiplier * 3.5,
+              vertical: SizeConfig.heightMultiplier * 1),
+          decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Text(
+                "Details",
+                style: AppTextStyles.medium.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.whiteBGColor,
+                  fontSize: SizeConfig.heightMultiplier * 1.2,
+                ),
               ),
-            ),
-            SizedBox(width: SizeConfig.widthMultiplier * 0.5),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: AppColors.whiteBGColor,
-              size: SizeConfig.heightMultiplier * 1.2,
-            )
-          ],
+              SizedBox(width: SizeConfig.widthMultiplier * 0.5),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.whiteBGColor,
+                size: SizeConfig.heightMultiplier * 1.2,
+              )
+            ],
+          ),
         ),
       )),
     );

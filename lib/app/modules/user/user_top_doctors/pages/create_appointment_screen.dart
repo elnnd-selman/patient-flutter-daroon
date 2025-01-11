@@ -220,7 +220,10 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
   }) {
     return Container(
       margin: EdgeInsets.only(top: index == 0 || index == 4 ? 0 : 14),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(Get.context!).size.width * 0.017,
+        vertical: MediaQuery.of(Get.context!).size.height * 0.007,
+      ),
       decoration: BoxDecoration(
         color: const Color(0xffF7F5FF),
         borderRadius: BorderRadius.circular(12),
@@ -228,8 +231,8 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
       child: Row(
         children: [
           Container(
-            height: 40,
-            width: 40,
+            height: MediaQuery.of(Get.context!).size.height * 0.045,
+            width: MediaQuery.of(Get.context!).size.height * 0.045,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -243,9 +246,9 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
               ),
             ),
           ),
-          10.horizontalSpace,
+          SizedBox(width: MediaQuery.of(Get.context!).size.width * 0.015),
           SizedBox(
-            width: MediaQuery.of(Get.context!).size.width * 0.42,
+            width: MediaQuery.of(Get.context!).size.width * 0.40,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -278,7 +281,7 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
           ),
           const Spacer(),
           Text(
-            "\$ ${fees.toString()}",
+            "IQD ${fees.toString()}",
             style: AppTextStyles.medium.copyWith(
               fontWeight: FontWeight.w500,
               color: AppColors.primaryColor,
@@ -340,6 +343,8 @@ class CreateAppointmentScreen extends GetView<CreateAppointmentController> {
             return CustomCupertinoButton(
               onTap: () {
                 controller.currentIndex.value = index;
+                controller.currentTimeIndex.value = -1;
+                controller.selectedTime.value = "";
                 controller.setAppointmentData();
               },
               child: Obx(

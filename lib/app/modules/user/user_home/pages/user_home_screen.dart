@@ -72,26 +72,28 @@ class UserHomeScreen extends GetView<UserHomeController> {
                             backgroundCardCount: 2,
                             swipeOptions: const SwipeOptions.all(),
                             controller: controller.appinioSwiperController,
-                            onCardPositionChanged: (
-                              SwiperPosition position,
-                            ) {},
+                            onCardPositionChanged: (position) {},
                             onSwipeEnd: controller.swipeEnd,
                             onEnd: controller.onEnd,
                             cardCount: controller.vipDoctorModelList.length,
                             cardBuilder: (BuildContext context, int index) {
                               return VipDoctorContainer(
-                                  topDoctorModel:
-                                      controller.vipDoctorModelList[index]);
+                                index: index,
+                                topDoctorModel:
+                                    controller.vipDoctorModelList[index],
+                              );
                             },
                           ),
               ),
             ),
             SizedBox(height: 6 * SizeConfig.heightMultiplier),
-            _buildTitleRow("Doctor Specialty"),
+            _buildTitleRow("Doctor Specialty", true, () {
+              Get.toNamed(Routes.doctorSpecialtyDetail);
+            }),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
             const UserDoctorSpecialtyContainer(),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
-            _buildTitleRow("Upcoming Appointment"),
+            _buildTitleRow("Upcoming Appointment", false, () {}),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
             const HomeUpcomingAppointment(),
             CustomCupertinoButton(
@@ -110,7 +112,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
               ),
             ),
             SizedBox(height: 4 * SizeConfig.heightMultiplier),
-            _buildTitleRow("Top Doctors"),
+            _buildTitleRow("Top Doctors", false, () {}),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
             Obx(
               () => controller.isLoading.value
@@ -144,7 +146,7 @@ class UserHomeScreen extends GetView<UserHomeController> {
                         ),
             ),
             SizedBox(
-              height: 60 * SizeConfig.heightMultiplier,
+              height: 4 * SizeConfig.heightMultiplier,
             ),
           ],
         ),
@@ -168,7 +170,11 @@ class UserHomeScreen extends GetView<UserHomeController> {
     );
   }
 
-  Row _buildTitleRow(String title) {
+  Row _buildTitleRow(
+    String title,
+    bool showSeeeText,
+    Function()? onTap,
+  ) {
     return Row(
       children: [
         Text(
@@ -179,15 +185,20 @@ class UserHomeScreen extends GetView<UserHomeController> {
             fontSize: SizeConfig.heightMultiplier * 2,
           ),
         ),
-        // const Spacer(),
-        // Text(
-        //   "See All",
-        //   style: AppTextStyles.medium.copyWith(
-        //     fontWeight: FontWeight.w500,
-        //     color: AppColors.primaryColor,
-        //     fontSize: 12,
-        //   ),
-        // ),
+        showSeeeText ? const Spacer() : const SizedBox(),
+        showSeeeText
+            ? CustomCupertinoButton(
+                onTap: onTap,
+                child: Text(
+                  "See All",
+                  style: AppTextStyles.medium.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryColor,
+                    fontSize: 13,
+                  ),
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

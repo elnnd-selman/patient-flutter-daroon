@@ -11,7 +11,6 @@ import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/no_data_widget.dart';
 import 'package:daroon_user/global/widgets/search_text_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,9 +23,15 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
       padding: EdgeInsets.symmetric(
           horizontal: 4 * SizeConfig.widthMultiplier,
           vertical: 3 * SizeConfig.heightMultiplier),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: RefreshIndicator(
+        backgroundColor: AppColors.primaryColor,
+        edgeOffset: 0,
+        displacement: 0,
+        strokeWidth: 0,
+        onRefresh: controller.refreshTopDoctor,
+        child: ListView(
+          shrinkWrap: true,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // SizedBox(height: 2 * SizeConfig.heightMultiplier),
             SearchTextField(
@@ -173,7 +178,7 @@ class UserPodcastScreen extends GetView<UserPodcastController> {
             ),
             10.verticalSpace,
 
-            Obx(() => controller.loading.value
+            Obx(() => controller.processing.value
                 ? CarouselSlider.builder(
                     options: CarouselOptions(
                       height: 18 * SizeConfig.heightMultiplier,

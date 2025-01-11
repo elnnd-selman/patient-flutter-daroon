@@ -27,150 +27,154 @@ class _UserInvoiceDetailState extends State<UserInvoiceDetail>
   final controller = Get.find<UserInvoiceController>();
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<UserInvoiceController>(initState: (_) {
-      controller.setData(name, id);
-    }, builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          shadowColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          automaticallyImplyLeading: true,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Text(
-              name.capitalizeFirst!,
-              style: AppTextStyles.medium.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.blackBGColor,
-                fontSize: 2 * SizeConfig.heightMultiplier,
-              ),
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              10.verticalSpace,
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color(0xffe0f3f2),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      "FIB",
-                      style: AppTextStyles.bold.copyWith(
-                        fontSize: 2.2 * SizeConfig.heightMultiplier,
-                      ),
-                    ),
-                    const Spacer(),
-                    Image.asset(
-                      "assets/images/fibLogo.png",
-                      width: 10 * SizeConfig.heightMultiplier,
-                      fit: BoxFit.fitWidth,
-                    )
-                  ],
-                ),
-              ),
-              30.verticalSpace,
-              Text(
-                "Please Select Account Type",
-                style: AppTextStyles.semiBold.copyWith(
+    return GetBuilder<UserInvoiceController>(
+      initState: (_) {
+        controller.setData(name, id);
+      },
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.white,
+            shadowColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            automaticallyImplyLeading: true,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(
+                name.capitalizeFirst!,
+                style: AppTextStyles.medium.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.blackBGColor,
                   fontSize: 2 * SizeConfig.heightMultiplier,
                 ),
               ),
-              10.verticalSpace,
-              Obx(
-                () => controller.isLoading.value
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return ShimmerLoader(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 34, horizontal: 20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.grey.shade300,
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.accountTypeList.length,
-                        itemBuilder: (context, index) {
-                          return CustomCupertinoButton(
-                            onTap: () {
-                              controller.selectedIndex.value = index;
-                            },
-                            child: _buildAccountContainer(
-                              name: controller.accountTypeList[index],
-                              index: index,
-                            ),
-                          );
-                        },
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                10.verticalSpace,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: const Color(0xffe0f3f2),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "FIB",
+                        style: AppTextStyles.bold.copyWith(
+                          fontSize: 2.2 * SizeConfig.heightMultiplier,
+                        ),
                       ),
-              ),
-              const Spacer(),
-              CommonButton(
-                name: "Continue to Pay",
-                ontap: () {
-                  if (controller.selectedIndex.value == -1) {
-                    showToastMessage(
-                        message: "Please select account type",
-                        // ignore: use_build_context_synchronously
-                        context: context,
-                        color: const Color(0xffEC1C24),
-                        icon: Icons.close);
-                  } else {
-                    if (controller.userSpecificVoiceModel.value != null) {
-                      if (controller.selectedIndex.value == 0) {
-                        _handleDeepLink(
-                            url: controller.userSpecificVoiceModel.value!.data!
-                                .data!.personalAppLink!,
-                            context: context);
-                      } else if (controller.selectedIndex.value == 1) {
-                        _handleDeepLink(
-                            url: controller.userSpecificVoiceModel.value!.data!
-                                .data!.businessAppLink!,
-                            context: context);
-                      } else if (controller.selectedIndex.value == 2) {
-                        _handleDeepLink(
-                            url: controller.userSpecificVoiceModel.value!.data!
-                                .data!.corporateAppLink!,
-                            context: context);
-                      }
-                    } else {
+                      const Spacer(),
+                      Image.asset(
+                        "assets/images/fibLogo.png",
+                        width: 10 * SizeConfig.heightMultiplier,
+                        fit: BoxFit.fitWidth,
+                      )
+                    ],
+                  ),
+                ),
+                30.verticalSpace,
+                Text(
+                  "Please Select Account Type",
+                  style: AppTextStyles.semiBold.copyWith(
+                    fontSize: 2 * SizeConfig.heightMultiplier,
+                  ),
+                ),
+                10.verticalSpace,
+                Obx(
+                  () => controller.isLoading.value
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return ShimmerLoader(
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 34, horizontal: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.accountTypeList.length,
+                          itemBuilder: (context, index) {
+                            return CustomCupertinoButton(
+                              onTap: () {
+                                controller.selectedIndex.value = index;
+                              },
+                              child: _buildAccountContainer(
+                                name: controller.accountTypeList[index],
+                                index: index,
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                const Spacer(),
+                CommonButton(
+                  name: "Continue to Pay",
+                  ontap: () {
+                    if (controller.selectedIndex.value == -1) {
                       showToastMessage(
-                          message: "Please try again later",
+                          message: "Please select account type",
                           // ignore: use_build_context_synchronously
                           context: context,
                           color: const Color(0xffEC1C24),
                           icon: Icons.close);
+                    } else {
+                      if (controller.userSpecificVoiceModel.value != null) {
+                        if (controller.selectedIndex.value == 0) {
+                          _handleDeepLink(
+                              url: controller.userSpecificVoiceModel.value!
+                                  .data!.data!.personalAppLink!,
+                              context: context);
+                        } else if (controller.selectedIndex.value == 1) {
+                          _handleDeepLink(
+                              url: controller.userSpecificVoiceModel.value!
+                                  .data!.data!.businessAppLink!,
+                              context: context);
+                        } else if (controller.selectedIndex.value == 2) {
+                          _handleDeepLink(
+                              url: controller.userSpecificVoiceModel.value!
+                                  .data!.data!.corporateAppLink!,
+                              context: context);
+                        }
+                      } else {
+                        showToastMessage(
+                            message: "Please try again later",
+                            // ignore: use_build_context_synchronously
+                            context: context,
+                            color: const Color(0xffEC1C24),
+                            icon: Icons.close);
+                      }
                     }
-                  }
-                },
-              )
-            ],
+                  },
+                )
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   @override

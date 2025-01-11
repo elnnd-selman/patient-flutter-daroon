@@ -1,6 +1,9 @@
+import 'package:daroon_user/app/controllers/local_storage_controller.dart';
+import 'package:daroon_user/app/routes/app_routes.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
@@ -41,6 +44,17 @@ class UserDrawerOption extends StatelessWidget {
             SizedBox(height: 1 * SizeConfig.heightMultiplier),
             _drawerTexttile(
                 icon: Assets.settingIcon, text: "Setting", index: 3),
+            SizedBox(height: 1 * SizeConfig.heightMultiplier),
+            _drawerTexttile(
+                onTap: () {
+                  Get.find<LocalStorageController>()
+                      .daroonBox!
+                      .delete("isLogin");
+                  Get.offAllNamed(Routes.login);
+                },
+                icon: "assets/icons/logout.svg",
+                text: "Log Out",
+                index: 3),
             SizedBox(height: 20 * SizeConfig.heightMultiplier),
           ],
         ),
@@ -52,11 +66,13 @@ class UserDrawerOption extends StatelessWidget {
     required String icon,
     required String text,
     required int index,
+    Function()? onTap,
   }) {
     return CustomCupertinoButton(
-      onTap: () {
-        setIndex(index);
-      },
+      onTap: onTap ??
+          () {
+            setIndex(index);
+          },
       child: Row(
         children: [
           Container(

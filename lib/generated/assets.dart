@@ -56,4 +56,7 @@ class Assets {
 
   static const ophthalIcon = "assets/icons/ophthalIcon.svg";
   static const doneIcon = "assets/icons/done_icon.svg";
+
+  static const maleGender = 'assets/icons_png/avatar_male.png';
+  static const femaleGender = 'assets/icons_png/avatar_female.png';
 }
