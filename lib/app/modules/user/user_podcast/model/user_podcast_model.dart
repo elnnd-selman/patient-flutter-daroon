@@ -1,4 +1,8 @@
 import 'package:daroon_user/app/model/level_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
+
+import '../../../../model/education_model.dart';
 
 class PodCastModel {
   PodCastModel({
@@ -86,7 +90,7 @@ class User {
   final String? firstNameEn;
   final String? firstNameAr;
   final List<Education> education;
-  final String? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? usePictureAsLink;
   final Level? level;
   final Speciality? speciality;
@@ -102,95 +106,15 @@ class User {
           ? []
           : List<Education>.from(
               json["education"]!.map((x) => Education.fromJson(x))),
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       usePictureAsLink: json["usePictureAsLink"],
       level: json["level"] == null ? null : Level.fromJson(json["level"]),
       speciality: json["speciality"] == null
           ? null
           : Speciality.fromJson(json["speciality"]),
-    );
-  }
-}
-
-class Education {
-  Education({
-    required this.id,
-    required this.degree,
-    required this.fromYear,
-    required this.toYear,
-    required this.instituteAr,
-    required this.instituteEn,
-    required this.instituteKu,
-    required this.degreeNameAr,
-    required this.degreeNameEn,
-    required this.degreeNameKu,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? degree;
-  final String? fromYear;
-  final String? toYear;
-  final String? instituteAr;
-  final String? instituteEn;
-  final String? instituteKu;
-  final String? degreeNameAr;
-  final String? degreeNameEn;
-  final String? degreeNameKu;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Education.fromJson(Map<String, dynamic> json) {
-    return Education(
-      id: json["_id"],
-      degree: json["degree"],
-      fromYear: json["fromYear"],
-      toYear: json["toYear"],
-      instituteAr: json["institute_ar"],
-      instituteEn: json["institute_en"],
-      instituteKu: json["institute_ku"],
-      degreeNameAr: json["degreeName_ar"],
-      degreeNameEn: json["degreeName_en"],
-      degreeNameKu: json["degreeName_ku"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-    );
-  }
-}
-
-
-class Speciality {
-  Speciality({
-    required this.id,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      id: json["_id"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
     );
   }
 }

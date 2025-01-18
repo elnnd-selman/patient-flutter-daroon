@@ -71,6 +71,7 @@ abstract class Routes {
 
   static const userEditProfile = "/userEditProfile";
   static const userChangeEmail = "/userChangeEmail";
+  static const userChangeName = "/userChangeName";
   static const userChangeUserName = "/userChangeUserName";
 
   ///

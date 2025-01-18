@@ -1,2 +1,2 @@
-const kFontFamily = 'Inter';
+const kFontFamily = 'Poppins';
 const ksecondaryFontFamily = 'Roboto';

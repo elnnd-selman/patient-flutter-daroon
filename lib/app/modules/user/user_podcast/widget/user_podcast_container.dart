@@ -156,7 +156,7 @@ class UserPodCastContainer extends StatelessWidget {
                                   )
                                 : NetWorkImageLoader(
                                     imageURL:
-                                        podCastModel!.user!.profilePicture!,
+                                        podCastModel!.user!.profilePicture!.md!,
                                     height: 4 * SizeConfig.heightMultiplier,
                                     width: 4 * SizeConfig.heightMultiplier,
                                     containerColor:

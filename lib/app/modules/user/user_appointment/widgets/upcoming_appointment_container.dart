@@ -96,6 +96,8 @@ class UpcomingAppointmentContainer extends StatelessWidget {
                                                   .bookedBy!.profilePicture ==
                                               null
                                           ? NoProfileImage(
+                                              containerColor:
+                                                  Colors.transparent,
                                               boxFit: BoxFit.contain,
                                               height: 9 *
                                                   SizeConfig.heightMultiplier,
@@ -136,6 +138,34 @@ class UpcomingAppointmentContainer extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                                vertical: 0.5 *
+                                                    SizeConfig
+                                                        .heightMultiplier),
+                                            decoration: BoxDecoration(
+                                                color: appointmentModel!.isPaid!
+                                                    ? Colors.green
+                                                        .withOpacity(.5)
+                                                    : Colors.red
+                                                        .withOpacity(.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(6)),
+                                            child: Text(
+                                              appointmentModel!.isPaid!
+                                                  ? "Paid"
+                                                  : "Not Paid",
+                                              style: AppTextStyles.normal
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .whiteBGColor,
+                                                      fontSize: 1.2 *
+                                                          SizeConfig
+                                                              .heightMultiplier),
+                                            ),
+                                          ),
+                                          6.verticalSpace,
                                           Text(
                                             appointmentModel!.fullName!,
                                             style:
@@ -353,30 +383,48 @@ class UpcomingAppointmentContainer extends StatelessWidget {
       right: 2 * SizeConfig.widthMultiplier,
       top: 4,
       child: FadeInRight(
-          child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.widthMultiplier * 3.5,
-            vertical: SizeConfig.heightMultiplier * 1),
-        decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(20)),
-        child: Row(
-          children: [
-            Text(
-              "Details",
-              style: AppTextStyles.medium.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.whiteBGColor,
-                fontSize: SizeConfig.heightMultiplier * 1.2,
+          child: CustomCupertinoButton(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          Get.toNamed(
+            Routes.userAppointmentDetail,
+            arguments: [
+              "Confirm",
+              "upcoming",
+              const Color(0xffFFC000),
+              false,
+              "Upcoming Appointment",
+              false,
+              true,
+              appointmentModel,
+            ],
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.widthMultiplier * 3.5,
+              vertical: SizeConfig.heightMultiplier * 1),
+          decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Text(
+                "Details",
+                style: AppTextStyles.medium.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.whiteBGColor,
+                  fontSize: SizeConfig.heightMultiplier * 1.2,
+                ),
               ),
-            ),
-            SizedBox(width: SizeConfig.widthMultiplier * 0.5),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: AppColors.whiteBGColor,
-              size: SizeConfig.heightMultiplier * 1.2,
-            )
-          ],
+              SizedBox(width: SizeConfig.widthMultiplier * 0.5),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.whiteBGColor,
+                size: SizeConfig.heightMultiplier * 1.2,
+              )
+            ],
+          ),
         ),
       )),
     );

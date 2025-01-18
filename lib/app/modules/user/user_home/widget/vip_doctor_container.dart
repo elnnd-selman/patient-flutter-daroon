@@ -24,9 +24,7 @@ class VipDoctorContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: index == 1 || index == 2
-            ? AppColors.blackBGColor.withOpacity(0.5)
-            : AppColors.primaryColor.withOpacity(1),
+        color: AppColors.primaryColor.withOpacity(1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -40,12 +38,17 @@ class VipDoctorContainer extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
-                  Text(
-                    "Dr. ${topDoctorModel.firstName!.capitalizeFirst!} ${topDoctorModel.lastNameEn!.capitalizeFirst}",
-                    style: AppTextStyles.semiBold.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: MediaQuery.of(context).size.height * 0.024,
-                        color: AppColors.whiteBGColor),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.39,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    child: Text(
+                      "Dr. ${topDoctorModel.firstName!.capitalizeFirst!} ${topDoctorModel.lastNameEn!.capitalizeFirst}",
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.semiBold.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: MediaQuery.of(context).size.height * 0.024,
+                          color: AppColors.whiteBGColor),
+                    ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   Container(
@@ -144,13 +147,18 @@ class VipDoctorContainer extends StatelessWidget {
                     ),
                   ),
                   topDoctorModel.profilePicture == null
-                      ? NoProfileImage(
-                          height: MediaQuery.of(context).size.height * 0.18,
-                          width: MediaQuery.of(context).size.width * 0.32,
-                          imageUrl:
-                              topDoctorModel.gender!.toLowerCase() == "male"
-                                  ? Assets.maleGender
-                                  : Assets.femaleGender)
+                      ? Positioned(
+                          right: MediaQuery.of(context).size.width * 0.04,
+                          bottom: MediaQuery.of(context).size.height * 0.03,
+                          child: NoProfileImage(
+                              containerColor: Colors.transparent,
+                              height: MediaQuery.of(context).size.height * 0.13,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              imageUrl:
+                                  topDoctorModel.gender!.toLowerCase() == "male"
+                                      ? Assets.maleGender
+                                      : Assets.femaleGender),
+                        )
                       : Positioned(
                           bottom: 0,
                           child: NetWorkImageLoader(

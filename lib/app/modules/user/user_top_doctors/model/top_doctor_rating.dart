@@ -1,3 +1,5 @@
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+
 class DoctorRatingModel {
   DoctorRatingModel({
     required this.id,
@@ -88,29 +90,10 @@ class Patient {
       education: json["education"] == null
           ? []
           : List<dynamic>.from(json["education"]!.map((x) => x)),
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
-    );
-  }
-}
-
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
     );
   }
 }

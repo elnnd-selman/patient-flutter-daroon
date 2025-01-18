@@ -1,4 +1,4 @@
-import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
 
 class UserChatModel {
   UserChatModel({
@@ -76,7 +76,7 @@ class ErId {
   final String? lastNameKu;
   final String? lastNameAr;
   final String? lastNameEn;
-  ProfilePicture? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
@@ -94,7 +94,7 @@ class ErId {
       lastNameAr: json["lastName_ar"],
       lastNameEn: json["lastName_en"],
       profilePicture: json["profilePicture"] == null ||
-              json["profilePicture"] == "image key (optional)"
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],

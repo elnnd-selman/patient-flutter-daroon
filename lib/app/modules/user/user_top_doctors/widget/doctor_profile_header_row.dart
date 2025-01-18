@@ -1,7 +1,9 @@
+import 'package:daroon_user/app/modules/user/user_top_doctors/controller/top_doctor_profile_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DoctorProfileHeaderRow extends StatelessWidget {
   final TopDoctorModel topDoctorModel;
@@ -14,7 +16,7 @@ class DoctorProfileHeaderRow extends StatelessWidget {
         children: [
           const Expanded(child: SizedBox()),
           _headerText(
-            title: "+236",
+            title: "+${topDoctorModel.completedAppointments}",
             subTitle: "Patients",
           ),
           const Expanded(child: SizedBox()),
@@ -27,9 +29,12 @@ class DoctorProfileHeaderRow extends StatelessWidget {
           const Expanded(child: SizedBox()),
           const HorizontalDivider(),
           const Expanded(child: SizedBox()),
-          _headerText(
-            title: "+26",
-            subTitle: "Reviews",
+          Obx(
+            () => _headerText(
+              title:
+                  "+${Get.find<TopDoctorProfileController>().doctorRatingList.length}",
+              subTitle: "Reviews",
+            ),
           ),
           const Expanded(child: SizedBox()),
         ],

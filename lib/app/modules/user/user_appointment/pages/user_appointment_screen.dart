@@ -45,7 +45,7 @@ class _UserAppointmentScreenState extends State<UserAppointmentScreen>
         children: [
           10.verticalSpace,
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height * 0.042,
             child: Padding(
               padding: const EdgeInsets.only(right: 25),
               child: TabBar(

@@ -1,4 +1,7 @@
+import 'package:daroon_user/app/model/education_model.dart';
 import 'package:daroon_user/app/model/level_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
 
 class UserOfferModel {
   UserOfferModel({
@@ -156,7 +159,7 @@ class DatumDoctor {
   final int? experienceByYear;
   final String? typeOfUser;
   final List<String> languages;
-  final String? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
   final Level? level;
@@ -183,101 +186,16 @@ class DatumDoctor {
       languages: json["languages"] == null
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
       level: json["level"] == null ? null : Level.fromJson(json["level"]),
       speciality: json["speciality"] == null
           ? null
           : Speciality.fromJson(json["speciality"]),
-    );
-  }
-}
-
-class Education {
-  Education({
-    required this.id,
-    required this.degree,
-    required this.fromYear,
-    required this.toYear,
-    required this.instituteAr,
-    required this.instituteEn,
-    required this.instituteKu,
-    required this.degreeNameAr,
-    required this.degreeNameEn,
-    required this.degreeNameKu,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? degree;
-  final String? fromYear;
-  final String? toYear;
-  final String? instituteAr;
-  final String? instituteEn;
-  final String? instituteKu;
-  final String? degreeNameAr;
-  final String? degreeNameEn;
-  final String? degreeNameKu;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Education.fromJson(Map<String, dynamic> json) {
-    return Education(
-      id: json["_id"],
-      degree: json["degree"],
-      fromYear: json["fromYear"],
-      toYear: json["toYear"],
-      instituteAr: json["institute_ar"],
-      instituteEn: json["institute_en"],
-      instituteKu: json["institute_ku"],
-      degreeNameAr: json["degreeName_ar"],
-      degreeNameEn: json["degreeName_en"],
-      degreeNameKu: json["degreeName_ku"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-    );
-  }
-}
-
-class Speciality {
-  Speciality({
-    required this.id,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      id: json["_id"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
     );
   }
 }
@@ -573,7 +491,7 @@ class OfficeDoctor {
   final String? typeOfUser;
   final List<String> languages;
   final String? appLang;
-  final String? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
@@ -612,7 +530,10 @@ class OfficeDoctor {
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),

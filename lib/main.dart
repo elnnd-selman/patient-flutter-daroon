@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daroon_user/app/binding/initial_binding.dart';
 import 'package:daroon_user/app/model/user_model.dart';
+import 'package:daroon_user/app/model/user_profile_picture.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(EducationAdapter());
   Hive.registerAdapter(PhoneAdapter());
+  Hive.registerAdapter(UserProfilePictureAdapter());
 
   await Hive.openBox('DaroonBox');
   runApp(

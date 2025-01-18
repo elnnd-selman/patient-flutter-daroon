@@ -352,7 +352,7 @@ class UserAppointmentController extends GetxController {
     } else if (currentIndex.value == 5) {
       appointmentTimeList.value = appointmentTimes.friday;
     } else if (currentIndex.value == 6) {
-      appointmentTimeList.value = appointmentTimes.saturday;
+      // appointmentTimeList.value = appointmentTimes.saturday;
     }
   }
 

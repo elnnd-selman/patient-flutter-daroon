@@ -1,3 +1,4 @@
+import 'package:daroon_user/app/model/user_profile_picture.dart';
 import 'package:hive/hive.dart';
 part 'user_model.g.dart';
 
@@ -26,13 +27,6 @@ class UserModel {
       message: json["message"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "user": user?.toJson(),
-        "token": token,
-        "success": success,
-        "message": message,
-      };
 
   @override
   String toString() {
@@ -100,7 +94,7 @@ class User {
   @HiveField(17)
   final String? sessionToken;
   @HiveField(18)
-  final dynamic profilePicture;
+  final UserProfilePicture? profilePicture;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -122,30 +116,13 @@ class User {
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
       sessionToken: json["sessionToken"],
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String ||
+              json["profilePicture"] == ""
+          ? null
+          : UserProfilePicture.fromJson(json["profilePicture"]),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
-        "username": username,
-        "fullName": fullName,
-        "email": email,
-        "isEmailVerified": isEmailVerified,
-        "level": level,
-        "password": password,
-        "isActive": isActive,
-        "gender": gender,
-        "phone": phone?.toJson(),
-        "bio": bio,
-        "language": language,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
-        "sessionToken": sessionToken,
-        "profilePicture": profilePicture,
-      };
 }
 
 @HiveType(typeId: 3)

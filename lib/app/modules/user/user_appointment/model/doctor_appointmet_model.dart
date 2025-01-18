@@ -1,4 +1,9 @@
-import '../../../../model/level_model.dart';
+import 'package:daroon_user/app/model/education_model.dart';
+import 'package:daroon_user/app/model/level_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
+
+import '../../../../model/type_currency_model.dart';
 
 class AppointmentModel {
   AppointmentModel({
@@ -23,15 +28,20 @@ class AppointmentModel {
     required this.status,
     required this.cancelledReason,
     required this.isDeleted,
+    required this.patientName,
+    required this.doctorName,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
-    required this.cancelledReasonNote,
+    required this.isReviewed,
+    required this.isReviewedByMe,
+    required this.conversation,
+    required this.invoice,
   });
 
   final String? id;
   final Office? office;
-  final BookedBy? doctor;
+  final DatumDoctor? doctor;
   final String? selectedDay;
   final String? selectedTime;
   final bool? isPaid;
@@ -48,18 +58,24 @@ class AppointmentModel {
   final String? bookedFor;
   final BookedBy? bookedBy;
   final String? status;
-  String? cancelledReason;
+  final dynamic cancelledReason;
   final bool? isDeleted;
+  final String? patientName;
+  final String? doctorName;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final String? cancelledReasonNote;
+  final bool? isReviewed;
+  final bool? isReviewedByMe;
+  final Conversation? conversation;
+  final Invoice? invoice;
 
   factory AppointmentModel.fromJson(Map<String, dynamic> json) {
     return AppointmentModel(
       id: json["_id"],
       office: json["office"] == null ? null : Office.fromJson(json["office"]),
-      doctor: json["doctor"] == null ? null : BookedBy.fromJson(json["doctor"]),
+      doctor:
+          json["doctor"] == null ? null : DatumDoctor.fromJson(json["doctor"]),
       selectedDay: json["selectedDay"],
       selectedTime: json["selectedTime"],
       isPaid: json["isPaid"],
@@ -81,10 +97,18 @@ class AppointmentModel {
       status: json["status"],
       cancelledReason: json["cancelledReason"],
       isDeleted: json["isDeleted"],
+      patientName: json["patientName"],
+      doctorName: json["doctorName"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
-      cancelledReasonNote: json["cancelledReasonNote"],
+      isReviewed: json["is_reviewed"],
+      isReviewedByMe: json["is_reviewed_by_me"],
+      conversation: json["conversation"] == null
+          ? null
+          : Conversation.fromJson(json["conversation"]),
+      invoice:
+          json["invoice"] == null ? null : Invoice.fromJson(json["invoice"]),
     );
   }
 }
@@ -96,10 +120,9 @@ class BookedBy {
     required this.firstNameKu,
     required this.firstNameEn,
     required this.firstNameAr,
+    required this.username,
     required this.education,
     required this.profilePicture,
-    required this.level,
-    required this.speciality,
   });
 
   final String? id;
@@ -107,10 +130,9 @@ class BookedBy {
   final String? firstNameKu;
   final String? firstNameEn;
   final String? firstNameAr;
-  final List<Education> education;
+  final String? username;
+  final List<dynamic> education;
   final ProfilePicture? profilePicture;
-  final Level? level;
-  final Speciality? speciality;
 
   factory BookedBy.fromJson(Map<String, dynamic> json) {
     return BookedBy(
@@ -119,6 +141,117 @@ class BookedBy {
       firstNameKu: json["firstName_ku"],
       firstNameEn: json["firstName_en"],
       firstNameAr: json["firstName_ar"],
+      username: json["username"],
+      education: json["education"] == null
+          ? []
+          : List<dynamic>.from(json["education"]!.map((x) => x)),
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
+    );
+  }
+}
+
+class Conversation {
+  Conversation({
+    required this.id,
+    required this.patient,
+    required this.doctor,
+    required this.office,
+    required this.inTimeStartingConversation,
+    required this.inTimeEndingConversation,
+    required this.invoice,
+    required this.duration,
+    required this.timeType,
+    required this.types,
+    required this.appointment,
+    required this.isActive,
+    required this.meetingInfo,
+    required this.messages,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+  });
+
+  final String? id;
+  final String? patient;
+  final String? doctor;
+  final String? office;
+  final String? inTimeStartingConversation;
+  final String? inTimeEndingConversation;
+  final String? invoice;
+  final int? duration;
+  final String? timeType;
+  final List<String> types;
+  final String? appointment;
+  final bool? isActive;
+  final dynamic meetingInfo;
+  final List<dynamic> messages;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  factory Conversation.fromJson(Map<String, dynamic> json) {
+    return Conversation(
+      id: json["_id"],
+      patient: json["patient"],
+      doctor: json["doctor"],
+      office: json["office"],
+      inTimeStartingConversation: json["inTimeStartingConversation"],
+      inTimeEndingConversation: json["inTimeEndingConversation"],
+      invoice: json["invoice"],
+      duration: json["duration"],
+      timeType: json["timeType"],
+      types: json["types"] == null
+          ? []
+          : List<String>.from(json["types"]!.map((x) => x)),
+      appointment: json["appointment"],
+      isActive: json["isActive"],
+      meetingInfo: json["meeting_info"],
+      messages: json["messages"] == null
+          ? []
+          : List<dynamic>.from(json["messages"]!.map((x) => x)),
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      v: json["__v"],
+    );
+  }
+}
+
+class DatumDoctor {
+  DatumDoctor({
+    required this.id,
+    required this.firstName,
+    required this.firstNameKu,
+    required this.firstNameEn,
+    required this.firstNameAr,
+    required this.username,
+    required this.education,
+    required this.profilePicture,
+    required this.speciality,
+    required this.level,
+  });
+
+  final String? id;
+  final String? firstName;
+  final String? firstNameKu;
+  final String? firstNameEn;
+  final String? firstNameAr;
+  final String? username;
+  final List<Education> education;
+  final ProfilePicture? profilePicture;
+  final Speciality? speciality;
+  final Level? level;
+
+  factory DatumDoctor.fromJson(Map<String, dynamic> json) {
+    return DatumDoctor(
+      id: json["_id"],
+      firstName: json["firstName"],
+      firstNameKu: json["firstName_ku"],
+      firstNameEn: json["firstName_en"],
+      firstNameAr: json["firstName_ar"],
+      username: json["username"],
       education: json["education"] == null
           ? []
           : List<Education>.from(
@@ -127,118 +260,120 @@ class BookedBy {
               json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
-      level: json["level"] == null ? null : Level.fromJson(json["level"]),
       speciality: json["speciality"] == null
           ? null
           : Speciality.fromJson(json["speciality"]),
+      level: json["level"] == null ? null : Level.fromJson(json["level"]),
     );
   }
 }
 
-class Education {
-  Education({
+class Invoice {
+  Invoice({
     required this.id,
-    required this.degree,
-    required this.fromYear,
-    required this.toYear,
-    required this.instituteAr,
-    required this.instituteEn,
-    required this.instituteKu,
-    required this.degreeNameAr,
-    required this.degreeNameEn,
-    required this.degreeNameKu,
-    required this.isDeleted,
+    required this.user,
+    required this.appointment,
+    required this.currency,
+    required this.totalAmount,
+    required this.originalTotal,
+    required this.patientName,
+    required this.doctorName,
+    required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.invoiceNumber,
     required this.v,
+    required this.paymentId,
+    required this.transaction,
   });
 
   final String? id;
-  final String? degree;
-  final String? fromYear;
-  final String? toYear;
-  final String? instituteAr;
-  final String? instituteEn;
-  final String? instituteKu;
-  final String? degreeNameAr;
-  final String? degreeNameEn;
-  final String? degreeNameKu;
-  final bool? isDeleted;
+  final String? user;
+  final String? appointment;
+  final String? currency;
+  final int? totalAmount;
+  final int? originalTotal;
+  final String? patientName;
+  final String? doctorName;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final int? invoiceNumber;
   final int? v;
+  final String? paymentId;
+  final Transaction? transaction;
 
-  factory Education.fromJson(Map<String, dynamic> json) {
-    return Education(
+  factory Invoice.fromJson(Map<String, dynamic> json) {
+    return Invoice(
       id: json["_id"],
-      degree: json["degree"],
-      fromYear: json["fromYear"],
-      toYear: json["toYear"],
-      instituteAr: json["institute_ar"],
-      instituteEn: json["institute_en"],
-      instituteKu: json["institute_ku"],
-      degreeNameAr: json["degreeName_ar"],
-      degreeNameEn: json["degreeName_en"],
-      degreeNameKu: json["degreeName_ku"],
-      isDeleted: json["isDeleted"],
+      user: json["user"],
+      appointment: json["appointment"],
+      currency: json["currency"],
+      totalAmount: json["totalAmount"],
+      originalTotal: json["originalTotal"],
+      patientName: json["patientName"],
+      doctorName: json["doctorName"],
+      status: json["status"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      invoiceNumber: json["invoiceNumber"],
       v: json["__v"],
+      paymentId: json["paymentId"],
+      transaction: json["transaction"] == null
+          ? null
+          : Transaction.fromJson(json["transaction"]),
     );
   }
 }
 
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
+class Transaction {
+  Transaction({
+    required this.succuess,
+    required this.message,
+    required this.data,
   });
 
-  final String? bg;
-  final String? md;
-  final String? sm;
+  final bool? succuess;
+  final String? message;
+  final Data? data;
 
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      succuess: json["succuess"],
+      message: json["message"],
+      data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
   }
 }
 
-class Speciality {
-  Speciality({
-    required this.id,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+class Data {
+  Data({
+    required this.paymentId,
+    required this.readableCode,
+    required this.qrCode,
+    required this.validUntil,
+    required this.personalAppLink,
+    required this.businessAppLink,
+    required this.corporateAppLink,
   });
 
-  final String? id;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
+  final String? paymentId;
+  final String? readableCode;
+  final String? qrCode;
+  final DateTime? validUntil;
+  final String? personalAppLink;
+  final String? businessAppLink;
+  final String? corporateAppLink;
 
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      id: json["_id"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      paymentId: json["paymentId"],
+      readableCode: json["readableCode"],
+      qrCode: json["qrCode"],
+      validUntil: DateTime.tryParse(json["validUntil"] ?? ""),
+      personalAppLink: json["personalAppLink"],
+      businessAppLink: json["businessAppLink"],
+      corporateAppLink: json["corporateAppLink"],
     );
   }
 }
@@ -256,7 +391,7 @@ class Office {
   });
 
   final String? id;
-  final Doctor? doctor;
+  final OfficeDoctor? doctor;
   final String? title;
   final String? description;
   final String? appointmentTimeType;
@@ -267,7 +402,8 @@ class Office {
   factory Office.fromJson(Map<String, dynamic> json) {
     return Office(
       id: json["_id"],
-      doctor: json["doctor"] == null ? null : Doctor.fromJson(json["doctor"]),
+      doctor:
+          json["doctor"] == null ? null : OfficeDoctor.fromJson(json["doctor"]),
       title: json["title"],
       description: json["description"],
       appointmentTimeType: json["appointmentTimeType"],
@@ -298,7 +434,7 @@ class Address {
   final String? city;
   final String? town;
   final String? street;
-  final dynamic typeOfOffice;
+  final TypeOfOffice? typeOfOffice;
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
@@ -310,7 +446,9 @@ class Address {
       city: json["city"],
       town: json["town"],
       street: json["street"],
-      typeOfOffice: json["typeOfOffice"],
+      typeOfOffice: json["typeOfOffice"] == null
+          ? null
+          : TypeOfOffice.fromJson(json["typeOfOffice"]),
     );
   }
 }
@@ -338,6 +476,7 @@ class Country {
     required this.countryKu,
     required this.countryAr,
     required this.countryEn,
+    required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -347,6 +486,7 @@ class Country {
   final String? countryKu;
   final String? countryAr;
   final String? countryEn;
+  final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
@@ -357,6 +497,45 @@ class Country {
       countryKu: json["country_ku"],
       countryAr: json["country_ar"],
       countryEn: json["country_en"],
+      isDeleted: json["isDeleted"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      v: json["__v"],
+    );
+  }
+}
+
+class TypeOfOffice {
+  TypeOfOffice({
+    required this.id,
+    required this.typeOfOfficeKu,
+    required this.typeOfOfficeAr,
+    required this.typeOfOfficeEn,
+    required this.image,
+    required this.isDeleted,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+  });
+
+  final String? id;
+  final String? typeOfOfficeKu;
+  final String? typeOfOfficeAr;
+  final String? typeOfOfficeEn;
+  final String? image;
+  final bool? isDeleted;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  factory TypeOfOffice.fromJson(Map<String, dynamic> json) {
+    return TypeOfOffice(
+      id: json["_id"],
+      typeOfOfficeKu: json["typeOfOffice_ku"],
+      typeOfOfficeAr: json["typeOfOffice_ar"],
+      typeOfOfficeEn: json["typeOfOffice_en"],
+      image: json["image"],
+      isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
@@ -366,46 +545,41 @@ class Country {
 
 class AppointmentTimes {
   AppointmentTimes({
-    required this.sunday,
+    required this.thursday,
     required this.monday,
+    required this.sunday,
     required this.tuesday,
     required this.wednesday,
-    required this.thursday,
     required this.friday,
-    required this.saturday,
   });
 
-  final List<Day> sunday;
+  final List<Day> thursday;
   final List<Day> monday;
+  final List<Day> sunday;
   final List<Day> tuesday;
   final List<Day> wednesday;
-  final List<Day> thursday;
   final List<Day> friday;
-  final List<Day> saturday;
 
   factory AppointmentTimes.fromJson(Map<String, dynamic> json) {
     return AppointmentTimes(
-      sunday: json["sunday"] == null
+      thursday: json["thursday"] == null
           ? []
-          : List<Day>.from(json["sunday"]!.map((x) => Day.fromJson(x))),
+          : List<Day>.from(json["thursday"]!.map((x) => Day.fromJson(x))),
       monday: json["monday"] == null
           ? []
           : List<Day>.from(json["monday"]!.map((x) => Day.fromJson(x))),
+      sunday: json["sunday"] == null
+          ? []
+          : List<Day>.from(json["sunday"]!.map((x) => Day.fromJson(x))),
       tuesday: json["tuesday"] == null
           ? []
           : List<Day>.from(json["tuesday"]!.map((x) => Day.fromJson(x))),
       wednesday: json["wednesday"] == null
           ? []
           : List<Day>.from(json["wednesday"]!.map((x) => Day.fromJson(x))),
-      thursday: json["thursday"] == null
-          ? []
-          : List<Day>.from(json["thursday"]!.map((x) => Day.fromJson(x))),
       friday: json["friday"] == null
           ? []
           : List<Day>.from(json["friday"]!.map((x) => Day.fromJson(x))),
-      saturday: json["saturday"] == null
-          ? []
-          : List<Day>.from(json["saturday"]!.map((x) => Day.fromJson(x))),
     );
   }
 }
@@ -427,8 +601,8 @@ class Day {
   }
 }
 
-class Doctor {
-  Doctor({
+class OfficeDoctor {
+  OfficeDoctor({
     required this.id,
     required this.firstName,
     required this.firstNameKu,
@@ -449,17 +623,22 @@ class Doctor {
     required this.typeOfUser,
     required this.languages,
     required this.appLang,
+    required this.backgroundPicture,
     required this.profilePicture,
     required this.isThirdParty,
     required this.usePictureAsLink,
     required this.dateOfBirth,
+    required this.isVip,
     required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
     required this.sessionToken,
-    required this.level,
+    required this.lastLogin,
     required this.speciality,
+    required this.level,
+    required this.biographyEn,
+    required this.otp,
   });
 
   final String? id;
@@ -482,20 +661,25 @@ class Doctor {
   final String? typeOfUser;
   final List<String> languages;
   final String? appLang;
+  final dynamic backgroundPicture;
   final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
+  final bool? isVip;
   final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
   final String? sessionToken;
-  final Level? level;
+  final DateTime? lastLogin;
   final Speciality? speciality;
+  final Level? level;
+  final String? biographyEn;
+  final Otp? otp;
 
-  factory Doctor.fromJson(Map<String, dynamic> json) {
-    return Doctor(
+  factory OfficeDoctor.fromJson(Map<String, dynamic> json) {
+    return OfficeDoctor(
       id: json["_id"],
       firstName: json["firstName"],
       firstNameKu: json["firstName_ku"],
@@ -521,6 +705,7 @@ class Doctor {
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
+      backgroundPicture: json["background_picture"],
       profilePicture: json["profilePicture"] == null ||
               json["profilePicture"].runtimeType == String
           ? null
@@ -528,15 +713,36 @@ class Doctor {
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
+      isVip: json["is_vip"],
       isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
       sessionToken: json["sessionToken"],
-      level: json["level"] == null ? null : Level.fromJson(json["level"]),
+      lastLogin: DateTime.tryParse(json["lastLogin"] ?? ""),
       speciality: json["speciality"] == null
           ? null
           : Speciality.fromJson(json["speciality"]),
+      level: json["level"] == null ? null : Level.fromJson(json["level"]),
+      biographyEn: json["biography_en"],
+      otp: json["otp"] == null ? null : Otp.fromJson(json["otp"]),
+    );
+  }
+}
+
+class Otp {
+  Otp({
+    required this.code,
+    required this.expireAt,
+  });
+
+  final String? code;
+  final DateTime? expireAt;
+
+  factory Otp.fromJson(Map<String, dynamic> json) {
+    return Otp(
+      code: json["code"],
+      expireAt: DateTime.tryParse(json["expireAt"] ?? ""),
     );
   }
 }
@@ -554,38 +760,6 @@ class Phone {
     return Phone(
       number: json["number"],
       isVerified: json["isVerified"],
-    );
-  }
-}
-
-class TypeOfCurrency {
-  TypeOfCurrency({
-    required this.id,
-    required this.typeOfCurrencyKu,
-    required this.typeOfCurrencyAr,
-    required this.typeOfCurrencyEn,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? typeOfCurrencyKu;
-  final String? typeOfCurrencyAr;
-  final String? typeOfCurrencyEn;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory TypeOfCurrency.fromJson(Map<String, dynamic> json) {
-    return TypeOfCurrency(
-      id: json["_id"],
-      typeOfCurrencyKu: json["typeOfCurrency_ku"],
-      typeOfCurrencyAr: json["typeOfCurrency_ar"],
-      typeOfCurrencyEn: json["typeOfCurrency_en"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
     );
   }
 }

@@ -21,6 +21,7 @@ import 'package:daroon_user/app/modules/user/user_profile/binding/user_edit_prof
 import 'package:daroon_user/app/modules/user/user_profile/binding/user_profile_binding.dart';
 import 'package:daroon_user/app/modules/user/user_profile/pages/user_change_email.dart';
 import 'package:daroon_user/app/modules/user/user_profile/pages/user_change_username.dart';
+import 'package:daroon_user/app/modules/user/user_profile/pages/user_edit_name.dart';
 import 'package:daroon_user/app/modules/user/user_profile/pages/user_edit_profile.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/binding/top_doctor_bindng.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/pages/create_appointment_screen.dart';
@@ -147,6 +148,7 @@ class AppPages {
       page: () => TopDoctorProfileScreen(),
       binding: TopDoctorBindng(),
     ),
+
     GetPage(
       name: Routes.seeOnMapAppointment,
       page: () => SeeOnMapAppointment(),
@@ -203,6 +205,11 @@ class AppPages {
     GetPage(
       name: Routes.userChangeEmail,
       page: () => const UserChangeEmail(),
+      binding: UserEditProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.userChangeName,
+      page: () => const UserEditName(),
       binding: UserEditProfileBinding(),
     ),
     GetPage(

@@ -1,3 +1,5 @@
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+
 class CommetModel {
   CommetModel({
     required this.data,
@@ -177,7 +179,8 @@ class User {
       lastNameAr: json["lastName_ar"],
       lastNameEn: json["lastName_en"],
       usePictureAsLink: json["usePictureAsLink"],
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
     );
@@ -195,31 +198,5 @@ class User {
         "lastName_en": lastNameEn,
         "usePictureAsLink": usePictureAsLink,
         "profilePicture": profilePicture?.toJson(),
-      };
-}
-
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "bg": bg,
-        "md": md,
-        "sm": sm,
       };
 }

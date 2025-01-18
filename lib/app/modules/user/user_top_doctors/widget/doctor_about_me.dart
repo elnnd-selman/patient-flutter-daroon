@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:daroon_user/app/model/education_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/controller/top_doctor_profile_controller.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/model/top_doctor_model.dart';
 import 'package:daroon_user/app/modules/user/user_top_doctors/widget/specific_doctor_offer_container.dart';

@@ -131,7 +131,7 @@ class TopDoctorContainer extends StatelessWidget {
                         ),
                         10.horizontalSpace,
                         Text(
-                          "4.5",
+                          topDoctorModel.averageRatting!.toString(),
                           style: AppTextStyles.medium.copyWith(
                             fontWeight: FontWeight.w400,
                             color: AppColors.lighttextColor,

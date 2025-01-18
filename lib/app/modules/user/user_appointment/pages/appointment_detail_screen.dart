@@ -7,6 +7,7 @@ import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
+import 'package:daroon_user/global/utils/spaces.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/border_common_button.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
@@ -67,25 +68,35 @@ class AppointmentDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Container(
-                      //   height: 9 * SizeConfig.heightMultiplier,
-                      //   width: 18 * SizeConfig.widthMultiplier,
-                      //   decoration: BoxDecoration(
-                      //     image: const DecorationImage(
-                      //         image: AssetImage("assets/images/Rectangle 25.png")),
-                      //     borderRadius: BorderRadius.circular(10),
-                      //   ),
-                      // ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: NetWorkImageLoader(
-                          containerColor: Colors.black54,
-                          imageURL:
-                              appointmentModel.bookedBy!.profilePicture!.bg!,
-                          height: 9 * SizeConfig.heightMultiplier,
-                          width: 18 * SizeConfig.widthMultiplier,
-                        ),
-                      ),
+                      appointmentModel.bookedBy!.profilePicture == null
+                          ? Container(
+                              height: 9 * SizeConfig.heightMultiplier,
+                              width: 18 * SizeConfig.widthMultiplier,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                  color: AppColors.blackBGColor,
+                                  shape: BoxShape.circle),
+                              child: Center(
+                                child: FittedBox(
+                                  child: Text(
+                                    '${appointmentModel.bookedBy!.firstName![0].toUpperCase()}${appointmentModel.bookedBy!.firstNameEn![1].toUpperCase()}',
+                                    style: AppTextStyles.bold.copyWith(
+                                      color: Colors.white,
+                                      fontSize: Spaces.fontSize(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: NetWorkImageLoader(
+                                containerColor: Colors.black54,
+                                imageURL: appointmentModel
+                                    .bookedBy!.profilePicture!.bg!,
+                                height: 9 * SizeConfig.heightMultiplier,
+                                width: 18 * SizeConfig.widthMultiplier,
+                              ),
+                            ),
                       16.horizontalSpace,
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

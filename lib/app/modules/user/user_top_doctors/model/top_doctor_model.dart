@@ -1,4 +1,7 @@
+import 'package:daroon_user/app/model/education_model.dart';
 import 'package:daroon_user/app/model/level_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
 
 class TopDoctorModel {
   TopDoctorModel({
@@ -8,23 +11,28 @@ class TopDoctorModel {
     required this.firstNameEn,
     required this.firstNameAr,
     required this.gender,
+    required this.biographyKu,
+    required this.biographyAr,
+    required this.biographyEn,
     required this.isActive,
+    required this.level,
+    required this.speciality,
     required this.education,
     required this.lastNameKu,
     required this.lastNameAr,
     required this.lastNameEn,
     required this.experienceByYear,
     required this.languages,
+    required this.backgroundPicture,
     required this.profilePicture,
     required this.dateOfBirth,
+    required this.isVip,
     required this.isDeleted,
-    required this.backgroundPicture,
+    required this.lastLogin,
+    required this.averageRatting,
+    required this.completedAppointments,
     required this.offices,
-    required this.level,
-    required this.speciality,
-    required this.biographyAr,
-    required this.biographyEn,
-    required this.biographyKu,
+    required this.reviews,
   });
 
   final String? id;
@@ -33,23 +41,28 @@ class TopDoctorModel {
   final String? firstNameEn;
   final String? firstNameAr;
   final String? gender;
+  final dynamic biographyKu;
+  final dynamic biographyAr;
+  final String? biographyEn;
   final bool? isActive;
+  final Level? level;
+  final Speciality? speciality;
   final List<Education> education;
   final String? lastNameKu;
   final String? lastNameAr;
   final String? lastNameEn;
   final int? experienceByYear;
   final List<String> languages;
+  final dynamic backgroundPicture;
   final ProfilePicture? profilePicture;
   final DateTime? dateOfBirth;
+  final bool? isVip;
   final bool? isDeleted;
-  final dynamic backgroundPicture;
+  final DateTime? lastLogin;
+  final int? averageRatting;
+  final int? completedAppointments;
   final List<Office> offices;
-  final Level? level;
-  final Speciality? speciality;
-  final String? biographyAr;
-  final String? biographyEn;
-  final String? biographyKu;
+  final List<dynamic> reviews;
 
   factory TopDoctorModel.fromJson(Map<String, dynamic> json) {
     return TopDoctorModel(
@@ -59,7 +72,14 @@ class TopDoctorModel {
       firstNameEn: json["firstName_en"],
       firstNameAr: json["firstName_ar"],
       gender: json["gender"],
+      biographyKu: json["biography_ku"],
+      biographyAr: json["biography_ar"],
+      biographyEn: json["biography_en"],
       isActive: json["isActive"],
+      level: json["level"] == null ? null : Level.fromJson(json["level"]),
+      speciality: json["speciality"] == null
+          ? null
+          : Speciality.fromJson(json["speciality"]),
       education: json["education"] == null
           ? []
           : List<Education>.from(
@@ -71,75 +91,23 @@ class TopDoctorModel {
       languages: json["languages"] == null
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
-      profilePicture: json["profilePicture"] == null
+      backgroundPicture: json["background_picture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
+      isVip: json["is_vip"],
       isDeleted: json["isDeleted"],
-      backgroundPicture: json["background_picture"],
+      lastLogin: DateTime.tryParse(json["lastLogin"] ?? ""),
+      averageRatting: json["average_ratting"],
+      completedAppointments: json["completed_appointments"],
       offices: json["offices"] == null
           ? []
           : List<Office>.from(json["offices"]!.map((x) => Office.fromJson(x))),
-      level: json["level"] == null ? null : Level.fromJson(json["level"]),
-      speciality: json["speciality"] == null
-          ? null
-          : Speciality.fromJson(json["speciality"]),
-      biographyAr: json["biography_ar"],
-      biographyEn: json["biography_en"],
-      biographyKu: json["biography_ku"],
-    );
-  }
-}
-
-class Education {
-  Education({
-    required this.id,
-    required this.degree,
-    required this.fromYear,
-    required this.toYear,
-    required this.instituteAr,
-    required this.instituteEn,
-    required this.instituteKu,
-    required this.degreeNameAr,
-    required this.degreeNameEn,
-    required this.degreeNameKu,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? degree;
-  final String? fromYear;
-  final String? toYear;
-  final String? instituteAr;
-  final String? instituteEn;
-  final String? instituteKu;
-  final String? degreeNameAr;
-  final String? degreeNameEn;
-  final String? degreeNameKu;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Education.fromJson(Map<String, dynamic> json) {
-    return Education(
-      id: json["_id"],
-      degree: json["degree"],
-      fromYear: json["fromYear"],
-      toYear: json["toYear"],
-      instituteAr: json["institute_ar"],
-      instituteEn: json["institute_en"],
-      instituteKu: json["institute_ku"],
-      degreeNameAr: json["degreeName_ar"],
-      degreeNameEn: json["degreeName_en"],
-      degreeNameKu: json["degreeName_ku"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
+      reviews: json["reviews"] == null
+          ? []
+          : List<dynamic>.from(json["reviews"]!.map((x) => x)),
     );
   }
 }
@@ -160,9 +128,6 @@ class Office {
     required this.typeOfCurrency,
     required this.phoneNumbers,
     required this.isDeleted,
-    required this.room,
-    required this.floor,
-    required this.buildingNumber,
     required this.appointmentTimes,
     required this.createdAt,
     required this.updatedAt,
@@ -183,9 +148,6 @@ class Office {
   final TypeOfCurrency? typeOfCurrency;
   final List<String> phoneNumbers;
   final bool? isDeleted;
-  final int? room;
-  final int? floor;
-  final int? buildingNumber;
   final AppointmentTimes? appointmentTimes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -214,9 +176,6 @@ class Office {
           ? []
           : List<String>.from(json["phoneNumbers"]!.map((x) => x)),
       isDeleted: json["isDeleted"],
-      room: json["room"],
-      floor: json["floor"],
-      buildingNumber: json["buildingNumber"],
       appointmentTimes: json["appointmentTimes"] == null
           ? null
           : AppointmentTimes.fromJson(json["appointmentTimes"]),
@@ -280,32 +239,32 @@ class Coordinate {
 
 class Country {
   Country({
-    required this.isDeleted,
     required this.id,
     required this.countryKu,
     required this.countryAr,
     required this.countryEn,
+    required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
   });
 
-  final bool? isDeleted;
   final String? id;
   final String? countryKu;
   final String? countryAr;
   final String? countryEn;
+  final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
-      isDeleted: json["isDeleted"],
       id: json["_id"],
       countryKu: json["country_ku"],
       countryAr: json["country_ar"],
       countryEn: json["country_en"],
+      isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
@@ -315,32 +274,35 @@ class Country {
 
 class TypeOfOffice {
   TypeOfOffice({
-    required this.isDeleted,
     required this.id,
     required this.typeOfOfficeKu,
     required this.typeOfOfficeAr,
     required this.typeOfOfficeEn,
+    required this.image,
+    required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
   });
 
-  final bool? isDeleted;
   final String? id;
   final String? typeOfOfficeKu;
   final String? typeOfOfficeAr;
   final String? typeOfOfficeEn;
+  final String? image;
+  final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
 
   factory TypeOfOffice.fromJson(Map<String, dynamic> json) {
     return TypeOfOffice(
-      isDeleted: json["isDeleted"],
       id: json["_id"],
       typeOfOfficeKu: json["typeOfOffice_ku"],
       typeOfOfficeAr: json["typeOfOffice_ar"],
       typeOfOfficeEn: json["typeOfOffice_en"],
+      image: json["image"],
+      isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
@@ -350,34 +312,28 @@ class TypeOfOffice {
 
 class AppointmentTimes {
   AppointmentTimes({
-    required this.sunday,
     required this.monday,
-    required this.tuesday,
     required this.wednesday,
     required this.thursday,
     required this.friday,
     required this.saturday,
+    required this.tuesday,
+    required this.sunday,
   });
 
-  final List<Day> sunday;
   final List<Day> monday;
-  final List<Day> tuesday;
   final List<Day> wednesday;
   final List<Day> thursday;
   final List<Day> friday;
   final List<Day> saturday;
+  final List<Day> tuesday;
+  final List<Day> sunday;
 
   factory AppointmentTimes.fromJson(Map<String, dynamic> json) {
     return AppointmentTimes(
-      sunday: json["sunday"] == null
-          ? []
-          : List<Day>.from(json["sunday"]!.map((x) => Day.fromJson(x))),
       monday: json["monday"] == null
           ? []
           : List<Day>.from(json["monday"]!.map((x) => Day.fromJson(x))),
-      tuesday: json["tuesday"] == null
-          ? []
-          : List<Day>.from(json["tuesday"]!.map((x) => Day.fromJson(x))),
       wednesday: json["wednesday"] == null
           ? []
           : List<Day>.from(json["wednesday"]!.map((x) => Day.fromJson(x))),
@@ -390,6 +346,12 @@ class AppointmentTimes {
       saturday: json["saturday"] == null
           ? []
           : List<Day>.from(json["saturday"]!.map((x) => Day.fromJson(x))),
+      tuesday: json["tuesday"] == null
+          ? []
+          : List<Day>.from(json["tuesday"]!.map((x) => Day.fromJson(x))),
+      sunday: json["sunday"] == null
+          ? []
+          : List<Day>.from(json["sunday"]!.map((x) => Day.fromJson(x))),
     );
   }
 }
@@ -414,7 +376,8 @@ class Day {
 class Doctor {
   Doctor({
     required this.phone,
-    required this.backgroundPicture,
+    required this.biographyKu,
+    required this.biographyAr,
     required this.id,
     required this.firstName,
     required this.firstNameKu,
@@ -433,23 +396,25 @@ class Doctor {
     required this.typeOfUser,
     required this.languages,
     required this.appLang,
+    required this.backgroundPicture,
     required this.profilePicture,
     required this.isThirdParty,
     required this.usePictureAsLink,
     required this.dateOfBirth,
+    required this.isVip,
     required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
-    required this.level,
+    required this.lastLogin,
     required this.speciality,
-    required this.biographyAr,
+    required this.level,
     required this.biographyEn,
-    required this.biographyKu,
   });
 
   final Phone? phone;
-  final dynamic backgroundPicture;
+  final dynamic biographyKu;
+  final dynamic biographyAr;
   final String? id;
   final String? firstName;
   final String? firstNameKu;
@@ -468,24 +433,26 @@ class Doctor {
   final String? typeOfUser;
   final List<String> languages;
   final String? appLang;
-  final String? profilePicture;
+  final dynamic backgroundPicture;
+  final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
+  final bool? isVip;
   final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final Level? level;
+  final DateTime? lastLogin;
   final Speciality? speciality;
-  final String? biographyAr;
+  final Level? level;
   final String? biographyEn;
-  final String? biographyKu;
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
     return Doctor(
       phone: json["phone"] == null ? null : Phone.fromJson(json["phone"]),
-      backgroundPicture: json["background_picture"],
+      biographyKu: json["biography_ku"],
+      biographyAr: json["biography_ar"],
       id: json["_id"],
       firstName: json["firstName"],
       firstNameKu: json["firstName_ku"],
@@ -509,21 +476,25 @@ class Doctor {
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
-      profilePicture: json["profilePicture"],
+      backgroundPicture: json["background_picture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
+      isVip: json["is_vip"],
       isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
-      level: json["level"] == null ? null : Level.fromJson(json["level"]),
+      lastLogin: DateTime.tryParse(json["lastLogin"] ?? ""),
       speciality: json["speciality"] == null
           ? null
           : Speciality.fromJson(json["speciality"]),
-      biographyAr: json["biography_ar"],
+      level: json["level"] == null ? null : Level.fromJson(json["level"]),
       biographyEn: json["biography_en"],
-      biographyKu: json["biography_ku"],
     );
   }
 }
@@ -541,47 +512,6 @@ class Phone {
     return Phone(
       number: json["number"],
       isVerified: json["isVerified"],
-    );
-  }
-}
-
-class Speciality {
-  Speciality({
-    required this.specialityType,
-    required this.id,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.image,
-  });
-
-  final String? specialityType;
-  final String? id;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final String? image;
-
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      specialityType: json["speciality_type"],
-      id: json["_id"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-      image: json["image"],
     );
   }
 }
@@ -611,55 +541,35 @@ class Fee {
 
 class TypeOfCurrency {
   TypeOfCurrency({
-    required this.isDeleted,
     required this.id,
     required this.typeOfCurrencyKu,
     required this.typeOfCurrencyAr,
     required this.typeOfCurrencyEn,
+    required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
   });
 
-  final bool? isDeleted;
   final String? id;
   final String? typeOfCurrencyKu;
   final String? typeOfCurrencyAr;
   final String? typeOfCurrencyEn;
+  final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
 
   factory TypeOfCurrency.fromJson(Map<String, dynamic> json) {
     return TypeOfCurrency(
-      isDeleted: json["isDeleted"],
       id: json["_id"],
       typeOfCurrencyKu: json["typeOfCurrency_ku"],
       typeOfCurrencyAr: json["typeOfCurrency_ar"],
       typeOfCurrencyEn: json["typeOfCurrency_en"],
+      isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
-    );
-  }
-}
-
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
     );
   }
 }

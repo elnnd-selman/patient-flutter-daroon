@@ -78,7 +78,7 @@ class UserAdapter extends TypeAdapter<User> {
       updatedAt: fields[15] as DateTime?,
       v: fields[16] as int?,
       sessionToken: fields[17] as String?,
-      profilePicture: fields[18] as dynamic,
+      profilePicture: fields[18] as UserProfilePicture?,
     );
   }
 

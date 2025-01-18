@@ -24,6 +24,7 @@ class UserEditProfileController extends GetxController {
   }
 
   getUserProfileData() async {
+    print("Testing");
     isLoading.value = true;
     final response = await ApiService.getwithUserToken(
       endPoint: '${AppTokens.apiURl}/users/profile',
@@ -139,6 +140,50 @@ class UserEditProfileController extends GetxController {
               color: const Color(0xffEC1C24),
               icon: Icons.close);
           printInfo(info: "Error While Updating  Gender  ${response.body}");
+        }
+      }
+      processing.value = false;
+    } catch (e) {
+      processing.value = false;
+      printInfo(info: e.toString());
+    }
+  }
+
+  Rxn<DateTime> birthDate = Rxn(null);
+  updateDoctorBirthDay({
+    required BuildContext context,
+  }) async {
+    try {
+      processing.value = true;
+      final response = await ApiService.putWithHeader(
+          userToken: {
+            'Content-Type': 'application/json',
+            "Authorization":
+                "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
+          },
+          endPoint: '${AppTokens.apiURl}/users',
+          body: {
+            "dateOfBirth": birthDate.value.toString(),
+          });
+
+      if (response != null) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Get.find<UserEditProfileController>().getUserProfileData();
+          Get.find<UserEditProfileController>().imageUrl.value = '';
+          showToastMessage(
+              message: "Update Birth Day Successfully",
+              context: context,
+              color: const Color(0xff5BA66B),
+              icon: Icons.check);
+
+          update();
+        } else {
+          showToastMessage(
+              message: response.body.extractErrorMessage(),
+              context: context,
+              color: const Color(0xffEC1C24),
+              icon: Icons.close);
+          printInfo(info: "Error While Updating  Birthday   ${response.body}");
         }
       }
       processing.value = false;

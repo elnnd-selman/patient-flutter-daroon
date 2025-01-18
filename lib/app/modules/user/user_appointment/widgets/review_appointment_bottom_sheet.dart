@@ -4,6 +4,7 @@ import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appoi
 import 'package:daroon_user/global/constants/app_colors.dart';
 import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:daroon_user/global/utils/app_text_style.dart';
+import 'package:daroon_user/global/utils/spaces.dart';
 import 'package:daroon_user/global/utils/widget_spacing.dart';
 import 'package:daroon_user/global/widgets/common_button.dart';
 import 'package:daroon_user/global/widgets/loading_overlay.dart';
@@ -64,16 +65,35 @@ class ReviewAppointmentBottomSheet extends GetView<UserAppointmentController> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: NetWorkImageLoader(
-                          containerColor: Colors.black54,
-                          imageURL:
-                              appointmentModel.bookedBy!.profilePicture!.bg!,
-                          height: 7 * SizeConfig.heightMultiplier,
-                          width: 15 * SizeConfig.widthMultiplier,
-                        ),
-                      ),
+                      appointmentModel.bookedBy!.profilePicture == null
+                          ? Container(
+                              height: 7 * SizeConfig.heightMultiplier,
+                              width: 15 * SizeConfig.widthMultiplier,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                  color: AppColors.blackBGColor,
+                                  shape: BoxShape.circle),
+                              child: Center(
+                                child: FittedBox(
+                                  child: Text(
+                                    '${appointmentModel.bookedBy!.firstName![0].toUpperCase()}${appointmentModel.bookedBy!.firstNameEn![1].toUpperCase()}',
+                                    style: AppTextStyles.bold.copyWith(
+                                      color: Colors.white,
+                                      fontSize: Spaces.fontSize(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: NetWorkImageLoader(
+                                containerColor: Colors.black54,
+                                imageURL: appointmentModel
+                                    .bookedBy!.profilePicture!.bg!,
+                                height: 7 * SizeConfig.heightMultiplier,
+                                width: 15 * SizeConfig.widthMultiplier,
+                              ),
+                            ),
                       const SizedBox(height: 10),
                       Text(
                         appointmentModel.fullName!,

@@ -77,8 +77,7 @@ class ChatRoomController extends GetxController {
       lastNameKu: doctor.lastNameKu,
       lastNameAr: doctor.lastNameAr,
       lastNameEn: doctor.lastNameEn,
-      profilePicture:
-          doctor.profilePicture == null ? null : patientClass.profilePicture!,
+      profilePicture: null,
       isThirdParty: doctor.isThirdParty,
       usePictureAsLink: doctor.usePictureAsLink,
       dateOfBirth: doctor.dateOfBirth,

@@ -1,3 +1,5 @@
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+
 class UserProfileModel {
   UserProfileModel({
     required this.id,
@@ -81,7 +83,8 @@ class UserProfileModel {
           ? []
           : List<dynamic>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
@@ -109,26 +112,6 @@ class Phone {
     return Phone(
       number: json["number"],
       isVerified: json["isVerified"],
-    );
-  }
-}
-
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
     );
   }
 }

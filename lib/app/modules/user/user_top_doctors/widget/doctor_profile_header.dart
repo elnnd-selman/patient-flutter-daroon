@@ -90,7 +90,7 @@ class DoctorProfileHeadrer extends StatelessWidget {
                 ),
                 10.horizontalSpace,
                 Text(
-                  "${topDoctorModel.level == null ? "--" : topDoctorModel.level!.levelEn}",
+                  "${topDoctorModel.level == null ? "--" : topDoctorModel.level!}",
                   style: AppTextStyles.medium.copyWith(
                     fontWeight: FontWeight.w400,
                     color: AppColors.lighttextColor,

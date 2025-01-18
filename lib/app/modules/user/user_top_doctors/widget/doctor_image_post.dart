@@ -106,7 +106,7 @@ class _DoctorImagePostContainerState extends State<DoctorImagePostContainer> {
                   ),
                   Text(
                     Get.find<TopDoctorProfileController>().convertDateToformat(
-                        widget.contentData.updatedAt.toString()),
+                        widget.contentData.createdAt.toString()),
                     style: AppTextStyles.medium.copyWith(
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff717171),

@@ -364,7 +364,7 @@ class UserPodcastDetailScreen extends GetView<UserPodcastDetailCtrl> {
                         ),
                       )
                     : CachedNetworkImage(
-                        imageUrl: podcastData.user!.profilePicture!,
+                        imageUrl: podcastData.user!.profilePicture!.md!,
                         fit: BoxFit.cover,
                         imageBuilder: (context, imageProvider) => Container(
                           height: SizeConfig.heightMultiplier * 12,

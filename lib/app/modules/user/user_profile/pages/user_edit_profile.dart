@@ -14,6 +14,7 @@ import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class UserEditProfile extends GetView<UserEditProfileController> {
   const UserEditProfile({super.key});
@@ -171,10 +172,11 @@ class UserEditProfile extends GetView<UserEditProfileController> {
                       _profileTextField(
                         context: context,
                         title: "Name",
-                        subtitle: controller.userProfileModel.value!.username!,
-                        showIcon: false,
+                        subtitle:
+                            "${controller.userProfileModel.value!.firstNameEn} ${controller.userProfileModel.value!.lastNameEn}",
+                        showIcon: true,
                         hintText: "UserName",
-                        onTap: () {},
+                        onTap: () => Get.toNamed(Routes.userChangeName),
                       ),
                       SizedBox(height: 1 * SizeConfig.heightMultiplier),
                       // _profileTextField(
@@ -276,12 +278,73 @@ class UserEditProfile extends GetView<UserEditProfileController> {
                               },
                             );
                           }),
+                      SizedBox(height: 1 * SizeConfig.heightMultiplier),
+                      _profileTextField(
+                          context: context,
+                          title: "Birth-Day",
+                          subtitle: formatDate(
+                              controller.userProfileModel.value!.dateOfBirth!),
+                          showIcon: true,
+                          hintText: "Birth-Day",
+                          onTap: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Get.bottomSheet(
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.45,
+                                decoration: const BoxDecoration(
+                                    color: AppColors.whiteBGColor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(24),
+                                        topRight: Radius.circular(24))),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.back();
+                                        controller.updateDoctorBirthDay(
+                                            context: context);
+                                      },
+                                      child: Text(
+                                        "Done",
+                                        style: AppTextStyles.bold.copyWith(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Expanded(
+                                      child: CupertinoDatePicker(
+                                        itemExtent: 100,
+                                        initialDateTime:
+                                            controller.birthDate.value ??
+                                                DateTime.now(),
+                                        backgroundColor: AppColors.whiteBGColor,
+                                        mode: CupertinoDatePickerMode.date,
+                                        onDateTimeChanged: (date) {
+                                          controller.birthDate.value = date;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
                     ],
                   ),
                 ),
               ),
       ),
     );
+  }
+
+  String formatDate(DateTime inputDate) {
+    String formattedDate = DateFormat("MMM d, yyyy").format(inputDate);
+    return formattedDate;
   }
 
   Row _profileTextField({

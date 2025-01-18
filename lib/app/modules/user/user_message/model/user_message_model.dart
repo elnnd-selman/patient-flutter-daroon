@@ -1,5 +1,6 @@
 import 'package:daroon_user/app/model/level_model.dart';
-import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
 
 class UserMessageModel {
   UserMessageModel({
@@ -222,7 +223,8 @@ class PatientClass {
       lastNameKu: json["lastName_ku"],
       lastNameAr: json["lastName_ar"],
       lastNameEn: json["lastName_en"],
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
@@ -281,47 +283,6 @@ class Education {
       degreeNameAr: json["degreeName_ar"],
       degreeNameEn: json["degreeName_en"],
       degreeNameKu: json["degreeName_ku"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-    );
-  }
-}
-
-class Speciality {
-  Speciality({
-    required this.id,
-    required this.image,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.specialityType,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  final String? id;
-  final String? image;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final String? specialityType;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      id: json["_id"],
-      image: json["image"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      specialityType: json["speciality_type"],
       isDeleted: json["isDeleted"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
@@ -569,7 +530,7 @@ class OfficeDoctor {
   final List<String> languages;
   final String? appLang;
   final dynamic backgroundPicture;
-  final String? profilePicture;
+  final ProfilePicture? profilePicture;
   final bool? isThirdParty;
   final bool? usePictureAsLink;
   final DateTime? dateOfBirth;
@@ -610,7 +571,10 @@ class OfficeDoctor {
           : List<String>.from(json["languages"]!.map((x) => x)),
       appLang: json["appLang"],
       backgroundPicture: json["background_picture"],
-      profilePicture: json["profilePicture"],
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
+          ? null
+          : ProfilePicture.fromJson(json["profilePicture"]),
       isThirdParty: json["isThirdParty"],
       usePictureAsLink: json["usePictureAsLink"],
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),

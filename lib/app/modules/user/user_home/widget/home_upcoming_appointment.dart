@@ -21,8 +21,9 @@ class HomeUpcomingAppointment extends GetView<UserHomeController> {
           : controller.upcomingAppointmentList.isEmpty
               ? Center(
                   child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 7 * SizeConfig.heightMultiplier),
+                      padding: EdgeInsets.only(
+                          top: 5 * SizeConfig.heightMultiplier,
+                          bottom: 7 * SizeConfig.heightMultiplier),
                       child: const NoDataWidget(
                         text: "No Upcoming appointment\nis found.",
                       )),

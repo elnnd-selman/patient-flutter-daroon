@@ -180,7 +180,7 @@ class _UserInvoiceDetailState extends State<UserInvoiceDetail>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      Future.delayed(const Duration(seconds: 2));
+      Future.delayed(const Duration(seconds: 5));
       checkPayment();
     }
   }

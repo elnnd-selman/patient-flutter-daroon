@@ -1,8 +1,8 @@
+import 'package:daroon_user/global/constants/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:daroon_user/app/controllers/local_storage_controller.dart';
 import 'package:daroon_user/app/routes/app_routes.dart';
-import 'package:daroon_user/generated/assets.dart';
 import 'package:daroon_user/global/constants/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,9 +18,16 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: AppColors.whiteBGColor,
       body: Center(
-        child: Image.asset(
-          Assets.appLogo,
-          width: 90,
+        child: Container(
+          height: 12 * SizeConfig.heightMultiplier,
+          width: 55 * SizeConfig.widthMultiplier,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(
+                  "assets/icons_png/splash_image.png",
+                ),
+                fit: BoxFit.contain),
+          ),
         ),
       ),
     );

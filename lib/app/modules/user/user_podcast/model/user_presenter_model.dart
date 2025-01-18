@@ -1,4 +1,6 @@
 import 'package:daroon_user/app/model/level_model.dart';
+import 'package:daroon_user/app/model/profile_picture_model.dart';
+import 'package:daroon_user/app/model/specialty_model.dart';
 
 class UserPresenterModel {
   UserPresenterModel({
@@ -72,67 +74,13 @@ class UserPresenterModel {
       languages: json["languages"] == null
           ? []
           : List<String>.from(json["languages"]!.map((x) => x)),
-      profilePicture: json["profilePicture"] == null
+      profilePicture: json["profilePicture"] == null ||
+              json["profilePicture"].runtimeType == String
           ? null
           : ProfilePicture.fromJson(json["profilePicture"]),
       dateOfBirth: DateTime.tryParse(json["dateOfBirth"] ?? ""),
       isDeleted: json["isDeleted"],
       level: json["level"] == null ? null : Level.fromJson(json["level"]),
-    );
-  }
-}
-
-class ProfilePicture {
-  ProfilePicture({
-    required this.bg,
-    required this.md,
-    required this.sm,
-  });
-
-  final String? bg;
-  final String? md;
-  final String? sm;
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      bg: json["bg"],
-      md: json["md"],
-      sm: json["sm"],
-    );
-  }
-}
-
-class Speciality {
-  Speciality({
-    required this.id,
-    required this.specialityKu,
-    required this.specialityAr,
-    required this.specialityEn,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.image,
-  });
-
-  final String? id;
-  final String? specialityKu;
-  final String? specialityAr;
-  final String? specialityEn;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final String? image;
-
-  factory Speciality.fromJson(Map<String, dynamic> json) {
-    return Speciality(
-      id: json["_id"],
-      specialityKu: json["speciality_ku"],
-      specialityAr: json["speciality_ar"],
-      specialityEn: json["speciality_en"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-      image: json["image"],
     );
   }
 }

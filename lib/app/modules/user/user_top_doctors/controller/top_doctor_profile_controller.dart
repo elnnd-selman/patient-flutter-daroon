@@ -135,7 +135,7 @@ class TopDoctorProfileController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
-      printInfo(info: e.toString());
+      printInfo(info: "Get Post ${e.toString()}");
     }
     isLoading.value = false;
   }
@@ -144,8 +144,7 @@ class TopDoctorProfileController extends GetxController {
     currentPage = currentPage + 1;
 
     final response = await ApiService.getwithUserToken(
-      endPoint:
-          '${AppTokens.apiURl}/contents/my-contents?pagination=$currentPage&limit=10&contentType=$postType',
+      endPoint: '${AppTokens.apiURl}/contents/my-contents',
       userToken: {
         "Authorization":
             "Bearer ${Get.find<UserHomeController>().userModel.value!.token!}",
@@ -253,7 +252,7 @@ class TopDoctorProfileController extends GetxController {
 
       isOfferLoading.value = false;
     } catch (e) {
-      printError(info: e.toString());
+      printError(info: "Offer ${e.toString()}");
       isOfferLoading.value = false;
     }
   }
@@ -282,7 +281,7 @@ class TopDoctorProfileController extends GetxController {
 
       isRatingLoading.value = false;
     } catch (e) {
-      printError(info: e.toString());
+      printError(info: "Doctor Rating ${e.toString()}");
       isRatingLoading.value = false;
     }
   }

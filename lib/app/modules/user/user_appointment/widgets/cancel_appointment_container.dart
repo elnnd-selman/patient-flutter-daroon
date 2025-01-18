@@ -3,6 +3,7 @@ import 'package:daroon_user/app/modules/user/user_appointment/controller/user_ap
 import 'package:daroon_user/app/modules/user/user_appointment/model/doctor_appointmet_model.dart';
 import 'package:daroon_user/app/modules/user/user_appointment/widgets/change_appointment_time.dart';
 import 'package:daroon_user/app/modules/user/user_home/widget/upcoming_custom_container.dart';
+import 'package:daroon_user/global/utils/spaces.dart';
 import 'package:daroon_user/global/widgets/custom_cupertino_button.dart';
 import 'package:daroon_user/global/widgets/network_image_loader.dart';
 import 'package:flutter/material.dart';
@@ -71,21 +72,66 @@ class CancelAppointmentContainer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: NetWorkImageLoader(
-                                    containerColor: Colors.black54,
-                                    imageURL: appointmentModel
-                                        .bookedBy!.profilePicture!.bg!,
-                                    height: 9 * SizeConfig.heightMultiplier,
-                                    width: 18 * SizeConfig.widthMultiplier,
-                                  ),
-                                ),
+                                appointmentModel.bookedBy!.profilePicture ==
+                                        null
+                                    ? Container(
+                                        height: 9 * SizeConfig.heightMultiplier,
+                                        width: 18 * SizeConfig.widthMultiplier,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: const BoxDecoration(
+                                            color: AppColors.blackBGColor,
+                                            shape: BoxShape.circle),
+                                        child: Center(
+                                          child: FittedBox(
+                                            child: Text(
+                                              '${appointmentModel.bookedBy!.firstName![0].toUpperCase()}${appointmentModel.bookedBy!.firstNameEn![1].toUpperCase()}',
+                                              style:
+                                                  AppTextStyles.bold.copyWith(
+                                                color: Colors.white,
+                                                fontSize: Spaces.fontSize(
+                                                    fontSize: 18),
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: NetWorkImageLoader(
+                                          containerColor: Colors.black54,
+                                          imageURL: appointmentModel
+                                              .bookedBy!.profilePicture!.bg!,
+                                          height:
+                                              9 * SizeConfig.heightMultiplier,
+                                          width:
+                                              18 * SizeConfig.widthMultiplier,
+                                        ),
+                                      ),
                                 14.horizontalSpace,
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    14.verticalSpace,
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14,
+                                          vertical: 0.5 *
+                                              SizeConfig.heightMultiplier),
+                                      decoration: BoxDecoration(
+                                          color: appointmentModel.isPaid!
+                                              ? Colors.green.withOpacity(.5)
+                                              : Colors.red.withOpacity(.5),
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                      child: Text(
+                                        appointmentModel.isPaid!
+                                            ? "Paid"
+                                            : "Not Paid",
+                                        style: AppTextStyles.normal.copyWith(
+                                            color: AppColors.whiteBGColor,
+                                            fontSize: 1.2 *
+                                                SizeConfig.heightMultiplier),
+                                      ),
+                                    ),
+                                    6.verticalSpace,
                                     Text(
                                       appointmentModel.fullName!,
                                       style: AppTextStyles.medium.copyWith(
@@ -312,30 +358,48 @@ class CancelAppointmentContainer extends StatelessWidget {
       right: 2 * SizeConfig.widthMultiplier,
       top: 1 * SizeConfig.heightMultiplier,
       child: FadeInRight(
-          child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.widthMultiplier * 3.5,
-            vertical: SizeConfig.heightMultiplier * 1),
-        decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(20)),
-        child: Row(
-          children: [
-            Text(
-              "Details",
-              style: AppTextStyles.medium.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.whiteBGColor,
-                fontSize: SizeConfig.heightMultiplier * 1.2,
+          child: CustomCupertinoButton(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          Get.toNamed(
+            Routes.userAppointmentDetail,
+            arguments: [
+              "cancelled",
+              "cancelled",
+              const Color(0xffEC1C24),
+              false,
+              "Cancelled Appointment",
+              true,
+              true,
+              appointmentModel,
+            ],
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.widthMultiplier * 3.5,
+              vertical: SizeConfig.heightMultiplier * 1),
+          decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Text(
+                "Details",
+                style: AppTextStyles.medium.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.whiteBGColor,
+                  fontSize: SizeConfig.heightMultiplier * 1.2,
+                ),
               ),
-            ),
-            SizedBox(width: SizeConfig.widthMultiplier * 0.5),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: AppColors.whiteBGColor,
-              size: SizeConfig.heightMultiplier * 1.2,
-            )
-          ],
+              SizedBox(width: SizeConfig.widthMultiplier * 0.5),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.whiteBGColor,
+                size: SizeConfig.heightMultiplier * 1.2,
+              )
+            ],
+          ),
         ),
       )),
     );

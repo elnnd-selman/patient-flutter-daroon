@@ -102,7 +102,10 @@ class UserInvoiceController extends GetxController {
       );
 
       if (response!.statusCode == 200 || response.statusCode == 201) {
+        // final jsonResponse = jsonDecode(response.body);
+
         final result = response.body.extractErrorMessage();
+        print(result);
 
         Get.offAndToNamed(Routes.paymentStatus, arguments: [
           result == "Invoice Paid Successfully" ? true : false,
